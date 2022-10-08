@@ -5,6 +5,7 @@ import { Checkbox } from "./components/Checkbox";
 import { Landing } from "./components/Landing";
 import { TaskCard } from "./components/TaskCard";
 import { TaskDetail } from "./components/TaskDetail";
+import { UploadedCard } from "./components/UploadedCard";
 import { UserProfile } from "./components/UserProfile";
 import { Components } from "./pages/Components";
 import { Home } from "./pages/Home";
@@ -54,6 +55,7 @@ function App() {
           <Route path="components">
             <Route path="peter">
               <Route path="taskdetail" element={<TaskDetail />}></Route>
+              <Route path="uploadedcard" element={<UploadedCard />}></Route>
             </Route>
             <Route path="guohao">
               <Route path="profile" element={<UserProfile />}></Route>

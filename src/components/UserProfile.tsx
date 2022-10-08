@@ -1,7 +1,7 @@
 interface UserProfileProps {}
 
 const UserProfile = ({}: UserProfileProps) => {
-  return <div className="text-yellow-500">Write ur component here</div>;
+  return <div className="text-yellow-500">Write your component here</div>;
 };
 
 export { UserProfile };

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Navbar } from "../components/Navbar";
 
 interface HomeProps {
   children: JSX.Element;
@@ -27,7 +28,7 @@ export const Home = ({ children }: HomeProps) => {
         <div>Task</div>
       </div>
       <div className="flex flex-col w-full">
-        <div className="w-full h-12 flex flex-row items-center p-4 bg-gray-300">Nav Bar</div>
+        <Navbar></Navbar>
         <div className="w-full h-full bg-purple-500">{children}</div>
       </div>
     </div>

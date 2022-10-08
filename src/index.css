@@ -2,7 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-body > #root > div {
+body > #root {
   height: 100vh;
   width: 100vw;
+}
+
+input {
+  border: none; 
+  outline: none;
+  background-color: transparent;
+}
+
+input:focus {
+  outline: none /* Removes the border when the input is clicked */
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url(./fonts/DMSans-Regular.ttf);
+  font-weight: normal;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url(./fonts/DMSans-Bold.ttf);
+  font-weight: bold;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url(./fonts/DMSans-Medium.ttf);
+  font-weight: medium;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: "DM Sans";
+  font-weight: normal;
 }

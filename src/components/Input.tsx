@@ -11,11 +11,12 @@ interface Props{
     placeholder?:string
     onChange?:(val:string)=>void
     onComplete?:(val:string)=>void
+    defaultValue?:string
 }
 
-export const Input = ({type,placeholder='',onChange,onComplete}:Props)=>{
+export const Input = ({type,placeholder='',onChange,onComplete,defaultValue}:Props)=>{
     const [focus,setFocus] = useState<boolean>(false)
-    const [value,setValue] = useState<string>('')
+    const [value,setValue] = useState<string>(defaultValue || '')
     const [hidePassword,setHidePassword] = useState<boolean>(true)
 
     const getType = useCallback(() => {

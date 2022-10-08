@@ -27,7 +27,8 @@ export const Landing = ({}: Props) => {
       .then((userCredential) => {
         const user = userCredential.user;
         setUser?.(user);
-        navigate("/");
+        setTimeout(()=>{navigate("/");},500)
+        
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -43,7 +44,7 @@ export const Landing = ({}: Props) => {
           const token = credential.accessToken;
           const user = result.user;
           setUser?.(user);
-          navigate("/");
+          setTimeout(()=>{navigate("/");},500)
         }
       })
       .catch((error) => {
@@ -59,7 +60,7 @@ export const Landing = ({}: Props) => {
       .then((userCredential) => {
         const user = userCredential.user;
         setUser?.(user);
-        navigate("/");
+        setTimeout(()=>{navigate("/");},500)
       })
       .catch((error) => {
         const errorCode = error.code;

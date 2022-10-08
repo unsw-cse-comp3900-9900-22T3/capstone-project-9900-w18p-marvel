@@ -14,7 +14,8 @@ input {
 }
 
 input:focus {
-  outline: none /* Removes the border when the input is clicked */
+  outline: none;
+  background-color: transparent;
 }
 
 @font-face {

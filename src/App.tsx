@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import reactLogo from "./assets/react.svg";
 import { Checkbox } from "./components/Checkbox";
@@ -52,6 +52,15 @@ export function App() {
   };
 
   const app = initializeApp(firebaseConfig);
+
+  useEffect(()=>{
+    if(user) setAuthorized(true)
+    else setAuthorized(false)
+  },[user])
+
+  useEffect(()=>{
+    console.log(authorized)
+  },[authorized])
   
   const providerValues = useMemo(() => {
     return {
@@ -73,7 +82,7 @@ export function App() {
             <Route
               index
               element={
-                <Interceptor authorized={authorized}>
+                <Interceptor>
                   <Home>
                     <Project />
                   </Home>
@@ -83,7 +92,7 @@ export function App() {
             <Route
               path="projects"
               element={
-                <Interceptor authorized={authorized}>
+                <Interceptor>
                   <Home>
                     <Project />
                   </Home>
@@ -93,7 +102,7 @@ export function App() {
             <Route
               path="tasks"
               element={
-                <Interceptor authorized={authorized}>
+                <Interceptor>
                   <Home>
                     <Tasks />
                   </Home>

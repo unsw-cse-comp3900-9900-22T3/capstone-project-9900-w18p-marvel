@@ -30,9 +30,9 @@ interface Props {
 export const Button = ({ theme,size, label, onClick,prefix }: Props) => {
   return (
     <div
-      className={`cursor-pointer select-none px-4 py-2 flex flex-row gap-3 justify-center items-center h-10 ${
+      className={`transition cursor-pointer select-none px-4 py-2 flex flex-row gap-3 justify-center items-center h-10 ${
         size === "hug" ? "w-fit" : "w-full"
-      } w-full rounded-2xl ${themeDefaultMapping.get(theme)}`}
+      } rounded-2xl ${themeDefaultMapping.get(theme)} hover:brightness-90`}
       onClick={() => {
         onClick?.();
       }}

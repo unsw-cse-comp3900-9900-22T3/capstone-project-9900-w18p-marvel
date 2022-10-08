@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navbar } from "../components/Navbar";
+import { Navbar } from "../features/Navbar";
 
 interface HomeProps {
   children: JSX.Element;

@@ -250,6 +250,11 @@
   resolved "https://registry.yarnpkg.com/@esbuild/linux-loong64/-/linux-loong64-0.15.9.tgz#b658a97babf1f40783354af7039b84c3fdfc3fc3"
   integrity sha512-O+NfmkfRrb3uSsTa4jE3WApidSe3N5++fyOVGP1SmMZi4A3BZELkhUUvj5hwmMuNdlpzAZ8iAPz2vmcR7DCFQA==
 
+"@faker-js/faker@^7.5.0":
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/@faker-js/faker/-/faker-7.5.0.tgz#8e8265f65f5b68d2a57886d59b03788eeb676264"
+  integrity sha512-8wNUCCUHvfvI0gQpDUho/3gPzABffnCn5um65F8dzQ86zz6dlt4+nmAA7PQUc8L+eH+9RgR/qzy5N/8kN0Ozdw==
+
 "@firebase/analytics-compat@0.1.13":
   version "0.1.13"
   resolved "https://registry.yarnpkg.com/@firebase/analytics-compat/-/analytics-compat-0.1.13.tgz#61e1d6f9e4d033c3ed9943d91530eb3e0f382f92"
@@ -693,6 +698,11 @@
   dependencies:
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
+
+"@lukeed/csprng@^1.0.0":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@lukeed/csprng/-/csprng-1.0.1.tgz#625e93a0edb2c830e3c52ce2d67b9d53377c6a66"
+  integrity sha512-uSvJdwQU5nK+Vdf6zxcWAY2A8r7uqe+gePwLWzJ+fsQehq18pc0I2hJKwypZ2aLM90+Er9u1xn4iLJPZ+xlL4g==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -1923,6 +1933,13 @@ typescript@^4.6.4:
   version "4.8.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.8.4.tgz#c464abca159669597be5f96b8943500b238e60e6"
   integrity sha512-QCh+85mCy+h0IGff8r5XWzOVSbBO+KfeYrMQh7NJ58QujwcE22u+NUSmUxqF+un70P9GXKxa2HCNiTTMJknyjQ==
+
+uid@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/uid/-/uid-2.0.1.tgz#a3f57c962828ea65256cd622fc363028cdf4526b"
+  integrity sha512-PF+1AnZgycpAIEmNtjxGBVmKbZAQguaa4pBUq6KNaGEcpzZ2klCNZLM34tsjp76maN00TttiiUf6zkIBpJQm2A==
+  dependencies:
+    "@lukeed/csprng" "^1.0.0"
 
 update-browserslist-db@^1.0.9:
   version "1.0.9"

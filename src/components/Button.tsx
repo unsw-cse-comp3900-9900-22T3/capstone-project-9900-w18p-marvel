@@ -5,15 +5,9 @@ type Size = "hug" | "fill";
 type Rounded = "none" | "2xl";
 
 const themeDefaultMapping = new Map<Theme, string>([
-  ["blue", "bg-blue-100  text-sm text-white-100 font-bold"],
-  ["gray", "bg-white-5 text-sm text-black font-bold"],
+  ["blue", "bg-blue-100  text-sm text-white-100 font-bold hover:bg-blue-200"],
+  ["gray", "bg-white-5 text-sm text-black font-bold hover:bg-white-10"],
   ["transparent", "bg-transparent text-sm text-black font-bold hover:bg-white-5"],
-]);
-
-const themeHoverMapping = new Map<Theme, string>([
-  ["blue", "bg-blue-200 text-sm text-white-100 font-bold"],
-  ["gray", "bg-white-10 text-sm text-black font-bold"],
-  ["transparent", ""],
 ]);
 
 interface Props {

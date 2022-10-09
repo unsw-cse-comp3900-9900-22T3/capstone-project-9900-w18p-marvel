@@ -10,12 +10,12 @@ type Props = {
   export const Interceptor = ({children }: Props) => {
     const navigate = useNavigate();
     const { authorized } = useApp();
-    useEffect(()=>{
-        if(!authorized){
-            navigate("/login")
-        }
-    },[])
+    // useEffect(()=>{
+    //     if(!authorized){
+    //         navigate("/login")
+    //     }
+    // },[])
 
-    return <div className="w-full h-full">{authorized === true && children}</div>;
+    return <div className="w-full h-full">{children}</div>;
   }
   

@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { useApp } from "../App";
 import { Avatar } from "../components/Avatar";
 import { Button } from "../components/Button";
+import { Portrait } from "../components/Portrait";
+import { LogoutIcon } from "../icons/LogoutIcon";
+import { PlusIcon } from "../icons/PlusIcon";
 
 export const Navbar = () => {
   const { setUser } = useApp();
@@ -11,11 +14,13 @@ export const Navbar = () => {
   const navigate = useNavigate();
   return (
     <div className="flex flex-row justify-end items-center gap-9 w-full h-24 p-6">
-      <Button theme={"blue"} label={"Start Project"} size={"hug"}></Button>
-      <Avatar
-        size={"lg"}
-        rounded={"full"}
-        src={""}
+      <Button
+        theme={"blue"}
+        label={"Start Project"}
+        size={"hug"}
+        prefix={<PlusIcon className={""}></PlusIcon>}
+      ></Button>
+      <Portrait
         onClick={() => {
           signOut(auth)
             .then(() => {
@@ -26,7 +31,7 @@ export const Navbar = () => {
               alert("Logout Failed");
             });
         }}
-      ></Avatar>
+      />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Google } from "../icons/Google";
+import { GoogleIcon } from "../icons/GoogleIcon";
 import { Button } from "./Button";
 import { Checkbox } from "./Checkbox";
 import { Input } from "./Input";
@@ -82,7 +82,7 @@ export const Signup = ({
           <Button
             theme={"gray"}
             label={"Gontinue with Google"}
-            prefix={<Google className="" />}
+            prefix={<GoogleIcon className="" />}
             onClick={() => {
               onClickGoogle();
             }}

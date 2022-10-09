@@ -95,6 +95,7 @@ module.exports = {
         white:{
           5:'#F2F2F2',
           10:'#E6E6E6',
+          60:'#666666',
           100:'#FFFFFF'
         }
       },

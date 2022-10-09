@@ -4,7 +4,7 @@ interface Props {
   className: string;
 }
 
-export const Google = ({ className }: Props) => (
+export const GoogleIcon = ({ className }: Props) => (
   <svg
     width="16"
     height="16"

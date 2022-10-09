@@ -1,6 +1,6 @@
 import React, { useCallback } from "react"
 import { useState } from "react"
-import { Eye } from "../icons/Eye"
+import { EyeIcon } from "../icons/EyeIcon"
 
 type InputType =
 |'text'
@@ -60,7 +60,7 @@ export const Input = ({type,placeholder='',onChange,onComplete,defaultValue}:Pro
               setHidePassword(!hidePassword);
             }}
           >
-            <Eye
+            <EyeIcon
               className={`w-6 h-6 ${
                 hidePassword ? "text-gray-100" : "text-white-10"
               }`}

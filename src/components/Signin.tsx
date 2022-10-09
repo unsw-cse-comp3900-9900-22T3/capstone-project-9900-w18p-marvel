@@ -1,6 +1,6 @@
 import React from "react"
 import { useState } from "react"
-import { Google } from "../icons/Google"
+import { GoogleIcon } from "../icons/GoogleIcon"
 import { Button } from "./Button"
 import { Checkbox } from "./Checkbox"
 import { Input } from "./Input"
@@ -67,7 +67,7 @@ export const Signin = ({onClickLogin,onClickGoogle,onSwitchMode}:Props)=>{
             <Button
               theme={"gray"}
               label={"Gontinue with Google"}
-              prefix={<Google className="" />}
+              prefix={<GoogleIcon className="" />}
               onClick={() => {
                 onClickGoogle();
               }}

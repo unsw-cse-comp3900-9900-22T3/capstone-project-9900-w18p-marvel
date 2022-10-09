@@ -21,7 +21,7 @@ export const Navbar = () => {
         prefix={<PlusIcon className={""}></PlusIcon>}
       ></Button>
       <Portrait
-        onClick={() => {
+        onClickLogout={() => {
           signOut(auth)
             .then(() => {
               setUser?.(undefined);

@@ -1,38 +1,46 @@
 import { useState } from "react"
 import { LogoutIcon } from "../icons/LogoutIcon";
 import { Avatar } from "./Avatar";
+import { Button } from "./Button";
 
 interface Props{
-    onClick?:()=>void
+    onClickLogout?:()=>void
+    onClickProfile?:()=>void
 }
 
-export const Portrait = ({onClick}:Props)=>{
-    const [hover,setHover] = useState<boolean>(false)
+export const Portrait = ({onClickLogout,onClickProfile}:Props)=>{
+    const [open,setOpen] = useState<boolean>(false)
 
     return (
-      <div
-        className="relative"
-        onMouseEnter={() => {
-          setHover(true);
-        }}
-        onMouseLeave={() => {
-          setHover(false);
-        }}
-      >
+      <div className="relative">
         <Avatar
           size={"lg"}
           rounded={"full"}
           src={""}
           onClick={() => {
-            onClick?.();
+            setOpen(!open)
           }}
         ></Avatar>
-        <div className="rounded-full absolute flex justify-center items-center w-full h-full inset-0 pointer-events-none">
-          <LogoutIcon
-            className={
-              `transition ${hover?'text-white-100':' text-transparent'} pointer-events-none`
-            }
-          ></LogoutIcon>
+        <div
+          className={`transition-all rounded-2xl absolute bg-white-100 drop-shadow-2xl flex flex-col justify-center items-start w-24 ${
+            open ? "h-fit py-2" : "h-0"
+          }  top-14 -right-4  overflow-hidden`}
+        >
+          <Button
+            theme={"transparent"}
+            size={"fill"}
+            label={"Profile"}
+            rounded={"none"}
+          />
+          <Button
+            theme={"transparent"}
+            size={"fill"}
+            label={"Logout"}
+            rounded={"none"}
+            onClick={()=>{
+                onClickLogout?.();
+            }}
+          />
         </div>
       </div>
     );

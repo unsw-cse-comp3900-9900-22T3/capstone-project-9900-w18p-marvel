@@ -1,7 +1,7 @@
 interface UploadedCardProps {
   FilePic?: string;
   FileName?: string;
-  FileAddedTime?: Array<string>; //["01", "DEC", "2022"]
+  FileAddedTime?: string;
 
 }
 

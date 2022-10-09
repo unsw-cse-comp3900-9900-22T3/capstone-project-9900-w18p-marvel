@@ -14,7 +14,7 @@ interface DescriptionBoxProps {
               <div className={`flex items-center text-2xl`}><img src={img_address} className={`w-10 h-10 mr-3`} />Description</div>
           </div>
     
-          <div className={`flex item-start flex-row w-166 mb-5 text-gray-400 rounded-2xl relative mt-4 ml-10`}>
+          <div className={`flex item-start flex-row w-166 text-justify text-gray-400 rounded-2xl relative mt-4 ml-10`}>
               {Description}
           </div>
       </div>

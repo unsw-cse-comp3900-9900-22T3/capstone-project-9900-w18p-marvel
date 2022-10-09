@@ -2,7 +2,7 @@ interface TaskInfoBlockProps {
     TaskID: number;
     TaskName: string;
     Assignee: Array<string>;
-    DueDate?: string;
+    DueDate: string;
 
   }
   
@@ -12,7 +12,7 @@ interface TaskInfoBlockProps {
   
   const TaskInfoBlock = ({TaskName, TaskID, Assignee, DueDate}: TaskInfoBlockProps) => {
     return(
-      <div className={`flex flex-col w-176 h-44`}> 
+      <div className={`flex flex-col w-176 h-44 mt-5 ml-5`}> 
       <div className={`flex flex-col w-176 h-44`}> 
       <div className={`flex items-center text-2xl`}>{TaskName}</div>
       <div className={`flex items-center text-gray-400 text-sm mt-2`}>{TaskID}</div>
@@ -25,7 +25,7 @@ interface TaskInfoBlockProps {
 
       </div>
 
-      <div className={`flex items-start flex-col w-36 h-44`}> 
+      <div className={`flex items-start flex-col w-36 h-44 mb-5`}> 
       <div className={`flex items-center text-gray-400 text-lg mt-2`}>DUE DATE</div>
       <div className={`flex items-center text-sm text-gray-400 bg-gray-50 rounded-2xl mt-5`}>{DueDate}</div>
       

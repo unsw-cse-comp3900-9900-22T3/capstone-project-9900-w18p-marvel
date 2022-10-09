@@ -9,12 +9,12 @@ interface DescriptionBoxProps {
   
   const DescriptionBox = ({Description}: DescriptionBoxProps) => {
     return(
-      <div className={`flex flex-col w-176 h-44`}> 
+      <div className={`flex flex-col w-176 h-auto`}> 
           <div className={`flex flex-row w-176 h-auto`}> 
               <div className={`flex items-center text-2xl`}><img src={img_address} className={`w-10 h-10 mr-3`} />Description</div>
           </div>
     
-          <div className={`flex item-start flex-row w-166 h-32 text-gray-400 rounded-2xl relative mt-4 ml-10`}>
+          <div className={`flex item-start flex-row w-166 mb-5 text-gray-400 rounded-2xl relative mt-4 ml-10`}>
               {Description}
           </div>
       </div>

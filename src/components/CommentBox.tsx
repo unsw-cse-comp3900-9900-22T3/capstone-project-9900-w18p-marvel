@@ -1,8 +1,8 @@
 interface CommentboxProps {
-    TotalComment?: number;
-    Name?: string;
-    Avator?: string;
-    Comments?: string;
+    TotalComment: number;
+    Name: string;
+    Avator: string;
+    Comments: string;
     CommentDate: string; 
   
   }
@@ -25,9 +25,9 @@ interface CommentboxProps {
                 <img src={img_address} className={`w-10 h-10 gap-5 rounded-full`}/>
             </div>
             <div className={`flex flex-col w-auto h-auto gap-3`}>
-                <div className={`text-sm font-bold`}>Linda Hsu</div>
-                <div className={`text-xs text-gray-100`}>Can you send me the preview image of task management projec?</div>
-                <div className={`text-xs text-gray-100 pt-3`}>Reply</div>
+                <div className={`text-sm font-bold text-lg`}>{Name}</div>
+                <div className={`text-xs text-gray-100`}>{Comments}</div>
+                <div className={`text-xs text-gray-100 pt-1`}>Reply</div>
             </div>
             <div className={`flex flex-row absolute right-5`}>
                 <div className={`flex pr-2 text-xs text-gray-100`}>{CommentDate}</div>

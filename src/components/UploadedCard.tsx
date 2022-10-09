@@ -1,7 +1,7 @@
 interface UploadedCardProps {
-  FilePic?: string;
-  FileName?: string;
-  FileAddedTime?: string;
+  FilePic?: string; //Depending on the file format for different Pic
+  FileName: string;
+  FileAddedTime: string;
 
 }
 

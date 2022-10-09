@@ -8,7 +8,7 @@ interface Props{
     onClickProfile?:()=>void
 }
 
-export const Portrait = ({onClickLogout,onClickProfile}:Props)=>{
+export const ProfileEntry = ({onClickLogout,onClickProfile}:Props)=>{
     const [open,setOpen] = useState<boolean>(false)
 
     return (

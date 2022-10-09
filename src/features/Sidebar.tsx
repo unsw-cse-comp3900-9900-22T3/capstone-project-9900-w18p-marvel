@@ -1,13 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { DashboardIcon } from "../icons/DashboardIcon";
 import { ProjectIcon } from "../icons/ProjectIcon";
+import { TaskIcon } from "../icons/TaskIcon";
 
 interface MenuItemProps {
     prefix?:JSX.Element
     label:string
+    onClick?:()=>void
 }
 
-const MenuItem = ({prefix,label}:MenuItemProps)=>{
+const MenuItem = ({prefix,label,onClick}:MenuItemProps)=>{
     const [hover,setHover] = useState<boolean>(false)
     return (
       <div
@@ -18,6 +21,7 @@ const MenuItem = ({prefix,label}:MenuItemProps)=>{
         onMouseLeave={() => {
             setHover(false);
           }}
+          onClick={()=>{onClick?.()}}
       >
         <div className={`transition-all ${hover?'w-1':'w-0'} h-8 rounded-r-2xl ${hover?'bg-blue-100':'bg-transparent'}`}></div>
         <div className={`flex flex-row gap-4 ${hover?'text-blue-100':'text-black'} `}>
@@ -31,6 +35,7 @@ const MenuItem = ({prefix,label}:MenuItemProps)=>{
 export const Sidebar = ()=>{
     const [collapse, setCollpase] = useState<boolean>(false);
     const menuItems = []
+    const navigate = useNavigate()
     return (
       <div
         className={`transition-all overflow-hidden flex flex-col ${
@@ -47,6 +52,13 @@ export const Sidebar = ()=>{
         <MenuItem
           prefix={<DashboardIcon className={""} />}
           label={"Profile"}
+        ></MenuItem>
+        <MenuItem
+          prefix={<TaskIcon className={""} />}
+          label={"Tasks"}
+          onClick={()=>{
+            navigate("/tasks")
+          }}
         ></MenuItem>
       </div>
     );

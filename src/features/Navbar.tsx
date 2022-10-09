@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useApp } from "../App";
 import { Avatar } from "../components/Avatar";
 import { Button } from "../components/Button";
-import { Portrait } from "../components/Portrait";
+import { ProfileEntry } from "../components/ProfileEntry";
 import { LogoutIcon } from "../icons/LogoutIcon";
 import { PlusIcon } from "../icons/PlusIcon";
 
@@ -20,7 +20,7 @@ export const Navbar = () => {
         size={"hug"}
         prefix={<PlusIcon className={""}></PlusIcon>}
       ></Button>
-      <Portrait
+      <ProfileEntry
         onClickLogout={() => {
           signOut(auth)
             .then(() => {

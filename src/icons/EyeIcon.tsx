@@ -4,7 +4,7 @@ interface Props{
 className:string
 }
 
-export const Eye = ({ className }: Props) => (
+export const EyeIcon = ({ className }: Props) => (
   <svg
     width="24"
     height="24"

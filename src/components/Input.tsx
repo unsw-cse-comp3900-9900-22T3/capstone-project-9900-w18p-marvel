@@ -1,6 +1,6 @@
 import React, { useCallback } from "react"
 import { useState } from "react"
-import { Eye } from "../icons/Eye"
+import { EyeIcon } from "../icons/EyeIcon"
 
 type InputType =
 |'text'
@@ -11,11 +11,12 @@ interface Props{
     placeholder?:string
     onChange?:(val:string)=>void
     onComplete?:(val:string)=>void
+    defaultValue?:string
 }
 
-export const Input = ({type,placeholder='',onChange,onComplete}:Props)=>{
+export const Input = ({type,placeholder='',onChange,onComplete,defaultValue}:Props)=>{
     const [focus,setFocus] = useState<boolean>(false)
-    const [value,setValue] = useState<string>('')
+    const [value,setValue] = useState<string>(defaultValue || '')
     const [hidePassword,setHidePassword] = useState<boolean>(true)
 
     const getType = useCallback(() => {
@@ -59,7 +60,7 @@ export const Input = ({type,placeholder='',onChange,onComplete}:Props)=>{
               setHidePassword(!hidePassword);
             }}
           >
-            <Eye
+            <EyeIcon
               className={`w-6 h-6 ${
                 hidePassword ? "text-gray-100" : "text-white-10"
               }`}

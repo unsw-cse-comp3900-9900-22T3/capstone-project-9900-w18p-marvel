@@ -19,7 +19,7 @@ interface TaskInfoBlockProps {
       </div>
 
       <div className={`flex flex-row w-176 h-44 mt-10`}> 
-      <div className={`flex flex-col w-140 h-44`}> 
+      <div className={`flex flex-col w-176 h-44`}> 
       <div className={`flex items-center text-gray-400 text-lg mt-2`}>ASSIGNED TO</div>
       <div className={`flex items-center text-sm text-gray-400 bg-gray-50 rounded-2xl mt-5`}>{Assignee}</div>
 

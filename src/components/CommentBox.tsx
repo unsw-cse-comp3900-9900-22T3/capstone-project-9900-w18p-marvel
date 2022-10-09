@@ -16,7 +16,7 @@ interface CommentboxProps {
     return(
     <div className={`flex flex-col w-176 h-44`}> 
         <div className={`flex flex-row w-176 h-auto`}> 
-            <div className={`flex`}><img src={comment_icon} className={`w-10 h-10 mr-3`}></img></div>
+            <div className={`flex`}><img src={comment_icon} className={`w-12 h-12 mr-3`}></img></div>
             <div className={`flex font-bold text-2xl items-center`}>Comment({TotalComment})</div>
         </div>
 

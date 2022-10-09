@@ -7,9 +7,14 @@ import { Landing } from "./components/Landing";
 import { Notification } from "./components/Notification";
 import { TaskCard } from "./components/TaskCard";
 import { TaskDetail } from "./components/TaskDetail";
+import { UserList } from "./components/UserList";
+import { UserList2 } from "./components/UserList2";
+import { UserListAdmin } from "./components/UserListAdmin";
 import { UserListItem } from "./components/UserListItem";
 import { UserProfile } from "./components/UserProfile";
 import { Components } from "./pages/Components";
+import { Notification2 } from "./components/Notification2";
+import { UserList3 } from "./components/UserList3";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -46,8 +51,12 @@ function App() {
               }
             ></Route>
             <Route path="avatar" element={<AAvatar size='lg' rounded='sm' src="" onClick={()=>{}}/>}></Route>
-            <Route path="userlistitem" element={<UserListItem/>}></Route>
-            <Route path="noti" element={<Notification/>}></Route>
+            <Route path="userlist" element={<UserList/>}></Route>
+            <Route path="notification" element={<Notification src={""} name={""} description={""}/>}></Route>
+            <Route path="notification2" element={<Notification2 src={""} name={""} description={""}/>}></Route>
+            <Route path="userlist2" element={<UserList2/>}></Route>
+            <Route path="userlistadmin" element={<UserListAdmin src={""} name={""} description={""}/>}></Route>
+            <Route path="userlist3" element={<UserList3/>}></Route>
           </Route>
         </Route>
       </Routes>

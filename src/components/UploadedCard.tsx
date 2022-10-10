@@ -18,11 +18,11 @@ const UploadedCard = ({FilePic, FileName, FileAddedTime}: UploadedCardProps) => 
         </div>
   
         <div className={`flex item-start items-center flex-row w-166 h-32 bg-gray-50 rounded-2xl relative mt-4 ml-10`}>
-            <div className={`flex h-32 w-30`}>
-                <img src={temp_img_address} className={`h-32 w-30`}/>
+            <div className={`flex h-32 w-30 items-center`}>
+                <img src={temp_img_address} className={`h-20 w-20`}/>
             </div>
             <div className={`flex flex-col ml-5 w-auto h-auto gap-3`}>
-                <div className={`text-xl font-bold`}>CarPlay_screen_01.jpg</div>
+                <div className={`text-xl font-bold`}>{FileName}</div>
                 <div className={`text-xs text-gray-100`}>Added at {FileAddedTime}</div>
             </div>
             <div className={`flex flex-row absolute right-5 items-center`}>

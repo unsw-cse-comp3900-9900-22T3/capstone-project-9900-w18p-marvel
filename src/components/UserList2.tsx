@@ -1,4 +1,5 @@
 import { UserListAdmin } from "./UserListAdmin"
+import { Button } from "./Button"
 
 export const UserList2 = ()=>{
     const data = [
@@ -10,7 +11,12 @@ export const UserList2 = ()=>{
     return (
       <div className="flex flex-col gap-0 w-[408px]">
         <div className="h-20 w-full py-3 px-4">
-            This is a search
+            <Button
+                theme="gray"
+                size="fill"
+                rounded="2xl" 
+                label={"Search"}
+            ></Button>
         </div>
         <div className="h-0 w-full border-t border-gray-100"></div>
         <div className="w-full flex flex-col pt-6 pb-7 pl-8 pr-8 gap-6">
@@ -23,9 +29,23 @@ export const UserList2 = ()=>{
           ))}
         </div>
         <div className="h-0 w-full border-t border-gray-100"></div>
-        <div className="h-20 w-full pt-4 pb-5">
-            <span className="pl-4 pr-5">Cancel</span>
-            <span>Search</span>
+        <div className="flex flex-row h-20 w-full pt-4 pb-5">
+            <div className="pl-4 pr-5 h-10 w-44">
+                <Button
+                    theme="gray"
+                    size="hug"
+                    rounded="2xl" 
+                    label={"Cancel"}
+                ></Button>
+            </div>
+            <div>
+                <Button
+                    theme="blue"
+                    size="hug"
+                    rounded="2xl" 
+                    label={"Search"}
+                ></Button>
+            </div>
         </div>
       </div>
     );

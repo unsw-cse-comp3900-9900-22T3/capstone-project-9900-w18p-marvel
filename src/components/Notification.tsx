@@ -1,4 +1,5 @@
 import { AAvatar } from "./AAvatar"
+import { Button } from "./Button"
 
 interface Props {
     src:string
@@ -19,9 +20,23 @@ export const Notification = ({src,name,description}:Props)=>{
                     <div className="text-xs font-medium text-gray-100">{description}</div>
                 </div>
             </div>
-            <div className="flex pr-6">
-                <div className="ml-4">Confirm</div>
-                <div className="ml-2">Delete</div>
+            <div className="flex pr-6 items-center">
+                <div className="ml-4">
+                    <Button
+                        theme="blue"
+                        size="hug"
+                        rounded="2xl" 
+                        label={"Confirm"}
+                    ></Button>
+                </div>
+                <div className="ml-2">
+                    <Button
+                        theme="gray"
+                        size="hug"
+                        rounded="2xl" 
+                        label={"Delete"}
+                    ></Button>
+                </div>
             </div>
             
         </div>

@@ -9,13 +9,18 @@ interface Props {
 
 export const UserListItem = ({src,name,description}:Props)=>{
     return (
-        <div className="flex flex-row items-center gap-5 w-fill h-11">
-            <AAvatar src={src} size="md" rounded="full"/>
-            <div className="flex flex-col items-start">
-                <div className="text-sm font-bold">{name}</div>
-                <div className="text-xs font-medium text-gray-100">{description}</div>
+        <div className="flex flex-row items-center w-fill h-11 justify-between">
+            <div className="flex items-center">
+                <AAvatar src={src} size="md" rounded="full"/>
+                <div className="flex flex-col items-start ml-5">
+                    <div className="text-sm font-bold">{name}</div>
+                    <div className="text-xs font-medium text-gray-100">{description}</div>
+                </div>
             </div>
-            <div className="ml-8"><Checkbox defaultValue={true}/></div>
+            
+            <div className="flex">
+                <div><Checkbox defaultValue={true}/></div>
+            </div>
         </div>
     )
 }

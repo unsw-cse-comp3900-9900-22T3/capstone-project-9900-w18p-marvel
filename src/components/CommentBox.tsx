@@ -1,7 +1,7 @@
 interface CommentboxProps {
     TotalComment: number;
     Name: string;
-    Avator: string;
+    CommenterAvator: string;
     Comments: string;
     CommentDate: string; 
   
@@ -12,7 +12,7 @@ interface CommentboxProps {
   const comment_icon = "https://static.thenounproject.com/png/62334-200.png"
   const waste_icon = "https://freesvg.org/img/trash.png"
 
-  const CommentBox = ({Name, Avator, Comments, CommentDate, TotalComment}: CommentboxProps) => {
+  const CommentBox = ({Name, CommenterAvator, Comments, CommentDate, TotalComment}: CommentboxProps) => {
     return(
     <div className={`flex flex-col w-176 h-44`}> 
         <div className={`flex flex-row w-176 h-auto`}> 

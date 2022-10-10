@@ -15,7 +15,7 @@ interface TaskInfoBlockProps {
       <div className={`flex flex-col w-176 h-44 mt-5 ml-5`}> 
       <div className={`flex flex-col w-176 h-44`}> 
       <div className={`flex items-center text-2xl`}>{TaskName}</div>
-      <div className={`flex items-center text-gray-400 text-sm mt-2`}>{TaskID}</div>
+      <div className={`flex items-center text-gray-400 text-sm mt-2`}>TaskID: {TaskID}</div>
       </div>
 
       <div className={`flex flex-row w-176 h-44 mt-10`}> 

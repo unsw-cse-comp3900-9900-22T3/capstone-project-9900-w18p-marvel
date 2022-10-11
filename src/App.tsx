@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import reactLogo from "./assets/react.svg";
 import { Checkbox } from "./components/Checkbox";
 <<<<<<< HEAD
-import { Landing } from "./components/Landing";
+// import { Landing } from "./components/Landing";
 import { ProfileCard } from "./components/ProfileCard";
 =======
 >>>>>>> dev
@@ -82,30 +82,30 @@ export function App() {
 
   return (
 <<<<<<< HEAD
-    <BrowserRouter>
-      <Routes>
-        <Route path="/components">
-          <Route path="peter">
-            <Route path="taskdetail" element={<TaskDetail />}></Route>
-          </Route>
-          <Route path="vicki">
-            <Route path="pc" element={<ProfileCard />}></Route>
-            <Route path="test" element={<UserListItem />}></Route>
-          </Route>
-          <Route path="guohao">
-            <Route path="profile" element={<UserProfile />}></Route>
-          </Route>
-          <Route path="pigeon">
-            <Route path="landing" element={<Landing />}></Route>
-            <Route path="checkbox" element={<Checkbox defaultValue={false} onValueChange={(val)=>{console.log(val)}}/>}></Route>
-          </Route>
-          <Route path="anan">
-            <Route
-              path="taskcard"
-              element={
-                <TaskCard title={""} description={""} dueDate={new Date()} />
-              }
-            ></Route>
+    // <BrowserRouter>
+    //   <Routes>
+    //     <Route path="/components">
+    //       <Route path="peter">
+    //         <Route path="taskdetail" element={<TaskDetail />}></Route>
+    //       </Route>
+    //       <Route path="vicki">
+    //         <Route path="pc" element={<ProfileCard />}></Route>
+    //         <Route path="test" element={<UserListItem />}></Route>
+    //       </Route>
+    //       <Route path="guohao">
+    //         <Route path="profile" element={<UserProfile />}></Route>
+    //       </Route>
+    //       <Route path="pigeon">
+    //         <Route path="landing" element={<Landing />}></Route>
+    //         <Route path="checkbox" element={<Checkbox defaultValue={false} onValueChange={(val)=>{console.log(val)}}/>}></Route>
+    //       </Route>
+    //       <Route path="anan">
+    //         <Route
+    //           path="taskcard"
+    //           element={
+    //             <TaskCard title={""} description={""} dueDate={new Date()} />
+    //           }
+    //         ></Route>
 =======
     <AppContext.Provider value={providerValues}>
       <BrowserRouter>
@@ -145,6 +145,10 @@ export function App() {
             <Route path="components">
               <Route path="peter">
                 <Route path="taskdetail" element={<TaskDetail />}></Route>
+              </Route>
+              <Route path="vicki">
+                <Route path="pc" element={<ProfileCard />}></Route>
+                <Route path="test" element={<UserListItem />}></Route>
               </Route>
               <Route path="guohao">
                 <Route path="profile" element={<UserProfile />}></Route>

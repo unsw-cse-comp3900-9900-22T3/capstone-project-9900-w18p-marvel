@@ -18,7 +18,7 @@ export const Checkbox = ({defaultValue,onValueChange}:CheckboxProps)=>{
     return (
       <div
         className={`cursor-pointer select-none flex justify-center items-center w-3 h-3 ${
-          value ? "bg-blue-100" : "bg-gray-100"
+          value ? "bg-blue-100" : "bg-white-10"
         } rounded-sm`}
         onClick={() => {
           setValue(!value);

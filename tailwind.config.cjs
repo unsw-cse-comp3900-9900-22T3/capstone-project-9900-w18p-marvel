@@ -79,6 +79,7 @@ module.exports = {
         },
         blue: {
           100: '#0052CC',
+          200: '#0043A7'
         },
         gray: {
           100:'#8F92A1'
@@ -90,6 +91,12 @@ module.exports = {
         },
         green:{
           1:'#1FDBB9',
+        },
+        white:{
+          5:'#F2F2F2',
+          10:'#E6E6E6',
+          60:'#666666',
+          100:'#FFFFFF'
         }
       },
       animation: {

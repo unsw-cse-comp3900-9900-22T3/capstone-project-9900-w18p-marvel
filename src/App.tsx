@@ -2,11 +2,11 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import reactLogo from "./assets/react.svg";
 import { Checkbox } from "./components/Checkbox";
-<<<<<<< HEAD
+// <<<<<<< HEAD
 // import { Landing } from "./components/Landing";
 import { ProfileCard } from "./components/ProfileCard";
-=======
->>>>>>> dev
+// =======
+// >>>>>>> dev
 import { TaskCard } from "./components/TaskCard";
 import { TaskDetail } from "./components/TaskDetail";
 import { UserListItem } from "./components/UserListItem";
@@ -81,7 +81,7 @@ export function App() {
   ])
 
   return (
-<<<<<<< HEAD
+// <<<<<<< HEAD
     // <BrowserRouter>
     //   <Routes>
     //     <Route path="/components">
@@ -106,7 +106,7 @@ export function App() {
     //             <TaskCard title={""} description={""} dueDate={new Date()} />
     //           }
     //         ></Route>
-=======
+// =======
     <AppContext.Provider value={providerValues}>
       <BrowserRouter>
         <Routes>
@@ -179,7 +179,7 @@ export function App() {
                 ></Route>
               </Route>
             </Route>
->>>>>>> dev
+{/* >>>>>>> dev */}
           </Route>
         </Routes>
       </BrowserRouter>

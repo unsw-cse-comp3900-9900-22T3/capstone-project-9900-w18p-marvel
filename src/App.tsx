@@ -2,8 +2,14 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import reactLogo from "./assets/react.svg";
 import { Checkbox } from "./components/Checkbox";
+<<<<<<< HEAD
+import { Landing } from "./components/Landing";
+import { ProfileCard } from "./components/ProfileCard";
+=======
+>>>>>>> dev
 import { TaskCard } from "./components/TaskCard";
 import { TaskDetail } from "./components/TaskDetail";
+import { UserListItem } from "./components/UserListItem";
 import { UserProfile } from "./components/UserProfile";
 import { Components } from "./pages/Components";
 import { Home } from "./pages/Home";
@@ -75,6 +81,32 @@ export function App() {
   ])
 
   return (
+<<<<<<< HEAD
+    <BrowserRouter>
+      <Routes>
+        <Route path="/components">
+          <Route path="peter">
+            <Route path="taskdetail" element={<TaskDetail />}></Route>
+          </Route>
+          <Route path="vicki">
+            <Route path="pc" element={<ProfileCard />}></Route>
+            <Route path="test" element={<UserListItem />}></Route>
+          </Route>
+          <Route path="guohao">
+            <Route path="profile" element={<UserProfile />}></Route>
+          </Route>
+          <Route path="pigeon">
+            <Route path="landing" element={<Landing />}></Route>
+            <Route path="checkbox" element={<Checkbox defaultValue={false} onValueChange={(val)=>{console.log(val)}}/>}></Route>
+          </Route>
+          <Route path="anan">
+            <Route
+              path="taskcard"
+              element={
+                <TaskCard title={""} description={""} dueDate={new Date()} />
+              }
+            ></Route>
+=======
     <AppContext.Provider value={providerValues}>
       <BrowserRouter>
         <Routes>
@@ -143,6 +175,7 @@ export function App() {
                 ></Route>
               </Route>
             </Route>
+>>>>>>> dev
           </Route>
         </Routes>
       </BrowserRouter>

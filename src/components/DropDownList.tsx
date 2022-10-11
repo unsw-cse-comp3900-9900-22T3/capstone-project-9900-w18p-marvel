@@ -6,16 +6,6 @@ type Rounded = "none" | "2xl";
 
 
 
-function getlistitem(values){
-    const selected_item = document.getElementById("timerange")
-    const final_list = [...values]
-    final_list.forEach(item =>{
-        const option = document.createElement("option");
-        option.textContent = item;
-        selected_item.appendChild(option);
-        
-        });
-}
 
 
 interface Props {
@@ -31,7 +21,7 @@ interface Props {
 
   }: Props) => {
     const data =[
-        {value: [5,6,7, 8,9]}
+        {value: [1,2,3,4,5,6,7,8,9,10]}
     ]
   
     

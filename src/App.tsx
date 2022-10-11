@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import reactLogo from "./assets/react.svg";
 import { Checkbox } from "./components/Checkbox";
 import { Landing } from "./components/Landing";
+import { ProfileCard } from "./components/ProfileCard";
 import { TaskCard } from "./components/TaskCard";
 import { TaskDetail } from "./components/TaskDetail";
 import { UserListItem } from "./components/UserListItem";
@@ -23,6 +24,10 @@ function App() {
         <Route path="/components">
           <Route path="peter">
             <Route path="taskdetail" element={<TaskDetail />}></Route>
+          </Route>
+          <Route path="vicki">
+            <Route path="pc" element={<ProfileCard />}></Route>
+            <Route path="test" element={<UserListItem />}></Route>
           </Route>
           <Route path="guohao">
             <Route path="profile" element={<UserProfile />}></Route>

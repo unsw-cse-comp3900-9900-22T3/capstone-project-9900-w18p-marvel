@@ -19,8 +19,19 @@ const desc = "This is the test!!!Currently, no matter whether in schoolno matter
 const TaskDetail = ({}: TaskDetailProps) => {
   return (
     <>
-    <div className={`flex items-center flex-col w-190 h-5/6 overflow-auto gap-5 border-solid border-2 rounded-2xl `}> 
-    <div className={`flex`}><TaskInfoBlock TaskID={12345} TaskName={"Marvel Task Management"} Assignee={[]} DueDate={"22/02/2023"} /></div>
+    
+    <div className={`flex items-center flex-col w-190 h-5/6 overflow-auto gap-5 border-solid border-2 rounded-2xl relative`}> 
+    <div className={`flex h-auto w-auto mt-5 left-8 absolute`}>
+    <Button 
+            theme={"gray"}
+            label={"Mark as Complete"}
+            onClick={() => {
+            }}
+            size={"fill"}
+          ></Button>
+
+        </div>
+    <div className={`flex mt-20`}><TaskInfoBlock TaskID={12345} TaskName={"Marvel Task Management"} Assignee={[]} DueDate={"22/02/2023"} /></div>
     <div className={`flex`}><DescriptionBox Description={desc} /></div>
     <div className={`flex mt-10`}><UploadedCard FilePic={""} FileName={"Marvel Porject"} FileAddedTime={"10/10/2022"} /></div>
     <div className={`flex`}><NewUploadedCard /></div>

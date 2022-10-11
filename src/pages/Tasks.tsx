@@ -18,7 +18,7 @@ export const Tasks = ({}: Props) => {
         onClick={() => {
           if(user){
             createTask(
-              `task-${uid(4)}`,
+              `sample task`,
               "start",
               uid(20),
               faker.date.future(),

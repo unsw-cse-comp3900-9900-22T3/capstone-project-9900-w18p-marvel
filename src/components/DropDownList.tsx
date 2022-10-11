@@ -28,25 +28,28 @@ interface Props {
   export const DropDownList = ({
     size,
     rounded = "2xl",
-    value=[5,6,7, 8]
 
   }: Props) => {
+    const data =[
+        {value: [5,6,7, 8,9]}
+    ]
   
     
     return (
     
-        
 
-
-    <div className ={`flex flex-row items-center`}>
-        <div className ={`flex flex-row bg-gray-100 items-center ${size === "hug" ? "w-fit" : "w-full"} h-11 rounded-${rounded} pl-3 mr-3`}>
+    <div className ={`flex flex-row items-center ${size === "hug" ? "w-fit" : "w-full"} `}>
+        <div className ={`flex flex-row bg-gray-100 items-center h-11 rounded-${rounded} pl-3 mr-3`}>
         <input list="timerange" id="timerangechoice" name="timerangechoice"/>
             <div className={`flex`}>
             <datalist id="timerange" >
-            ${value}.map((index) => (
-                <option>{value}[index]</option>
-              ));
-                <option>2</option>
+            {data.map((item:any) => (
+                item.value.map((items:any) =>{
+                    return <option key={items.toString()}>{items}</option>
+                    console.log({items})
+                })
+              ))}
+
      
             </datalist>
            
@@ -55,17 +58,6 @@ interface Props {
         <div className={`flex`}>Days</div>
     </div>
     
-
-
-
-
-
-                
-
-
-
-
-
 
     );
   };

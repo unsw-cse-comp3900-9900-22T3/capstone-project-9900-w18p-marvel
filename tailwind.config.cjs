@@ -35,6 +35,7 @@ module.exports = {
         five: '5px'
       },
       width: {
+        42: '168px',
         90: '360px',
         92: '368px',
         68: '272px',

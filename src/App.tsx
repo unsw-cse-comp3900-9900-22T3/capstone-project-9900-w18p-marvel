@@ -12,6 +12,8 @@ import { DescriptionBox } from "./components/DescriptionBox";
 import { TaskInfoBlock } from "./components/TaskInfoBlock";
 import { UserProfile } from "./components/UserProfile";
 import { DropDownList } from "./components/DropDownList";
+import { SearchBox } from "./components/SearchBox";
+
 import { Components } from "./pages/Components";
 import { Home } from "./pages/Home";
 import { Interceptor } from "./pages/Interceptor";
@@ -117,6 +119,8 @@ export function App() {
                 <Route path="descriptionbox" element={<DescriptionBox Description="Currently, no matter whether in school, company, etc, people usually need to work as a team for the final assignment, product manufacturing, or software development. It will be very complicated if the group is very large, or the big project is divided into various small teams. Such as if the company wants to build new products, they need to have several teams, one for design, one for manufacture, one for testing, etc. If there is no well- structured system to manage the task, the products might be missing some critical parts, causing some severe issues and failing the project."/>}></Route>
                 <Route path="taskinfoblock" element={<TaskInfoBlock TaskID="1234" TaskName="Marvel Task Management System" DueDate = "20/Dec/2022"/>}></Route>
                 <Route path="dropdownlist" element={<DropDownList />}></Route>
+                
+                <Route path="searchbox" element={<SearchBox />}></Route>
               </Route>
               <Route path="guohao">
                 <Route path="profile" element={<UserProfile />}></Route>

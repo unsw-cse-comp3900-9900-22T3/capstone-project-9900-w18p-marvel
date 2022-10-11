@@ -28,7 +28,7 @@ interface Props {
   export const DropDownList = ({
     size,
     rounded = "2xl",
-    value=[5,6,7, 8]
+    value=[5,6,7]
 
   }: Props) => {
   
@@ -43,9 +43,9 @@ interface Props {
         <input list="timerange" id="timerangechoice" name="timerangechoice"/>
             <div className={`flex`}>
             <datalist id="timerange" >
-            ${value}.map((index) => (
-                <option>{value}[index]</option>
-              ));
+            {props.value.map(() => (
+                <option>{value}</option>
+              ))}
                 <option>2</option>
      
             </datalist>

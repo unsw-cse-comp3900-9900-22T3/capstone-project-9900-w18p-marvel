@@ -13,7 +13,7 @@ export const Home = ({ children }: HomeProps) => {
       <Sidebar></Sidebar>
       <div className="flex flex-col w-full">
         <Navbar></Navbar>
-        <div className="w-full h-full bg-purple-500">{children}</div>
+        <div className="w-full h-full bg-[#8F92A1]">{children}</div>
       </div>
     </div>
   );

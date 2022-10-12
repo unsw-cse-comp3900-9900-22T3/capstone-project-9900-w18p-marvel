@@ -98,8 +98,6 @@ const TaskDetail = ({ }: TaskDetailProps) => {
           <TotalCommentItem TotalComment={TotalComment}></TotalCommentItem>
         </div>
 
-
-
         <div className={`flex flex-col`}>
           {CommentorData.map((item) => (
             <CommentBox

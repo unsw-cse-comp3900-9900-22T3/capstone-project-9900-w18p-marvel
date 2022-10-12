@@ -8,7 +8,6 @@ import { UploadedCard } from "./components/UploadedCard";
 import { NewUploadedCard } from "./components/NewUploadedCard";
 import { NewCommentBox } from "./components/NewCommentBox";
 import { CommentBox } from "./components/CommentBox";
-import { DescriptionBox } from "./components/DescriptionBox";
 import { TaskInfoBlock } from "./components/TaskInfoBlock";
 import { UserProfile } from "./components/UserProfile";
 import { DropDownList } from "./components/DropDownList";
@@ -27,9 +26,9 @@ import React from "react";
 interface ContextProps {
   app: any;
   authorized: boolean;
-  setAuthorized: Function|undefined;
+  setAuthorized: Function | undefined;
   user: User | undefined;
-  setUser: Function|undefined;
+  setUser: Function | undefined;
 }
 
 const AppContext = React.createContext<ContextProps>({
@@ -46,8 +45,8 @@ export function useApp() {
 
 export function App() {
   const [authorized, setAuthorized] = useState<boolean>(true);
-  const [user, setUser] = useState<User|undefined>();
-  
+  const [user, setUser] = useState<User | undefined>();
+
 
   const firebaseConfig = {
     apiKey: "AIzaSyB71hVo6nDG7esBu5XAmwmwBGj0WC3eXys",
@@ -62,15 +61,15 @@ export function App() {
 
   const app = initializeApp(firebaseConfig);
 
-  useEffect(()=>{
-    if(user) setAuthorized(true)
+  useEffect(() => {
+    if (user) setAuthorized(true)
     else setAuthorized(false)
-  },[user])
+  }, [user])
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(authorized)
-  },[authorized])
-  
+  }, [authorized])
+
   const providerValues = useMemo(() => {
     return {
       app,
@@ -80,7 +79,7 @@ export function App() {
       setUser,
     };
   }, [
-    authorized,user
+    authorized, user
   ])
 
   return (
@@ -113,17 +112,16 @@ export function App() {
             <Route path="components">
               <Route path="peter">
                 <Route path="taskdetail" element={<TaskDetail />}></Route>
-                <Route path="uploadedcard" element={<UploadedCard FileAddedTime="20/Dec/2022 10:21:20"/>}></Route>
+                <Route path="uploadedcard" element={<UploadedCard FileAddedTime="20/Dec/2022 10:21:20" />}></Route>
                 <Route path="newuploadedcard" element={<NewUploadedCard />}></Route>
                 <Route path="newcommentbox" element={<NewCommentBox />}></Route>
                 <Route path="commentbox" element={<CommentBox />}></Route>
-                <Route path="descriptionbox" element={<DescriptionBox Description="Currently, no matter whether in school, company, etc, people usually need to work as a team for the final assignment, product manufacturing, or software development. It will be very complicated if the group is very large, or the big project is divided into various small teams. Such as if the company wants to build new products, they need to have several teams, one for design, one for manufacture, one for testing, etc. If there is no well- structured system to manage the task, the products might be missing some critical parts, causing some severe issues and failing the project."/>}></Route>
-                <Route path="taskinfoblock" element={<TaskInfoBlock TaskID="1234" TaskName="Marvel Task Management System" DueDate = "20/Dec/2022"/>}></Route>
+                <Route path="taskinfoblock" element={<TaskInfoBlock TaskID="1234" TaskName="Marvel Task Management System" DueDate="20/Dec/2022" />}></Route>
                 <Route path="totalcommentitem" element={<TotalCommentItem />}></Route>
 
-          
+
                 <Route path="dropdownlist" element={<DropDownList />}></Route>
-                
+
                 <Route path="searchbox" element={<SearchBox />}></Route>
               </Route>
               <Route path="guohao">

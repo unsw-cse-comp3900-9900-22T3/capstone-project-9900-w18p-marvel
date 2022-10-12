@@ -19,8 +19,8 @@ const desc = "This is the test!!!Currently, no matter whether in schoolno matter
 const TaskDetail = ({}: TaskDetailProps) => {
   const CommentorData = [
     {Name:'Linda Hsu', CommenterAvator:img_address, Comments:'@11', CommentDate: '10/12/2023'},
-    {Name:'', CommenterAvator:img_address, Comments:'@11', CommentDate: '10/12/2023'},
-    {Name:'', CommenterAvator:img_address, Comments:'@11', CommentDate: '10/12/2023'},
+    {Name:'Teddy', CommenterAvator:img_address, Comments:'@113', CommentDate: '10/12/2023'},
+    {Name:'', CommenterAvator:img_address, Comments:'@112', CommentDate: '10/12/2023'},
     {Name:'', CommenterAvator:img_address, Comments:'@11', CommentDate: '10/12/2023'},
 ]
 
@@ -47,8 +47,10 @@ const TaskDetail = ({}: TaskDetailProps) => {
     <div className={`flex`}><NewUploadedCard /></div>
     <div className={`flex mt-20`}>
 
+
+
 {CommentorData.map((item) => (
-        <CommentBox CommentDate={item.CommentDate} TotalComment={1} Name={item.Name} CommenterAvator={item.CommenterAvator} Comments={item.Comments} />
+        <CommentBox CommentDate={item.CommentDate} TotalComment={1} Name={item.Name} CommenterAvator={item.CommenterAvator} Comments={item.Comments}></CommentBox>
       ))}
     </div>
     <div className={`flex`}><NewCommentBox MyAvator={img_address} /></div>

@@ -19,10 +19,10 @@ export const ProfileCard = ({userName,position, email, phoneNo, url}: ProfileCar
               <Avatar src="" size="xl" rounded="sm" />
             </div>
             <div className="text-sm font-bold text-black mt-6 ml-6">
-              USER NAME
+              Vicki Chen
             </div>
             <div className="text-sm font-light text-black mt-12 ml-[-75px]">
-              POSITION
+              Scrum Master
             </div>
           </div>
           <div className="flex flex-basis: | auto ml-8 bg-white w-[690px] h-[100px]">
@@ -31,18 +31,18 @@ export const ProfileCard = ({userName,position, email, phoneNo, url}: ProfileCar
                 EMAIL ADDRESS
               </div>
               <div className="text-sm font-bold text-black m-4">
-                1234@gmail.com
+                vickichen98@gmail.com
               </div>
             </div>
             <div className="flex1 mt-2 ml-3">
               <div className="text-sm font-bold text-gray-500 m-4">
                 PHONE NUMBER
               </div>
-              <div className="text-sm font-bold text-black m-4">04502222</div>
+              <div className="text-sm font-bold text-black m-4">0420202020</div>
             </div>
             <div className="flex1 mt-2 ml-3">
               <div className="text-sm font-bold text-gray-500 m-4">USER ID</div>
-              <div className="text-sm font-bold text-black m-4">00001</div>
+              <div className="text-sm font-bold text-black m-4">0000001</div>
             </div>
           </div>
 

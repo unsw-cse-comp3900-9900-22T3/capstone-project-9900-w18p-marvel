@@ -18,10 +18,10 @@ const desc = "This is the test!!!Currently, no matter whether in schoolno matter
 
 const TaskDetail = ({}: TaskDetailProps) => {
   const CommentorData = [
-    {Name:'', CommenterAvator:img_address, Comments:'@11', CommentDate},
-    {Name:'', CommenterAvator:img_address, Comments:'@11', CommentDate},
-    {Name:'', CommenterAvator:img_address, Comments:'@11', CommentDate},
-    {Name:'', CommenterAvator:img_address, Comments:'@11', CommentDate},
+    {Name:'Linda Hsu', CommenterAvator:img_address, Comments:'@11', CommentDate: '10/12/2023'},
+    {Name:'', CommenterAvator:img_address, Comments:'@11', CommentDate: '10/12/2023'},
+    {Name:'', CommenterAvator:img_address, Comments:'@11', CommentDate: '10/12/2023'},
+    {Name:'', CommenterAvator:img_address, Comments:'@11', CommentDate: '10/12/2023'},
 ]
 
 
@@ -40,12 +40,17 @@ const TaskDetail = ({}: TaskDetailProps) => {
           ></Button>
 
         </div>
-    <div className={`flex mt-20`}>
-    {CommentorData.map(item)=>}<TaskInfoBlock TaskID={12345} TaskName={"Marvel Task Management"} Assignee={[]} DueDate={"22/02/2023"} /></div>
+   
+    <div><TaskInfoBlock TaskID={12345} TaskName={"Marvel Task Management"} Assignee={[]} DueDate={"22/02/2023"} /></div>
     <div className={`flex`}><DescriptionBox Description={desc} /></div>
     <div className={`flex mt-10`}><UploadedCard FilePic={""} FileName={"Marvel Porject"} FileAddedTime={"10/10/2022"} /></div>
     <div className={`flex`}><NewUploadedCard /></div>
-    <div className={`flex  mt-10`}><CommentBox CommentDate={"10/08/2022"} TotalComment={1} Name={"Linda Hsu"} CommenterAvator={CommenterAvator} Comments={"Hi Could you provide me the link of data?"} /></div>
+    <div className={`flex mt-20`}>
+
+{CommentorData.map((item) => (
+        <CommentBox CommentDate={item.CommentDate} TotalComment={1} Name={item.Name} CommenterAvator={item.CommenterAvator} Comments={item.Comments} />
+      ))}
+    </div>
     <div className={`flex`}><NewCommentBox MyAvator={img_address} /></div>
     <div className={`flex w-60 mb-5`}>
     <Button

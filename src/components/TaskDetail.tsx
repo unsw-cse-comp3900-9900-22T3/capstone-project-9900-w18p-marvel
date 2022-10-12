@@ -25,16 +25,16 @@ const TaskDetail = ({ }: TaskDetailProps) => {
 
 
   const CommentorData = [
-    { Name: 'Linda Hsu', CommenterAvator: img_address, Comments: '@11', CommentDate: '10/12/2023' },
-    { Name: 'Teddy', CommenterAvator: img_address, Comments: '@113', CommentDate: '10/12/2023' },
-    { Name: 'Anthony', CommenterAvator: img_address, Comments: '@112', CommentDate: '10/12/2023' },
-    { Name: 'Lisa', CommenterAvator: img_address, Comments: '@11', CommentDate: '10/12/2023' },
+    { CommentorID: '1', Name: 'Linda Hsu', CommenterAvator: img_address, Comments: '@11', CommentDate: '10/12/2023' },
+    { CommentorID: '2', Name: 'Teddy', CommenterAvator: img_address, Comments: '@113', CommentDate: '10/12/2023' },
+    { CommentorID: '3', Name: 'Anthony', CommenterAvator: img_address, Comments: '@112', CommentDate: '10/12/2023' },
+    { CommentorID: '4', Name: 'Lisa', CommenterAvator: img_address, Comments: '@11', CommentDate: '10/12/2023' },
   ]
 
   const UploadedCardDetails = [
-    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022" },
-    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022" },
-    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022" }
+    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: "1", FileDownloadLink: "test" },
+    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: "2", FileDownloadLink: "test" },
+    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: "3", FileDownloadLink: "test" }
 
   ]
 
@@ -83,8 +83,8 @@ const TaskDetail = ({ }: TaskDetailProps) => {
               FilePic={item.FilePic}
               FileName={item.FileName}
               FileAddedTime={item.FileAddedTime}
-              FileID={0}
-              FileDownloadLink={""} >
+              FileID={item.FileID}
+              FileDownloadLink={item.FileDownloadLink} >
 
             </UploadedCard>
           ))}
@@ -103,8 +103,8 @@ const TaskDetail = ({ }: TaskDetailProps) => {
         <div className={`flex flex-col`}>
           {CommentorData.map((item) => (
             <CommentBox
+              CommentorID={item.CommentorID}
               CommentDate={item.CommentDate}
-              TotalComment={1}
               Name={item.Name}
               CommenterAvator={item.CommenterAvator}
               Comments={item.Comments}>

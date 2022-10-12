@@ -7,8 +7,7 @@ import { Button } from "./Button";
 import { TotalCommentItem } from "./TotalCommentItem";
 
 
-interface TaskDetailProps {
-}
+interface TaskDetailProps { }
 
 
 const img_address = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL9LonfTfSW8SOAc8E7Fe982afR_kqYbwSuQ&usqp=CAU"
@@ -25,10 +24,10 @@ const TaskDetail = ({ }: TaskDetailProps) => {
 
 
   const CommentorData = [
-    { CommentorID: '1', Name: 'Linda Hsu', CommenterAvator: img_address, Comments: '@11', CommentDate: '10/12/2023' },
-    { CommentorID: '2', Name: 'Teddy', CommenterAvator: img_address, Comments: '@113', CommentDate: '10/12/2023' },
-    { CommentorID: '3', Name: 'Anthony', CommenterAvator: img_address, Comments: '@112', CommentDate: '10/12/2023' },
-    { CommentorID: '4', Name: 'Lisa', CommenterAvator: img_address, Comments: '@11', CommentDate: '10/12/2023' },
+    { CommentorID: 1, Name: 'Linda Hsu', CommenterAvator: img_address, Comments: '@11', CommentDate: '10/12/2023' },
+    { CommentorID: 2, Name: 'Teddy', CommenterAvator: img_address, Comments: '@113', CommentDate: '10/12/2023' },
+    { CommentorID: 3, Name: 'Anthony', CommenterAvator: img_address, Comments: '@112', CommentDate: '10/12/2023' },
+    { CommentorID: 4, Name: 'Lisa', CommenterAvator: img_address, Comments: '@11', CommentDate: '10/12/2023' },
   ]
 
   const UploadedCardDetails = [

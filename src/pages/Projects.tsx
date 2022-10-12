@@ -21,12 +21,11 @@ export const Project = ({}: ProjectProps) => {
         MY PROJECT
       </div>
       <div className="w-full h-full pt-24 px-12 pb-12">
-      <div className="grid">
-      {data.map((item: any)=>(
-        <CreateProject src={item.image} name={item.name}/>
-      ))}
-
-      </div>
+        <div className="grid grid-cols-4 gap-4">
+          {data.map((item: any) => (
+            <CreateProject src={item.image} name={item.name} />
+          ))}
+        </div>
       </div>
     </div>
   );

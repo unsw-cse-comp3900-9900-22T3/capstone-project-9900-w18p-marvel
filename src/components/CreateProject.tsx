@@ -11,7 +11,7 @@ export const CreateProject = ({src,name}:Props)=>{
         console.log('传的数据',name, id)
     }
     return (
-        <div onClick={()=>{create(name,'xx')}} className="flex flex-row justify-center items-center" style={{width:'260px',height:'304px',borderRadius:'16px',backgroundColor:'white',display:'grid',flexDirection:'column'}}>
+        <div onClick={()=>{create(name,'xx')}} className="flex flex-row justify-center items-center" style={{width:'278px',height:'304px',borderRadius:'16px',backgroundColor:'white',display:'grid',flexDirection:'column'}}>
             <div className="flex flex-row justify-center items-center">
             
             <img src={src} style={{borderRadius:'16px',width:'228px',height:'160px', display:'flex'}}/>

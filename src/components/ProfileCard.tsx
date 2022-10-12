@@ -12,7 +12,7 @@ interface ProfileCardProps {
     
 export const ProfileCard = ({userName,position, email, phoneNo, url}: ProfileCardProps) => {
     return (
-      <div className="flex flex-col items-stretch bg-gray-100 m-10 w-[730px] h-[300px] rounded-lg">
+      <div className="flex flex-col items-stretch bg-white-100 m-10 w-[730px] h-[300px] rounded-lg">
         <div className="divide-y divide-gray-300">
           <div className="flex flex-basis: | auto ml-8 bg-white w-[690px] h-[100px]">
             <div className="mt-4">

@@ -83,7 +83,7 @@ export const Sidebar = () => {
           prefix={<DashboardIcon className={""} />}
           label={"Profile"}
           onClick={() => {
-            navigate("/projects");
+            navigate("/profile");
           }}
         ></MenuItem>
         <MenuItem

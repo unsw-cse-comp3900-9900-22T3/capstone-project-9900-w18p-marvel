@@ -6,6 +6,7 @@ import { useApp } from "../App";
 import { useState } from "react";
 import { Lane } from "../components/Lane";
 import { Popup } from "../components/Popup";
+import { TaskDetail } from "../components/TaskDetail";
 
 interface Props {}
 
@@ -23,7 +24,7 @@ export const Tasks = ({}: Props) => {
         ))}
       </div>
       <Popup open={open} onClose={()=>setOpen(false)}>
-        
+        <TaskDetail/>
       </Popup>
     </>
   );

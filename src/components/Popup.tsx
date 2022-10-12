@@ -21,7 +21,7 @@ interface Props{
     open:boolean
 }
 
-export const Popup = ({onClose,open}:React.FC<Props>)=>{
+export const Popup = ({onClose,open,children}:React.FC<Props>)=>{
     return (
         <Modal
             open={open}

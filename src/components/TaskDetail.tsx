@@ -17,6 +17,15 @@ const CommenterAvator = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT
 const desc = "This is the test!!!Currently, no matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in school, company, etc, people usually need to work as a team for the final assignment, product manufacturing, or software development. It will be very complicated if the group is very large, or the big project is divided into various small teams. Such as if the company wants to build new products, they need to have several teams, one for design, one for manufacture, one for testing, etc. If there is no well- structured system to manage the task, the products might be missing some critical parts, causing some severe issues and failing the project."
 
 const TaskDetail = ({}: TaskDetailProps) => {
+  const CommentorData = [
+    {Name:'', CommenterAvator:img_address, Comments:'@11', CommentDate},
+    {Name:'', CommenterAvator:img_address, Comments:'@11', CommentDate},
+    {Name:'', CommenterAvator:img_address, Comments:'@11', CommentDate},
+    {Name:'', CommenterAvator:img_address, Comments:'@11', CommentDate},
+]
+
+
+
   return (
     <>
     
@@ -31,7 +40,8 @@ const TaskDetail = ({}: TaskDetailProps) => {
           ></Button>
 
         </div>
-    <div className={`flex mt-20`}><TaskInfoBlock TaskID={12345} TaskName={"Marvel Task Management"} Assignee={[]} DueDate={"22/02/2023"} /></div>
+    <div className={`flex mt-20`}>
+    {CommentorData.map(item)=>}<TaskInfoBlock TaskID={12345} TaskName={"Marvel Task Management"} Assignee={[]} DueDate={"22/02/2023"} /></div>
     <div className={`flex`}><DescriptionBox Description={desc} /></div>
     <div className={`flex mt-10`}><UploadedCard FilePic={""} FileName={"Marvel Porject"} FileAddedTime={"10/10/2022"} /></div>
     <div className={`flex`}><NewUploadedCard /></div>

@@ -4,9 +4,10 @@ import { TaskCard } from "./TaskCard"
 
 interface Props {
     name:string
+    onClick?:(id:string)=>void
 }
 
-export const Lane = ({name}:Props)=>{
+export const Lane = ({name,onClick}:Props)=>{
     const [data, setData] = useState([
       {
         title: faker.lorem.sentence(),
@@ -46,6 +47,8 @@ export const Lane = ({name}:Props)=>{
                 title={item.title}
                 description={item.description}
                 dueDate={item.dueDate}
+                id={""}
+                onClick={onClick}
               />
             ))}
           </div>

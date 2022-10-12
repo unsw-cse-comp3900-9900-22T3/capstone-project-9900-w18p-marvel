@@ -143,6 +143,16 @@ export function App() {
                 </Interceptor>
               }
             ></Route>
+            <Route
+              path="profile"
+              element={
+                <Interceptor>
+                  <Home>
+                    <ProfileCard userName={""} position={""} email={""} phoneNo={""} url={""} />
+                  </Home>
+                </Interceptor>
+              }
+            ></Route>
             <Route path="login" element={<Landing />}></Route>
             <Route path="components">
               <Route path="peter">

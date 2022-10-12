@@ -5,17 +5,26 @@ import { faker } from '@faker-js/faker';
 import { useApp } from "../App";
 import { useState } from "react";
 import { Lane } from "../components/Lane";
+import { Popup } from "../components/Popup";
 
 interface Props {}
 
 export const Tasks = ({}: Props) => {
   const {user} = useApp()
   const [data,setData]=useState(["Todo","On Going"])
+  const [open,setOpen] = useState(false)
   return (
-    <div className="w-full h-full flex flex-row gap-6">
-      {data.map((item: any) => (
-        <Lane name={item} />
-      ))}
-    </div>
+    <>
+      <div className="w-full h-full flex flex-row gap-6">
+        {data.map((item: any) => (
+          <Lane name={item} onClick={(id) => {
+            setOpen(true)
+          }} />
+        ))}
+      </div>
+      <Popup open={open} onClose={()=>setOpen(false)}>
+        
+      </Popup>
+    </>
   );
 };

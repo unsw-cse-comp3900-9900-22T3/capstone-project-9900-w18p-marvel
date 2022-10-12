@@ -57,7 +57,7 @@ export const Sidebar = () => {
         collapse ? "w-16" : "w-56"
       } bg-white-100 h-full`}
     >
-      <div className="absolute top-8 left-8">
+      <div className="absolute top-3 left-8">
         <img src="/brand.png" className="w-16 h-16"/>
       </div>
       <div className="absolute inset-0 pointer-events-none">

@@ -6,7 +6,7 @@ interface TaskCardProps {
   dueDate: Date;
 }
 
-const TaskCard = ({}: TaskCardProps) => {
+const TaskCard = ({ }: TaskCardProps) => {
   return <div className="text-yellow-500">Write ur component here</div>;
 };
 

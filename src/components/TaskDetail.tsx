@@ -19,6 +19,11 @@ const uplodaicon = "https://cdn-icons-png.flaticon.com/128/1702/1702912.png"
 
 
 const TaskDetail = ({ }: TaskDetailProps) => {
+  const TaskDetail = [
+    { TaskID: 1234, TaskName: "Marvel Task Management", Assignee: "123", DueDate: "22/02/2023", Description: "123kwnflkwfnlkwnfklwnflwln" }
+  ]
+
+
   const CommentorData = [
     { Name: 'Linda Hsu', CommenterAvator: img_address, Comments: '@11', CommentDate: '10/12/2023' },
     { Name: 'Teddy', CommenterAvator: img_address, Comments: '@113', CommentDate: '10/12/2023' },
@@ -38,7 +43,6 @@ const TaskDetail = ({ }: TaskDetailProps) => {
 
 
 
-
   return (
     <>
 
@@ -54,12 +58,16 @@ const TaskDetail = ({ }: TaskDetailProps) => {
 
         </div>
 
-        <div className={`flex mt-20`}><TaskInfoBlock
-          TaskID={12345}
-          TaskName={"Marvel Task Management"}
-          Assignee={[]}
-          DueDate={"22/02/2023"}
-          Description={"123kwnflkwfnlkwnfklwnflwln"} /></div>
+        <div className={`flex mt-20`}>
+          {TaskDetail.map((item) => (
+            <TaskInfoBlock
+              TaskID={item.TaskID}
+              TaskName={item.TaskName}
+              Assignee={item.Assignee}
+              DueDate={item.DueDate}
+              Description={item.Description} />
+          ))}
+        </div>
 
 
 

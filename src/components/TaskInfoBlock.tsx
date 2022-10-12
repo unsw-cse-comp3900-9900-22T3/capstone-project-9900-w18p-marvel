@@ -20,15 +20,15 @@ const TaskInfoBlock = ({ TaskName, TaskID, Assignee, DueDate, Description }: Tas
       </div>
 
       <div className={`flex flex-row w-176 h-auto mt-10`}>
-        <div className={`flex flex-col w-176 h-auto mb-10`}>
-          <div className={`flex items-center text-gray-400 text-lg mt-2`}>ASSIGNED TO</div>
-          <div className={`flex items-center text-sm text-gray-400 bg-gray-50 rounded-2xl mt-5`}>{Assignee}</div>
+        <div className={`flex flex-col w-auto h-auto mb-10 mr-auto`}>
+          <div className={`flex items-start text-gray-400 text-lg mt-2`}>ASSIGNED TO</div>
+          <div className={`flex items-start text-sm text-gray-400 rounded-2xl mt-5`}>{Assignee}</div>
 
         </div>
 
-        <div className={`flex items-start flex-col w-36 h-auto mb-10`}>
-          <div className={`flex items-center text-gray-400 text-lg mt-2`}>DUE DATE</div>
-          <div className={`flex items-center text-sm text-gray-400 bg-gray-50 rounded-2xl mt-5`}>{DueDate}</div>
+        <div className={`flex flex-col w-auto h-auto mb-10`}>
+          <div className={`flex items-end text-gray-400 text-lg mt-2`}>DUE DATE</div>
+          <div className={`flex items-end text-sm text-gray-400 bg-gray-50 rounded-2xl mt-5`}>{DueDate}</div>
 
         </div>
 

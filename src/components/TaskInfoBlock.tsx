@@ -34,11 +34,11 @@ const TaskInfoBlock = ({ TaskName, TaskID, Assignee, DueDate, Description }: Tas
 
 
       </div>
-      <div className={`flex flex-col w-176 h-auto`}>
+      <div className={`flex flex-col w-176 h-auto mt-10`}>
         <div className={`flex font-bold text-2xl items-center`}><img src={img_address} className={`w-10 h-10 mr-3`} />Description</div>
       </div>
 
-      <div className={`flex item-start w-166 h-auto text-justify text-gray-400 rounded-2xl mt-4 ml-12`}>
+      <div className={`flex item-start w-166 h-auto text-justify text-gray-400 rounded-2xl mt-6 ml-5`}>
         {Description}
       </div>
 

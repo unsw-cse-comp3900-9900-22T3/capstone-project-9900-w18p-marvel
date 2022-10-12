@@ -19,7 +19,7 @@ const uplodaicon = "https://cdn-icons-png.flaticon.com/128/1702/1702912.png"
 
 const TaskDetail = ({ }: TaskDetailProps) => {
   const TaskDetail = [
-    { TaskID: 1234, TaskName: "Marvel Task Management", Assignee: "123", DueDate: "22/02/2023", Description: "123kwnflkwfnlkwnfklwnflwln" }
+    { TaskID: 1234, TaskName: "Marvel Task Management", Assignee: "123", DueDate: "22/02/2023", Description: desc }
   ]
 
 
@@ -70,7 +70,7 @@ const TaskDetail = ({ }: TaskDetailProps) => {
 
 
 
-        <div className={`flex flex-row w-176 h-auto mt-5 mb-5`}>
+        <div className={`flex flex-row w-176 h-auto mt-10 mb-5`}>
           <div className={`flex font-bold text-2xl items-center`}>
             <img src={uplodaicon} className={`w-10 h-10 mr-3`} />Attachment
           </div>
@@ -93,7 +93,7 @@ const TaskDetail = ({ }: TaskDetailProps) => {
 
         <div className={`flex`}><NewUploadedCard /></div>
 
-        <div className={`ml-12 justify-items-start mt-5 mb-5`}>
+        <div className={`ml-12 justify-items-start mt-10 mb-5`}>
           <TotalCommentItem TotalComment={TotalComment}></TotalCommentItem>
         </div>
 

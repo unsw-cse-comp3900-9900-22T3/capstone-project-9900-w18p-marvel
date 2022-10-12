@@ -40,7 +40,6 @@ interface Props {
                 })
               ))}
 
-     
             </datalist>
            
             </div>

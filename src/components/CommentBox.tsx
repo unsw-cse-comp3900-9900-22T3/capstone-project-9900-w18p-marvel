@@ -13,6 +13,14 @@ interface CommentboxProps {
   const waste_icon = "https://freesvg.org/img/trash.png"
 
   const CommentBox = ({Name, CommenterAvator, Comments, CommentDate, TotalComment}: CommentboxProps) => {
+    const CommentorData = [
+        {Name:'', CommenterAvator:img_address, Comments:'@11', CommentDate},
+        {Name:'', CommenterAvator:img_address, Comments:'@11', CommentDate},
+        {Name:'', CommenterAvator:img_address, Comments:'@11', CommentDate},
+        {Name:'', CommenterAvator:img_address, Comments:'@11', CommentDate},
+    ]
+
+
     return(
     <div className={`flex flex-col w-176 h-44`}> 
         <div className={`flex flex-row w-176 h-auto`}> 
@@ -24,17 +32,26 @@ interface CommentboxProps {
             <div className={`flex w-20`}>
                 <img src={CommenterAvator} className={`w-10 h-10 gap-5 rounded-full`}/>
             </div>
+            
+       
             <div className={`flex flex-col w-auto h-auto gap-3`}>
+
+  
                 <div className={`text-sm font-bold text-lg`}>{Name}</div>
                 <div className={`text-xs text-gray-100`}>{Comments}</div>
                 <div className={`text-xs text-gray-100 pt-1`}>Reply</div>
             </div>
+            
+            
             <div className={`flex flex-row absolute right-5 items-center`}>
                 <div className={`flex pr-2 text-xs text-gray-100`}>{CommentDate}</div>
                 <img src={waste_icon} className={`flex w-5 h-5`} />
             </div>
+           
+            
         
         </div>
+            
     </div>
     );
   };

@@ -1,23 +1,23 @@
 interface UploadedCardProps {
+  FileID: number;
   FilePic?: string; //Depending on the file format for different Pic
   FileName: string;
   FileAddedTime: string;
+  FileDownloadLink: string;
 
 }
 
 
-const img_address = "https://cdn-icons-png.flaticon.com/128/1702/1702912.png"
+
 const temp_img_address = "https://cdn.pixabay.com/photo/2017/02/07/02/16/cloud-2044823_960_720.png"
 const waste_icon = "https://freesvg.org/img/trash.png"
 
-const UploadedCard = ({FilePic, FileName, FileAddedTime}: UploadedCardProps) => {
+const UploadedCard = ({FileID, FilePic, FileName, FileAddedTime, FileDownloadLink}: UploadedCardProps) => {
   return(
-    <div className={`flex flex-col w-176 h-44`}> 
-        <div className={`flex flex-row w-176 h-auto`}> 
-            <div className={`flex font-bold text-2xl items-center`}><img src={img_address} className={`w-10 h-10 mr-3`} />Attachment</div>
-        </div>
+    <div className={`flex flex-col w-176 h-auto mb-2`}> 
+
   
-        <div className={`flex item-start items-center flex-row w-166 h-32 bg-gray-50 rounded-2xl relative mt-4 ml-10`}>
+        <div className={`flex item-start items-center flex-row w-166 h-32 bg-gray-50 rounded-2xl relative ml-10`}>
             <div className={`flex h-32 w-30 items-center`}>
                 <img src={temp_img_address} className={`h-20 w-20`}/>
             </div>

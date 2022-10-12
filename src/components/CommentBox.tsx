@@ -9,18 +9,15 @@ interface CommentboxProps {
   
   
   const img_address = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL9LonfTfSW8SOAc8E7Fe982afR_kqYbwSuQ&usqp=CAU"
-  const comment_icon = "https://static.thenounproject.com/png/62334-200.png"
+
   const waste_icon = "https://freesvg.org/img/trash.png"
 
   const CommentBox = ({Name, CommenterAvator, Comments, CommentDate, TotalComment}: CommentboxProps) => {
     return(
-    <div className={`flex flex-col w-176 h-44`}> 
-        <div className={`flex flex-row w-176 h-auto`}> 
-            <div className={`flex`}><img src={comment_icon} className={`w-12 h-12 mr-3`}></img></div>
-            <div className={`flex font-bold text-2xl items-center`}>Comment({TotalComment})</div>
-        </div>
+    <div className={`flex flex-col w-176 h-auto mb-2`}> 
+        
 
-        <div className={`flex item-start flex-row w-176 h-32 pl-5 pt-5 bg-gray-50 mt-4 rounded-2xl relative`}>
+        <div className={`flex item-start flex-row w-176 h-32 pl-5 pt-5 bg-gray-50 rounded-2xl relative`}>
             <div className={`flex w-20`}>
                 <img src={CommenterAvator} className={`w-10 h-10 gap-5 rounded-full`}/>
             </div>

@@ -4,6 +4,7 @@ interface CommentboxProps {
     CommenterAvator: string;
     Comments: string;
     CommentDate: string;
+    ShowWaste: boolean;
 
 }
 

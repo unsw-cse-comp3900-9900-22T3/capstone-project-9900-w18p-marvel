@@ -19,7 +19,7 @@ const uplodaicon = "https://cdn-icons-png.flaticon.com/128/1702/1702912.png"
 
 const TaskDetail = ({ }: TaskDetailProps) => {
   const TaskDetail = [
-    { TaskID: 1234, TaskName: "Marvel Task Management", Assignee: "123", DueDate: "22/02/2023", Description: desc }
+    { TaskID: 1234, TaskName: "Marvel Task Management", Assignee: ['1', '2', '3'], DueDate: "22/02/2023", Description: desc }
   ]
 
 
@@ -31,13 +31,15 @@ const TaskDetail = ({ }: TaskDetailProps) => {
   ]
 
   const UploadedCardDetails = [
-    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: "1", FileDownloadLink: "test" },
-    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: "2", FileDownloadLink: "test" },
-    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: "3", FileDownloadLink: "test" }
+    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: 1, FileDownloadLink: "test" },
+    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: 2, FileDownloadLink: "test" },
+    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: 3, FileDownloadLink: "test" }
 
   ]
 
-  const TotalComment = '1'
+  const TotalComment = 1
+
+  const UserID = 1
 
 
 
@@ -78,6 +80,7 @@ const TaskDetail = ({ }: TaskDetailProps) => {
 
         <div className={`flex flex-col`}>
           {UploadedCardDetails.map((item) => (
+
             <UploadedCard
               FilePic={item.FilePic}
               FileName={item.FileName}
@@ -99,6 +102,7 @@ const TaskDetail = ({ }: TaskDetailProps) => {
 
         <div className={`flex flex-col`}>
           {CommentorData.map((item) => (
+
             <CommentBox
               CommentorID={item.CommentorID}
               CommentDate={item.CommentDate}

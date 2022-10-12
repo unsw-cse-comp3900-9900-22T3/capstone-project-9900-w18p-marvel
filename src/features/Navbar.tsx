@@ -31,6 +31,9 @@ export const Navbar = () => {
               alert("Logout Failed");
             });
         }}
+        onClickProfile={()=>{
+          navigate("/profile")
+        }}
       />
     </div>
   );

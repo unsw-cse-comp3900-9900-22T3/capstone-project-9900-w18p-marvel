@@ -34,7 +34,7 @@ const createProject = ()=>{
 }
 
 export const searchCollaborators = async (name:string)=>{
-  await delay(2000)
+  await delay(250)
   return [{src:'',name:'xxx',description:'xxx',id:'001'},{src:'',name:'yyy',description:'xxx',id:'002'},{src:'',name:'xxy',description:'xxx',id:'003'}]
 }
 

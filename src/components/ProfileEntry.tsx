@@ -31,14 +31,19 @@ export const ProfileEntry = ({onClickLogout,onClickProfile}:Props)=>{
             size={"fill"}
             label={"Profile"}
             rounded={"none"}
-          />
+            onClick={()=>{
+              onClickProfile?.()
+              setOpen(false)
+            }}
+            />
           <Button
             theme={"transparent"}
             size={"fill"}
             label={"Logout"}
             rounded={"none"}
             onClick={()=>{
-                onClickLogout?.();
+              onClickLogout?.();
+              setOpen(false)
             }}
           />
         </div>

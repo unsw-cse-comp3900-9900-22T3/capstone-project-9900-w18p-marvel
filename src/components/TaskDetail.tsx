@@ -5,6 +5,9 @@ import { CommentBox } from "../components/CommentBox";
 import { NewCommentBox } from "../components/NewCommentBox";
 import { Button } from "./Button";
 import { TotalCommentItem } from "./TotalCommentItem";
+import { Popup } from "./Popup";
+import { UserList } from "./UserList";
+import { useState } from "react";
 
 
 interface TaskDetailProps {
@@ -19,6 +22,7 @@ const uplodaicon = "https://cdn-icons-png.flaticon.com/128/1702/1702912.png"
 
 
 const TaskDetail = ({ }: TaskDetailProps) => {
+  const [open,setOpen] = useState(false)
   const TaskDetail = [
     { TaskID: 1234, TaskName: "Marvel Task Management", Assignee: "123", DueDate: "22/02/2023", Description: "123kwnflkwfnlkwnfklwnflwln" }
   ]
@@ -58,7 +62,9 @@ const TaskDetail = ({ }: TaskDetailProps) => {
 
         </div>
 
-        <div className={`flex mt-20`}>
+        <div className={`flex mt-20`} onClick={()=>{
+          setOpen(true)
+        }}>
           {TaskDetail.map((item) => (
             <TaskInfoBlock
               TaskID={item.TaskID}
@@ -122,6 +128,11 @@ const TaskDetail = ({ }: TaskDetailProps) => {
           ></Button>
         </div>
       </div>
+      <Popup open={open} onClose={()=>{setOpen(false)}}>
+        <UserList taskId={""} onConfirm={function (collaborators: string[]): void {
+          setOpen(false)
+        } }/>
+      </Popup>
     </>
 
 

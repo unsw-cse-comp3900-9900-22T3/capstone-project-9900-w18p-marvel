@@ -2,9 +2,9 @@ import { UserListItem } from "./UserListItem"
 import { Button } from "./Button"
 import { Input } from "./Input";
 import { searchCollaborators, setCollaborators } from "../api/task";
-import { useState } from "react";
-import _, {  } from "lodash";
+import { useEffect, useState } from "react";
 import { delay } from "../utils/promise";
+import _ from "lodash";
 
 interface Props{
     taskId:string
@@ -16,9 +16,10 @@ export const UserList = ({taskId,onConfirm}:Props)=>{
     const [data,setData] = useState<any>([])
     const [selected,setSelected] = useState<Array<string>>([])
 
+  
 
     return (
-        <div className="flex flex-col gap-0 w-72">
+        <div className="flex flex-col gap-0 w-72 bg-white-100 rounded-3xl">
             <div className="h-20 w-full py-3 px-3">
                 <Input type={"text"} onChange={async (val:string)=>{
                     const x = await searchCollaborators(val)

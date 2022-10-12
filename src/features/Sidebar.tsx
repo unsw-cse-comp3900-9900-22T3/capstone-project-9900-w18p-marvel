@@ -32,7 +32,7 @@ const MenuItem = ({ prefix, label, onClick }: MenuItemProps) => {
         }`}
       ></div>
       <div
-        className={`flex flex-row gap-4 ${
+        className={`flex flex-row gap-4 text-sm ${
           hover ? "text-blue-100" : "text-black"
         } `}
       >

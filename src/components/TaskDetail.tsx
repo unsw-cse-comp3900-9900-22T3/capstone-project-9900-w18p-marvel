@@ -46,7 +46,7 @@ const TaskDetail = ({ }: TaskDetailProps) => {
   return (
     <>
 
-      <div className={`flex items-center flex-col w-190 h-5/6 overflow-auto gap-2 border-solid border-2 rounded-2xl relative`}>
+      <div className={`flex items-center flex-col w-full h-full overflow-auto gap-2 rounded-[32px] relative bg-white-100`}>
         <div className={`flex h-auto w-auto mt-5 left-8 absolute`}>
           <Button
             theme={"gray"}
@@ -71,11 +71,11 @@ const TaskDetail = ({ }: TaskDetailProps) => {
 
 
 
-        <div className={`flex flex-row w-176 h-auto mt-5 mb-5`}>
+        {/* <div className={`flex flex-row w-176 h-auto mt-5 mb-5`}>
           <div className={`flex font-bold text-2xl items-center`}>
             <img src={uplodaicon} className={`w-10 h-10 mr-3`} />Attachment
           </div>
-        </div>
+        </div> */}
 
         <div className={`flex flex-col`}>
           {UploadedCardDetails.map((item) => (

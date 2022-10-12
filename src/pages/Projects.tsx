@@ -1,4 +1,18 @@
+import { CreateProject } from "../components/CreateProject"
+
 interface ProjectProps {}
+
+const data=[
+  {image: '', name:123, time:new Date()},
+  {image: '', name:123, time:new Date()},
+  {image: '', name:123, time:new Date()},
+  {image: '', name:123, time:new Date()},
+  {image: '', name:123, time:new Date()},
+  {image: '', name:123, time:new Date()},
+  {image: '', name:123, time:new Date()},
+  {image: '', name:123, time:new Date()}
+]
+
 
 export const Project = ({}: ProjectProps) => {
   return (
@@ -7,7 +21,12 @@ export const Project = ({}: ProjectProps) => {
         MY PROJECT
       </div>
       <div className="w-full h-full pt-24 px-12 pb-12">
-      <div className="grid"></div>
+      <div className="grid">
+      {data.map((item: any)=>(
+        <CreateProject src={item.image} name={item.name}/>
+      ))}
+
+      </div>
       </div>
     </div>
   );

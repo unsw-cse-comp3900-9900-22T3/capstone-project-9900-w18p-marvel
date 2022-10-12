@@ -1,5 +1,4 @@
 import { TaskInfoBlock } from "../components/TaskInfoBlock";
-import { DescriptionBox } from "../components/DescriptionBox";
 import { UploadedCard } from "../components/UploadedCard";
 import { NewUploadedCard } from "../components/NewUploadedCard";
 import { CommentBox } from "../components/CommentBox";
@@ -27,14 +26,17 @@ const TaskDetail = ({ }: TaskDetailProps) => {
     { Name: 'Lisa', CommenterAvator: img_address, Comments: '@11', CommentDate: '10/12/2023' },
   ]
 
-  const UploadedCardDetails=[
-{FilePic: uploadedcardpic, FileName:"Marvel Porject", FileAddedTime:"10/10/2022"},
-{FilePic: uploadedcardpic, FileName:"Marvel Porject", FileAddedTime:"10/10/2022"},
-{FilePic: uploadedcardpic, FileName:"Marvel Porject", FileAddedTime:"10/10/2022"}
+  const UploadedCardDetails = [
+    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022" },
+    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022" },
+    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022" }
 
   ]
 
   const TotalComment = '1'
+
+
+
 
 
   return (
@@ -52,25 +54,37 @@ const TaskDetail = ({ }: TaskDetailProps) => {
 
         </div>
 
-        <div className={`flex mt-20`}><TaskInfoBlock TaskID={12345} TaskName={"Marvel Task Management"} Assignee={[]} DueDate={"22/02/2023"} /></div>
-        <div className={`flex`}><DescriptionBox Description={desc} /></div>
+        <div className={`flex mt-20`}><TaskInfoBlock
+          TaskID={12345}
+          TaskName={"Marvel Task Management"}
+          Assignee={[]}
+          DueDate={"22/02/2023"}
+          Description={"123kwnflkwfnlkwnfklwnflwln"} /></div>
 
 
-        <div className={`flex flex-row w-176 h-auto mt-5 mb-5`}> 
-            <div className={`flex font-bold text-2xl items-center`}><img src={uplodaicon} className={`w-10 h-10 mr-3`} />Attachment</div>
+
+        <div className={`flex flex-row w-176 h-auto mt-5 mb-5`}>
+          <div className={`flex font-bold text-2xl items-center`}>
+            <img src={uplodaicon} className={`w-10 h-10 mr-3`} />Attachment
+          </div>
         </div>
 
         <div className={`flex flex-col`}>
           {UploadedCardDetails.map((item) => (
-            <UploadedCard FilePic={item.FilePic} FileName={item.FileName} FileAddedTime={item.FileAddedTime} FileID={0} FileDownloadLink={""} ></UploadedCard>
+            <UploadedCard
+              FilePic={item.FilePic}
+              FileName={item.FileName}
+              FileAddedTime={item.FileAddedTime}
+              FileID={0}
+              FileDownloadLink={""} >
+
+            </UploadedCard>
           ))}
 
         </div>
 
 
-
         <div className={`flex`}><NewUploadedCard /></div>
-
 
         <div className={`ml-12 justify-items-start mt-5 mb-5`}>
           <TotalCommentItem TotalComment={TotalComment}></TotalCommentItem>
@@ -80,7 +94,14 @@ const TaskDetail = ({ }: TaskDetailProps) => {
 
         <div className={`flex flex-col`}>
           {CommentorData.map((item) => (
-            <CommentBox CommentDate={item.CommentDate} TotalComment={1} Name={item.Name} CommenterAvator={item.CommenterAvator} Comments={item.Comments}></CommentBox>
+            <CommentBox
+              CommentDate={item.CommentDate}
+              TotalComment={1}
+              Name={item.Name}
+              CommenterAvator={item.CommenterAvator}
+              Comments={item.Comments}>
+
+            </CommentBox>
           ))}
 
         </div>

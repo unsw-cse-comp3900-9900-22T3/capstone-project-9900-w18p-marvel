@@ -93,6 +93,13 @@ export const Sidebar = () => {
             navigate("/tasks");
           }}
         ></MenuItem>
+         <MenuItem
+          prefix={<TaskIcon className={""} />}
+          label={"API"}
+          onClick={() => {
+            navigate("/api");
+          }}
+        ></MenuItem>
       </div>
     </div>
   );

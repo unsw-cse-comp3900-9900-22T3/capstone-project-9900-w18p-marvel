@@ -17,29 +17,30 @@ import { Interceptor } from "./pages/Interceptor";
 import { Project } from "./pages/Projects";
 import { Landing } from "./pages/Landing";
 import { Tasks } from "./pages/Tasks";
-import { getApp, initializeApp } from "firebase/app";
-import { User } from "firebase/auth";
+import { FirebaseApp, getApp, initializeApp } from "firebase/app";
+
 import React from "react";
 import { CreateProject } from "./components/CreateProject";
 import { CreateProject2 } from "./components/CreateProject2";
 import { APITest } from "./pages/APITest";
-import { collection, getFirestore, onSnapshot, query, where } from "firebase/firestore";
+import { collection, doc, getFirestore, onSnapshot, query, where } from "firebase/firestore";
+import { User } from "./api/type";
+import { getUser } from "./api/user";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 interface ContextProps {
-  app: any;
+  app: FirebaseApp|null;
   authorized: boolean;
-  setAuthorized: Function|undefined;
-  user: User | undefined;
-  setUser: Function|undefined;
+  setAuthorized: Function|null;
+  user: User | null;
   invitations:Array<any>
 }
 
 const AppContext = React.createContext<ContextProps>({
-  app: undefined,
+  app: null,
   authorized: false,
-  setAuthorized: undefined,
-  user: undefined,
-  setUser: undefined,
+  setAuthorized: null,
+  user: null,
   invitations:[]
 });
 
@@ -49,7 +50,7 @@ export function useApp() {
 
 export function App() {
   const [authorized, setAuthorized] = useState<boolean>(true);
-  const [user, setUser] = useState<User|undefined>();
+  const [user, setUser] = useState<User|null>(null);
   const [invitations,setInvitations] = useState<Array<any>>([])
   
 
@@ -67,7 +68,8 @@ export function App() {
   const app = initializeApp(firebaseConfig);
   const storage = getStorage(app);
 
-  let unsubsribe:any = null
+  let unsubscribeInvitation:any = null
+  let unsubscribeUser:any = null
 
   useEffect(()=>{
     const user = localStorage.getItem("user")
@@ -75,18 +77,29 @@ export function App() {
       setUser(JSON.parse(user))
     }
   },[])
+  
+  const auth = getAuth()
+  onAuthStateChanged(auth, (user) => {
+    setUser(user)
+  });
+  
 
   useEffect(()=>{
     if(user) {
+      setUser(user)
       setAuthorized(true);
       localStorage.setItem("user",JSON.stringify(user))
-      if(unsubsribe){
-        unsubsribe()
+
+      if(unsubscribeInvitation){
+        unsubscribeInvitation()
+      }
+      if(unsubscribeUser){
+        unsubscribeUser()
       }
       const app = getApp();
       const db = getFirestore(app);
-      const q = query(collection(db, "invitation"), where("inviteeId", "==", user.uid));
-      unsubsribe = onSnapshot(q, (querySnapshot) => {
+      const q = query(collection(db, "invitations"), where("inviteeId", "==", user.uid));
+      unsubscribeInvitation = onSnapshot(q, (querySnapshot) => {
         const data:any = [];
         querySnapshot.forEach((doc) => {
             data.push(doc.data());
@@ -107,7 +120,6 @@ export function App() {
       authorized,
       setAuthorized,
       user,
-      setUser,
       invitations
     };
   }, [
@@ -169,7 +181,9 @@ export function App() {
               path="api"
               element={
                 <Interceptor>
-                  <APITest />
+                  <Home>
+                    <APITest />
+                  </Home>
                 </Interceptor>
               }
             ></Route>

@@ -9,7 +9,7 @@ import { LogoutIcon } from "../icons/LogoutIcon";
 import { PlusIcon } from "../icons/PlusIcon";
 
 export const Navbar = () => {
-  const { setUser } = useApp();
+  const { setUser,user } = useApp();
   const auth = getAuth(getApp());
   const navigate = useNavigate();
   return (
@@ -31,9 +31,10 @@ export const Navbar = () => {
               alert("Logout Failed");
             });
         }}
-        onClickProfile={()=>{
-          navigate("/profile")
+        onClickProfile={() => {
+          navigate("/profile");
         }}
+        photoURL={user?.photoURL || ""}
       />
     </div>
   );

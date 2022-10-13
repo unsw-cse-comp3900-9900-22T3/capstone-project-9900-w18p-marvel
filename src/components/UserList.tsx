@@ -1,7 +1,6 @@
 import { UserListItem } from "./UserListItem"
 import { Button } from "./Button"
 import { Input } from "./Input";
-import { searchCollaborators, setCollaborators } from "../api/task";
 import { useEffect, useState } from "react";
 import { delay } from "../utils/promise";
 import _ from "lodash";
@@ -22,8 +21,6 @@ export const UserList = ({taskId,onConfirm}:Props)=>{
         <div className="flex flex-col gap-0 w-72 bg-white-100 rounded-3xl">
             <div className="h-20 w-full py-3 px-3">
                 <Input type={"text"} onChange={async (val:string)=>{
-                    const x = await searchCollaborators(val)
-                    setData(x)
                 }}/>
             </div>
             <div className="h-0 w-full border-t border-gray-100"></div>
@@ -56,8 +53,6 @@ export const UserList = ({taskId,onConfirm}:Props)=>{
                     rounded="2xl" 
                     label={"Confirm"}
                     onClick={async ()=>{
-                        await setCollaborators(selected,taskId)
-                        await delay(500)
                         onConfirm(selected)
                     }}
                 ></Button>

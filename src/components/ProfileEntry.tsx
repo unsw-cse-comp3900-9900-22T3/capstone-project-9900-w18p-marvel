@@ -4,11 +4,12 @@ import { Avatar } from "./Avatar";
 import { Button } from "./Button";
 
 interface Props{
+    photoURL?:string
     onClickLogout?:()=>void
     onClickProfile?:()=>void
 }
 
-export const ProfileEntry = ({onClickLogout,onClickProfile}:Props)=>{
+export const ProfileEntry = ({photoURL,onClickLogout,onClickProfile}:Props)=>{
     const [open,setOpen] = useState<boolean>(false)
 
     return (
@@ -16,7 +17,7 @@ export const ProfileEntry = ({onClickLogout,onClickProfile}:Props)=>{
         <Avatar
           size={"lg"}
           rounded={"full"}
-          src={""}
+          src={photoURL || ""}
           onClick={() => {
             setOpen(!open)
           }}

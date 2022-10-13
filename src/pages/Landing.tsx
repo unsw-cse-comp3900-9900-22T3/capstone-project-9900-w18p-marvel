@@ -12,8 +12,9 @@ import {
 import { getApp } from "firebase/app";
 import { useNavigate } from "react-router-dom";
 import { useApp } from "../App";
-import { createUser } from "../api/task";
 import { delay } from "../utils/promise";
+import { createUser, getUser } from "../api/user";
+import { faker } from "@faker-js/faker";
 
 interface Props {}
 
@@ -26,9 +27,13 @@ export const Landing = ({}: Props) => {
   const provider = new GoogleAuthProvider();
   const signin = (email: string, password: string) => {
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         const user = userCredential.user;
-        setUser?.(user);
+        const userInfo = await getUser(user.uid,user);
+            if (userInfo === undefined) {
+              await createUser(user.uid, email, faker.name.fullName());
+            }
+            setUser?.(user);
         setTimeout(() => {
           navigate("/");
         }, 500);
@@ -47,7 +52,10 @@ export const Landing = ({}: Props) => {
           const token = credential.accessToken;
           const user = result.user;
           if (user.email && user.displayName) {
-            await createUser(user.uid, user.email, user.displayName);
+            const userInfo = await getUser(user.uid,user);
+            if (userInfo === undefined) {
+              await createUser(user.uid, user.email, user.displayName);
+            }
             setUser?.(user);
             await delay(500);
             navigate("/");

@@ -74,7 +74,7 @@ export const Sidebar = () => {
       <div className="pt-36">
         <MenuItem
           prefix={<ProjectIcon className={""} />}
-          label={"Project"}
+          label={"projects"}
           onClick={() => {
             navigate("/projects");
           }}

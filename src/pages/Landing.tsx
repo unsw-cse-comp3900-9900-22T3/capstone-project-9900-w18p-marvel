@@ -12,6 +12,8 @@ import {
 import { getApp } from "firebase/app";
 import { useNavigate } from "react-router-dom";
 import { useApp } from "../App";
+import { createUser } from "../api/task";
+import { delay } from "../utils/promise";
 
 interface Props {}
 
@@ -27,8 +29,9 @@ export const Landing = ({}: Props) => {
       .then((userCredential) => {
         const user = userCredential.user;
         setUser?.(user);
-        setTimeout(()=>{navigate("/");},500)
-        
+        setTimeout(() => {
+          navigate("/");
+        }, 500);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -38,13 +41,17 @@ export const Landing = ({}: Props) => {
   };
   const googlePopup = () => {
     signInWithPopup(auth, provider)
-      .then((result) => {
+      .then(async (result) => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         if (credential) {
           const token = credential.accessToken;
           const user = result.user;
-          setUser?.(user);
-          setTimeout(()=>{navigate("/");},500)
+          if (user.email && user.displayName) {
+            await createUser(user.uid, user.email, user.displayName);
+            setUser?.(user);
+            await delay(500);
+            navigate("/");
+          }
         }
       })
       .catch((error) => {
@@ -55,12 +62,14 @@ export const Landing = ({}: Props) => {
         alert(`Sign in error: ${errorMessage}`);
       });
   };
-  const createUser = (email: string, password: string, username: string) => {
+  const register = (email: string, password: string, username: string) => {
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         const user = userCredential.user;
+        await createUser(user.uid, email, username);
         setUser?.(user);
-        setTimeout(()=>{navigate("/");},500)
+        await delay(500);
+        navigate("/");
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -77,7 +86,7 @@ export const Landing = ({}: Props) => {
             password: string,
             username: string
           ) => {
-            createUser(email, password, username);
+            register(email, password, username);
           }}
           onClickGoogle={() => {
             googlePopup();

@@ -1,4 +1,4 @@
-import defaultSrc from "/portrait.png"
+import defaultSrc from "/default-portrait.png"
 
 type Size = 
 | 'sm'

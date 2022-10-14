@@ -35,6 +35,7 @@ export const Notification = ({src,name,description}:Props)=>{
                         size="hug"
                         rounded="2xl" 
                         label={"Delete"}
+                        
                     ></Button>
                 </div>
             </div>

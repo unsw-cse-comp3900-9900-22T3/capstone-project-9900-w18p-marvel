@@ -15,10 +15,10 @@ import { uid } from "uid";
 import { deleteFile, uploadFile } from "./storage";
 import { Resource, User } from "./type";
 
-export const createUser = async (user: User) => {
+export const createUser = async (userId:string,user: User) => {
   const app = getApp();
   const db = getFirestore(app);
-  await addDoc(collection(db, "users"), user);
+  await setDoc(doc(db, "users", userId), user);
 };
 
 export const updateUserProfile = async (
@@ -31,26 +31,36 @@ export const updateUserProfile = async (
   const app = getApp();
   const db = getFirestore(app);
   const auth = getAuth();
-  if (auth.currentUser) {
+  const user = auth.currentUser;
+  if (user) {
     if (username) {
       await updateDoc(doc(db, "users", userId), {
         name: username,
       });
-      await updateProfile(auth.currentUser, { displayName: username });
-      onComplete?.(auth.currentUser);
+      await updateProfile(user, { displayName: username });
+      onComplete?.({
+        uid: user.uid,
+        displayName: user.displayName!,
+        email: user.email!,
+      });
     }
     if (email) {
       await updateDoc(doc(db, "users", userId), {
         email: email,
       });
-      await updateEmail(auth.currentUser, email);
-      onComplete?.(auth.currentUser);
+      await updateEmail(user, email);
+      onComplete?.({
+        uid: user.uid,
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: { downloadURL: "", storagePath: "" },
+      } as User);
     }
     if (image) {
-      const userInfo = await getUser(userId)
-      if(userInfo?.portrait?.storagePath){
+      const userInfo = await getUser(userId);
+      if (userInfo?.photoURL?.storagePath) {
         deleteFile(
-          userInfo?.portrait?.storagePath,
+          userInfo?.photoURL?.storagePath,
           () => {
             uploadFile(
               image,
@@ -66,9 +76,14 @@ export const updateUserProfile = async (
                     storagePath: storagePath,
                   } as Resource,
                 });
-                if (auth.currentUser) {
-                  await updateProfile(auth.currentUser, { photoURL: url });
-                  onComplete?.(auth.currentUser);
+                if (user) {
+                  await updateProfile(user, { photoURL: url });
+                  onComplete?.({
+                    uid: user.uid,
+                    displayName: user.displayName,
+                    email: user.email,
+                    photoURL: { downloadURL: "", storagePath: "" },
+                  } as User);
                 }
               }
             );
@@ -82,7 +97,7 @@ export const updateUserProfile = async (
   }
 };
 
-export const getUser: (uid: string) => Promise<User | undefined> = async (
+export const getUser: (uid: string) => Promise<User | null> = async (
   uid: string
 ) => {
   const app = getApp();
@@ -91,9 +106,9 @@ export const getUser: (uid: string) => Promise<User | undefined> = async (
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    return { id: uid, ...(docSnap.data() as User) } as User;
+    return { ...(docSnap.data() as User) } as User;
   } else {
-    return undefined;
+    return null;
   }
 };
 

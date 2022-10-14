@@ -8,9 +8,10 @@ import Modal from '@mui/material/Modal';
 interface Props{
     onClose?:()=>void
     open:boolean
+    children?:JSX.Element
 }
 
-export const Popup = ({onClose,open,children}:React.FC<Props>)=>{
+export const Popup = ({onClose,open,children}:Props)=>{
     return (
         <Modal
             open={open}
@@ -19,8 +20,8 @@ export const Popup = ({onClose,open,children}:React.FC<Props>)=>{
             aria-describedby="modal-modal-description"
         >
             <div className='absoulte flex justify-center items-center w-full h-full' onClick={(e)=>{
-                // e.stopPropagation()
-                // onClose()
+                e.stopPropagation()
+                onClose?.()
             }}>
                 {children}
             </div>

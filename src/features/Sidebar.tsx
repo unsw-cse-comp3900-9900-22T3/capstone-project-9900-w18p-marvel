@@ -54,7 +54,7 @@ export const Sidebar = () => {
   return (
     <div
       className={`relative transition-all overflow-hidden flex flex-col ${
-        collapse ? "w-16" : "w-56"
+        collapse ? "w-16 basis-16" : "w-56 basis-56"
       } bg-white-100 h-full`}
     >
       <div className="absolute top-3 left-8">

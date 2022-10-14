@@ -7,7 +7,6 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
-  User,
 } from "firebase/auth";
 import { getApp } from "firebase/app";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +14,7 @@ import { useApp } from "../App";
 import { delay } from "../utils/promise";
 import { createUser, getUser } from "../api/user";
 import { faker } from "@faker-js/faker";
+import { User } from "../api/type";
 
 interface Props {}
 
@@ -30,8 +30,12 @@ export const Landing = ({}: Props) => {
       .then(async (userCredential) => {
         const user = userCredential.user;
         const userInfo = await getUser(user.uid);
-        if (userInfo === undefined) {
-          await createUser(user);
+        if (userInfo === null) {
+          await createUser(user.uid, {
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: { downloadURL: "", storagePath: "" },
+          } as User);
         }
 
         setUser?.(user);
@@ -53,10 +57,16 @@ export const Landing = ({}: Props) => {
         if (credential) {
           const token = credential.accessToken;
           const user = result.user;
+          console.log(user)
           if (user.email && user.displayName) {
             const userInfo = await getUser(user.uid);
-            if (userInfo === undefined) {
-              await createUser(user);
+            console.log(userInfo)
+            if (userInfo === null) {
+              await createUser(user.uid,{
+                displayName: user.displayName,
+                email: user.email,
+                photoURL: { downloadURL: "", storagePath: "" },
+              } as User);
             }
             setUser?.(user);
             setAuthorized?.(true);
@@ -68,8 +78,6 @@ export const Landing = ({}: Props) => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        const email = error.customData.email;
-        const credential = GoogleAuthProvider.credentialFromError(error);
         alert(`Sign in error: ${errorMessage}`);
       });
   };
@@ -77,7 +85,11 @@ export const Landing = ({}: Props) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         const user = userCredential.user;
-        await createUser(user);
+        await createUser(user.uid,{
+          displayName: user.displayName,
+          email: user.email,
+          photoURL: { downloadURL: "", storagePath: "" },
+        } as User);
         setUser?.(user);
         setAuthorized?.(true);
         await delay(500);

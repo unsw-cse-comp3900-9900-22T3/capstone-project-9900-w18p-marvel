@@ -11,11 +11,11 @@ import {
 } from "firebase/firestore";
 import { uid } from "uid";
 import { queryAllCollaboratorsInProject } from "./collaborator";
-import { Project, ProjectCollaborator, Task } from "./type";
+import { Project, ProjectCollaborator, Resource, Task } from "./type";
 
 export const createProject = async (
   title: string,
-  img: string,
+  photoURL: Resource,
   createdBy: string,
   createdAt: Date
 ) => {
@@ -23,7 +23,7 @@ export const createProject = async (
   const db = getFirestore(app);
   await setDoc(doc(db, "projects", uid(20)), {
     title: title,
-    img: img,
+    photoURL: photoURL,
     createdBy: createdBy,
     createdAt: createdAt,
   });
@@ -38,16 +38,21 @@ export const queryMyProjects: (
   const querySnapshot = await getDocs(collection(db, "projects"));
   const projects: Array<Project> = [];
   querySnapshot.forEach((doc) => {
+    console.log("queryMyProjects:",doc.data())
     projects.push({ id: doc.id, ...doc.data() } as Project);
   });
 
   const myProjects: Array<Project> = [];
   projects.forEach(async (p: Project) => {
-    const projectcollaborators = await queryAllCollaboratorsInProject(p.id);
-    if (
-      projectcollaborators.find((c: ProjectCollaborator) => c.userId === userId)
-    ) {
-      myProjects.push(p);
+    if(p.createdBy === userId){
+      myProjects.push(p)
+    }else{
+      const projectcollaborators = await queryAllCollaboratorsInProject(p.id);
+      if (
+        projectcollaborators.find((c: ProjectCollaborator) => c.userId === userId)
+      ) {
+        myProjects.push(p);
+      }
     }
   });
   return myProjects;

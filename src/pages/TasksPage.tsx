@@ -10,7 +10,7 @@ import { TaskDetail } from "../components/TaskDetail";
 
 interface Props {}
 
-export const Tasks = ({}: Props) => {
+export const TasksPage = ({}: Props) => {
   const { user } = useApp();
   const [data, setData] = useState(["Todo", "On Going"]);
   const [open, setOpen] = useState(false);

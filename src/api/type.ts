@@ -3,8 +3,11 @@ import { User as FirebaseUser } from "firebase/auth";
 export type Status = "start" | "blocked" | "complete";
 export type Role = "owner" | "editor" | "viewer"
 
-export interface User extends FirebaseUser {
-    portrait?:Resource
+export interface User {
+    uid?:string
+    displayName:string
+    email:string
+    photoURL?:Resource
 }
 
 export interface Resource{
@@ -27,7 +30,7 @@ export interface Project {
     id:string
     createdAy:Date
     createdBy:string
-    photoURL:string
+    photoURL:Resource
     title:string
 }
 

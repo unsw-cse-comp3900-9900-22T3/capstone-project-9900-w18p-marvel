@@ -4,8 +4,13 @@ export type Status = "start" | "blocked" | "complete";
 export type Role = "owner" | "editor" | "viewer"
 
 export interface User extends FirebaseUser {
+    portrait?:Resource
 }
 
+export interface Resource{
+    downloadURL:string
+    storagePath:string
+}
 export interface Task {
     id:string
     createdAy:Date
@@ -13,6 +18,7 @@ export interface Task {
     description:string
     dueDate:Date
     projectId:string
+    laneName:string
     status:Status
     title:string
 }
@@ -57,7 +63,7 @@ export interface Attachment{
     id:string
     createdAy:Date
     createdBy:string
-    resourceUrl:string
+    resource:Resource
     taskId:string
 }
 

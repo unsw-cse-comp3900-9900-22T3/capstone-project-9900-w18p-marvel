@@ -9,7 +9,7 @@ import { LogoutIcon } from "../icons/LogoutIcon";
 import { PlusIcon } from "../icons/PlusIcon";
 
 export const Navbar = () => {
-  const { setUser,user } = useApp();
+  const { setUser,user,setAuthorized } = useApp();
   const auth = getAuth(getApp());
   const navigate = useNavigate();
   return (
@@ -25,6 +25,7 @@ export const Navbar = () => {
           signOut(auth)
             .then(() => {
               setUser?.(undefined);
+              setAuthorized?.(false)
               navigate("/login");
             })
             .catch(() => {

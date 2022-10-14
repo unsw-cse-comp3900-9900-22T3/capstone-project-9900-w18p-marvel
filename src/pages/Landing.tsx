@@ -19,7 +19,7 @@ import { faker } from "@faker-js/faker";
 interface Props {}
 
 export const Landing = ({}: Props) => {
-  const { user, setUser } = useApp();
+  const { user, setUser, setAuthorized } = useApp();
 
   const auth = getAuth(getApp());
   const navigate = useNavigate();
@@ -29,11 +29,13 @@ export const Landing = ({}: Props) => {
     signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         const user = userCredential.user;
-        const userInfo = await getUser(user.uid,user);
-            if (userInfo === undefined) {
-              await createUser(user.uid, email, faker.name.fullName());
-            }
-            setUser?.(user);
+        const userInfo = await getUser(user.uid);
+        if (userInfo === undefined) {
+          await createUser(user);
+        }
+
+        setUser?.(user);
+        setAuthorized?.(true);
         setTimeout(() => {
           navigate("/");
         }, 500);
@@ -52,11 +54,12 @@ export const Landing = ({}: Props) => {
           const token = credential.accessToken;
           const user = result.user;
           if (user.email && user.displayName) {
-            const userInfo = await getUser(user.uid,user);
+            const userInfo = await getUser(user.uid);
             if (userInfo === undefined) {
-              await createUser(user.uid, user.email, user.displayName);
+              await createUser(user);
             }
             setUser?.(user);
+            setAuthorized?.(true);
             await delay(500);
             navigate("/");
           }
@@ -74,8 +77,9 @@ export const Landing = ({}: Props) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         const user = userCredential.user;
-        await createUser(user.uid, email, username);
+        await createUser(user);
         setUser?.(user);
+        setAuthorized?.(true);
         await delay(500);
         navigate("/");
       })

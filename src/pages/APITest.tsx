@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { downloadFile } from "../api/storage";
-import { queryTasksByProjectId } from "../api/task";
+import { queryAllTasksByProjectId } from "../api/task";
 import { getUser, requestConnection, updateUserProfile } from "../api/user";
 import { useApp } from "../App";
 import { Button } from "../components/Button";
 
 export const APITest = () => {
-  const { user, setUser,invitations } = useApp();
+  const { user,setUser,invitations } = useApp();
   useEffect(() => {
     if (invitations) {
       console.log("invitation change:", invitations);
@@ -23,7 +23,7 @@ export const APITest = () => {
         size={"hug"}
         label={"Get All Tasks"}
         onClick={() => {
-          queryTasksByProjectId("");
+          queryAllTasksByProjectId("");
         }}
       />
       <Button
@@ -53,33 +53,16 @@ export const APITest = () => {
           label={"Update My Photo"}
           onClick={async () => {
             if (user?.uid && file) {
-              await updateUserProfile(user.uid, undefined, undefined, file);
-
-            } else {
-              alert("user is null");
-            }
-          }}
-        />
-      </div>
-      <div className="flex gap-2">
-        <img src={user?.photoURL || ""} className="w-8 h-8" />
-        <Button
-          theme={"blue"}
-          size={"hug"}
-          label={"Get My Photo"}
-          onClick={async () => {
-            if (user?.uid) {
-              const userInfo = await getUser(user.uid,user);
-              if(userInfo?.photoURL){
-                downloadFile(
-                  userInfo.photoURL,
-                  (url) => {
-                    setUser?.({...user,photoURL:url});
-                  },
-                  (error) => {},
-                  "url"
-                );
-              }
+              await updateUserProfile(
+                user.uid,
+                undefined,
+                undefined,
+                file,
+                (user) => {
+                  console.log("xxx", user,setUser);
+                  setUser?.(user);
+                }
+              );
             } else {
               alert("user is null");
             }

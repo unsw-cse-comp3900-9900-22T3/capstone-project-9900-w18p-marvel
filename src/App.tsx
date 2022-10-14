@@ -33,6 +33,7 @@ interface ContextProps {
   authorized: boolean;
   setAuthorized: Function|null;
   user: User | null;
+  setUser:Function|null;
   invitations:Array<any>
 }
 
@@ -41,6 +42,7 @@ const AppContext = React.createContext<ContextProps>({
   authorized: false,
   setAuthorized: null,
   user: null,
+  setUser:null,
   invitations:[]
 });
 
@@ -80,38 +82,41 @@ export function App() {
   
   const auth = getAuth()
   onAuthStateChanged(auth, (user) => {
+    console.log("user state change:",user)
     setUser(user)
   });
   
 
   useEffect(()=>{
     if(user) {
-      setUser(user)
-      setAuthorized(true);
+      console.log("app>>user:",user)
       localStorage.setItem("user",JSON.stringify(user))
-
-      if(unsubscribeInvitation){
-        unsubscribeInvitation()
-      }
-      if(unsubscribeUser){
-        unsubscribeUser()
-      }
-      const app = getApp();
-      const db = getFirestore(app);
-      const q = query(collection(db, "invitations"), where("inviteeId", "==", user.uid));
-      unsubscribeInvitation = onSnapshot(q, (querySnapshot) => {
-        const data:any = [];
-        querySnapshot.forEach((doc) => {
-            data.push(doc.data());
-        });
-        setInvitations(data)
-      })
     }
     else setAuthorized(false)
   },[user])
-
+  
   useEffect(()=>{
-    console.log(authorized)
+    if(user && authorized){
+      if (unsubscribeInvitation) {
+        unsubscribeInvitation();
+      }
+      if (unsubscribeUser) {
+        unsubscribeUser();
+      }
+      const app = getApp();
+      const db = getFirestore(app);
+      const q = query(
+        collection(db, "invitations"),
+        where("inviteeId", "==", user.uid)
+      );
+      unsubscribeInvitation = onSnapshot(q, (querySnapshot) => {
+        const data: any = [];
+        querySnapshot.forEach((doc) => {
+          data.push(doc.data());
+        });
+        setInvitations(data);
+      });
+    }
   },[authorized])
   
   const providerValues = useMemo(() => {
@@ -120,6 +125,7 @@ export function App() {
       authorized,
       setAuthorized,
       user,
+      setUser,
       invitations
     };
   }, [

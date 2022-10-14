@@ -11,7 +11,7 @@ import {
   where,
 } from "firebase/firestore";
 import Fuse from "fuse.js";
-import { queryTasksByProjectId } from "./task";
+import { queryAllTasksByProjectId } from "./task";
 import { TaskCollaborator, Role, Task, User, ProjectCollaborator } from "./type";
 
 export const updateCollaborators = async (
@@ -30,7 +30,7 @@ export const updateCollaborators = async (
 };
 
 export const queryActiveCollaboratorsInProject = async (projectId: string) => {
-  const tasks = await queryTasksByProjectId(projectId);
+  const tasks = await queryAllTasksByProjectId(projectId);
   let data: Array<TaskCollaborator> = [];
   tasks.forEach(async (t: Task) => {
     const collaborators = await queryCollaboratorsInTask(t.id);
@@ -70,7 +70,7 @@ export const queryCollaboratorsInTask: (
   const querySnapshot = await getDocs(q);
   const data: Array<TaskCollaborator> = [];
   querySnapshot.forEach((doc) => {
-    data.push({ id: doc.id, ...doc.data } as TaskCollaborator);
+    data.push({ id: doc.id, ...doc.data() } as TaskCollaborator);
   });
   return data;
 };
@@ -83,18 +83,18 @@ export const queryAllCollaborators: (
   const userSnapshot = await getDocs(collection(db, "users"));
   const users: Array<User> = [];
   userSnapshot.forEach((doc) => {
-    users.push({ id: doc.id, ...doc.data } as User);
+    users.push({ id: doc.id, ...doc.data() as User } as User);
   });
   const fuse = new Fuse(users, { keys: ["name", "email"] });
   const result = fuse.search(keyword);
-  const ids = result.map((item) => item.item.id);
+  const ids = result.map((item) => item.item.uid);
 
   const q = query(collection(db, "taskcollaborators"), where("userId", "in", ids));
 
   const querySnapshot = await getDocs(q);
   const data: Array<TaskCollaborator> = [];
   querySnapshot.forEach((doc) => {
-    data.push({ id: doc.id, ...doc.data } as TaskCollaborator);
+    data.push({ id: doc.id, ...doc.data() } as TaskCollaborator);
   });
   return data;
 };

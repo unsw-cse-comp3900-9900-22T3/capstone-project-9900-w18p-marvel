@@ -15,7 +15,7 @@ export const uploadFile = (
   type: FileType,
   onProgress: (progress: number) => void,
   onError: (error: any) => void,
-  onComplete: (storagePath: string) => void
+  onComplete: (downloadURL:string,storagePath: string) => void
 ) => {
   if (file) {
     let folderName = "";
@@ -35,7 +35,8 @@ export const uploadFile = (
       "state_changed",
       (snapshot) => {
         const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          (snapshot.bytesTransferred / snapshot.totalBytes);
+          onProgress?.(progress);
         console.log("Upload is " + progress + "% done");
         switch (snapshot.state) {
           case "paused":
@@ -51,7 +52,8 @@ export const uploadFile = (
       },
       () => {
         getDownloadURL(ref(storage, storagePath)).then((url)=>{
-          onComplete?.(storagePath);
+          console.log("upload complete:",url)
+          onComplete?.(url,storagePath);
         })
       }
     );

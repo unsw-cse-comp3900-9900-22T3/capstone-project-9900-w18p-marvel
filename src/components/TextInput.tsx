@@ -1,30 +1,31 @@
 import { useState } from "react"
 
 interface Props{
-    placeholder?:string
+    disabled:boolean
+    // placeholder?:string
     onChange?:(val:string)=>void
     onComplete?:(val:string)=>void
     defaultValue?:string
 }
-
-export const TextInput = ({placeholder='',onChange,onComplete,defaultValue}:Props)=>{
+// placeholder='',
+export const TextInput = ({disabled,onChange,onComplete,defaultValue}:Props)=>{
     const [focus,setFocus] = useState<boolean>(false)
     const [value,setValue] = useState<string>(defaultValue || '')
     return (
       <div
         className={`transition-all w-full h-10 rounded-2xl
       ${
-        focus ? "bg-white-5 px-6 break-all" : "px-2"
+        focus&&!disabled ? "bg-white-5 px-6 break-all" : "px-2"
       } py-3  hover:bg-white-5 flex flex-row gap-4 items-center`}
         onFocus={() => {
-          setFocus(true);
-        }}
+          if (!disabled) setFocus(true);
+        }}//focus 鼠标移上去点击事件
         onBlur={() => {
-          setFocus(false);
+         if (!disabled) setFocus(false);
         }}
       >
           <input
-            
+            disabled={disabled}//{}代表变量
             style={{ border: "" }}
             onChange={(e) => {
               setValue(e.target.value);
@@ -34,7 +35,7 @@ export const TextInput = ({placeholder='',onChange,onComplete,defaultValue}:Prop
               value.length > 0 ? "text-black" : "text-gray-100"
             }`}
             value={value}
-            placeholder={placeholder}
+            // placeholder={placeholder}
           />
       </div>
     );

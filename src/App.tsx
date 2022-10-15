@@ -51,10 +51,11 @@ export function useApp() {
 }
 
 export function App() {
-  const [authorized, setAuthorized] = useState<boolean>(true);
+  const [authorized, setAuthorized] = useState<boolean>(false);
   const [user, setUser] = useState<User|null>(null);
   const [projectId, setProjectId] = useState<string|null>(null);
   const [invitations,setInvitations] = useState<Array<any>>([])
+  const [inited,setInited] = useState<boolean>(false)
   
 
   const firebaseConfig = {
@@ -78,25 +79,38 @@ export function App() {
     const user = localStorage.getItem("user")
     if(user){
       setUser(JSON.parse(user))
+      setAuthorized(true)
     }
   },[])
   
   const auth = getAuth()
   onAuthStateChanged(auth, (user) => {
-    console.log("user state change:",user)
+    // console.log("user state change:",user)
   });
   
-
-  useEffect(()=>{
-    if(user) {
-      console.log("app>>user:",user)
-      localStorage.setItem("user",JSON.stringify(user))
-    }
-    else setAuthorized(false)
-  },[user])
   
   useEffect(()=>{
-    if(user && authorized){
+    if(user) {
+      console.log("user change:",user)
+      localStorage.setItem("user",JSON.stringify(user))
+    }
+    // else setAuthorized(false)
+  },[user])
+  
+  const fetchUserInfo = async (userId: string) => {
+    if (userId) {
+      console.log("app:user:",userId)
+      const userInfo = await getUser(userId)
+      if(userInfo){
+        setUser({...userInfo,uid:userId})
+      }
+    }
+  };
+  
+  useEffect(() => {
+    if (user?.uid && authorized && !inited) {
+      setInited(true)
+      fetchUserInfo(user?.uid!);
       if (unsubscribeInvitation) {
         unsubscribeInvitation();
       }
@@ -117,7 +131,7 @@ export function App() {
         setInvitations(data);
       });
     }
-  },[authorized])
+  }, [user, authorized,inited]);
   
   const providerValues = useMemo(() => {
     return {
@@ -185,7 +199,7 @@ export function App() {
                 </Interceptor>
               }
             ></Route>
-            <Route
+            {/* <Route
               path="api"
               element={
                 <Interceptor>
@@ -194,7 +208,7 @@ export function App() {
                   </Home>
                 </Interceptor>
               }
-            ></Route>
+            ></Route> */}
             <Route path="login" element={<Landing />}></Route>
             <Route path="components">
               <Route path="peter">

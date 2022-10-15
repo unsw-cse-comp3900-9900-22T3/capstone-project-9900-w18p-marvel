@@ -1,5 +1,10 @@
 import { getApp } from "firebase/app";
-import { getAuth, updateEmail, updateProfile } from "firebase/auth";
+import {
+  getAuth,
+  reauthenticateWithCredential,
+  updateEmail,
+  updateProfile,
+} from "firebase/auth";
 import {
   addDoc,
   collection,
@@ -15,7 +20,7 @@ import { uid } from "uid";
 import { deleteFile, uploadFile } from "./storage";
 import { Resource, User } from "./type";
 
-export const createUser = async (userId:string,user: User) => {
+export const createUser = async (userId: string, user: User) => {
   const app = getApp();
   const db = getFirestore(app);
   await setDoc(doc(db, "users", userId), user);
@@ -23,74 +28,83 @@ export const createUser = async (userId:string,user: User) => {
 
 export const updateUserProfile = async (
   userId: string,
-  username: string | undefined,
-  email: string | undefined,
-  image: File | undefined,
+  username: string | null,
+  email: string | null,
+  image: File | null,
   onComplete: (user: User) => void
 ) => {
   const app = getApp();
   const db = getFirestore(app);
   const auth = getAuth();
-  const user = auth.currentUser;
-  if (user) {
-    if (username) {
-      await updateDoc(doc(db, "users", userId), {
-        name: username,
-      });
-      await updateProfile(user, { displayName: username });
-      onComplete?.({
-        uid: user.uid,
-        displayName: user.displayName!,
-        email: user.email!,
-      });
-    }
-    if (email) {
-      await updateDoc(doc(db, "users", userId), {
-        email: email,
-      });
-      await updateEmail(user, email);
-      onComplete?.({
-        uid: user.uid,
-        displayName: user.displayName,
-        email: user.email,
-        photo: { downloadURL: "", storagePath: "" },
-      } as User);
-    }
-    if (image) {
-      const userInfo = await getUser(userId);
-      if (userInfo?.photo?.storagePath) {
-        deleteFile(
-          userInfo?.photo?.storagePath,
-          () => {
-            uploadFile(
-              image,
-              "image",
-              () => {},
-              (error) => {
-                console.log("updateUser>>error:", error);
-              },
-              async (url, storagePath) => {
-                await updateDoc(doc(db, "users", userId), {
-                  portrait: {
-                    downloadURL: url,
-                    storagePath: storagePath,
-                  } as Resource,
-                });
-                if (user) {
-                  await updateProfile(user, { photoURL: url });
-                  onComplete?.({
-                    uid: user.uid,
-                    displayName: user.displayName,
-                    email: user.email,
-                    photo: { downloadURL: "", storagePath: "" },
-                  } as User);
-                }
-              }
-            );
-          },
-          (error) => {}
-        );
+  const authUser = auth.currentUser;
+  
+  if (authUser) {
+    const userInfo = await getUser(userId)
+    if(userInfo){
+      // const credential = promptForCredentials();
+  
+      // reauthenticateWithCredential(user, credential)
+      // .then(async () => {
+      if (username) {
+        await updateDoc(doc(db, "users", userId), {
+          name: username,
+        });
+        // await updateProfile(user, { displayName: username });
+        onComplete?.({...userInfo,
+          uid: userId,
+          displayName: username,
+        });
       }
+      if (email) {
+        await updateDoc(doc(db, "users", userId), {
+          email: email,
+        });
+        // await updateEmail(user, email);
+        onComplete?.({...userInfo,
+          uid: userId,
+          email: email,
+        } as User);
+      }
+      if (image) {
+        if (userInfo?.photo) {
+          if (userInfo.photo.storagePath) {
+            deleteFile(
+              userInfo?.photo?.storagePath,
+              () => {},
+              (error) => {}
+            );
+          }
+          uploadFile(
+            image,
+            "image",
+            () => {},
+            (error) => {
+              console.log("updateUser:error:", error);
+            },
+            async (downloadURL, storagePath) => {
+              await updateDoc(doc(db, "users", userId), {
+                photo: {
+                  downloadURL: downloadURL,
+                  storagePath: storagePath,
+                } as Resource,
+              });
+              if (userInfo) {
+                
+                // await updateProfile(user, { photoURL: url });
+                onComplete?.({...userInfo,
+                  uid: userId,
+                  photo: { downloadURL, storagePath },
+                } as User);
+              }
+            }
+          );
+        }
+      }
+      // })
+      // .catch((error) => {
+      //   alert(error)
+      // });
+
     }
   } else {
     alert("user is null");
@@ -106,7 +120,7 @@ export const getUser: (uid: string) => Promise<User | null> = async (
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    return { ...(docSnap.data() as User) } as User;
+    return { ...(docSnap.data() as User), uid: uid } as User;
   } else {
     return null;
   }

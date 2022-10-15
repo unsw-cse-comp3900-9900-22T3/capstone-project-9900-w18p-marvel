@@ -40,7 +40,7 @@ export const Navbar = ({onClickCreateProject}:Props) => {
         onClickProfile={() => {
           navigate("/profile");
         }}
-        photoURL={user?.photo || ""}
+        photoURL={user?.photo?.downloadURL || ""}
       />
     </div>
   );

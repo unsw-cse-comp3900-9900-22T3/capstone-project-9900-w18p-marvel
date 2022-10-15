@@ -39,7 +39,7 @@ const hover = ""
 
 export const Avatar = ({ size, rounded, src, onClick }: Props) => {
   return (
-    <div className="relative select-none">
+    <div className="select-none">
       <img
         src={src === "" ? defaultSrc : src}
         className={`transition ${sizeMapping.get(size)} ${roundedMapping.get(
@@ -49,15 +49,6 @@ export const Avatar = ({ size, rounded, src, onClick }: Props) => {
             onClick?.()
         }}
       />
-      {/* <input
-        className={`cursor-pointer ${sizeMapping.get(
-          size
-        )} absolute top-0 left-0 opacity-0`}
-        type={"file"}
-        onChange={(e) => {
-          onClick?.();
-        }}
-      /> */}
     </div>
   );
 };

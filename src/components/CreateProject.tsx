@@ -27,7 +27,7 @@ export const CreateProject = ({createdBy,onComplete}:Props)=>{
         <div
           className={`${
             uploading ? "brightness-75" : ""
-          } transition-all relative w-full h-40 hover:brightness-75 `}
+          } transition-all relative w-full h-40 hover:brightness-75 overflow-hidden`}
         >
           <input
             type={"file"}
@@ -70,7 +70,7 @@ export const CreateProject = ({createdBy,onComplete}:Props)=>{
           )}
           <img
             src={downloadURL === "" ? "/cover.png" : downloadURL}
-            className=" w-full h-full hover:brightness-75"
+            className="hover:brightness-75"
           />
         </div>
         <div className=" p-6 flex flex-col gap-6">
@@ -78,10 +78,8 @@ export const CreateProject = ({createdBy,onComplete}:Props)=>{
             <div className="font-bold text-base text-black">
               <TextInput
                 onChange={(val) => {
-                  setTitle(val);
-                }}
-                placeholder="Project Name"
-              />
+                  setTitle(val)
+                } } disabled={false}              />
             </div>
             <div className="pl-2 flex gap-1 text-gray-100 font-normal text-xs">
               <span>Created By - </span>

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { LogoutIcon } from "../icons/LogoutIcon";
 import { Avatar } from "./Avatar";
 import { Button } from "./Button";
@@ -11,17 +11,35 @@ interface Props{
 
 export const ProfileEntry = ({photoURL,onClickLogout,onClickProfile}:Props)=>{
     const [open,setOpen] = useState<boolean>(false)
-
+    const wrapperRef = useRef(null);
+    useEffect(() => {
+      /**
+       * Alert if clicked on outside of element
+       */
+      function handleClickOutside(event:any) {
+        if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+          setOpen(false)
+        }
+      }
+      // Bind the event listener
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        // Unbind the event listener on clean up
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [wrapperRef]);
     return (
       <div className="relative">
-        <Avatar
-          size={"lg"}
-          rounded={"full"}
-          src={photoURL || ""}
-          onClick={() => {
-            setOpen(!open)
-          }}
-        ></Avatar>
+        <div ref={wrapperRef}>
+          <Avatar
+            size={"lg"}
+            rounded={"full"}
+            src={photoURL || ""}
+            onClick={() => {
+              setOpen(true);
+            }}
+          ></Avatar>
+        </div>
         <div
           className={`transition-all rounded-2xl absolute bg-white-100 drop-shadow-2xl flex flex-col justify-center items-start w-24 ${
             open ? "h-fit py-2" : "h-0"
@@ -32,19 +50,19 @@ export const ProfileEntry = ({photoURL,onClickLogout,onClickProfile}:Props)=>{
             size={"fill"}
             label={"Profile"}
             rounded={"none"}
-            onClick={()=>{
-              onClickProfile?.()
-              setOpen(false)
+            onClick={() => {
+              onClickProfile?.();
+              setOpen(false);
             }}
-            />
+          />
           <Button
             theme={"transparent"}
             size={"fill"}
             label={"Logout"}
             rounded={"none"}
-            onClick={()=>{
+            onClick={() => {
               onClickLogout?.();
-              setOpen(false)
+              setOpen(false);
             }}
           />
         </div>

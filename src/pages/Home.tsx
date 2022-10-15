@@ -28,7 +28,7 @@ export const Home = ({ children }: HomeProps) => {
           </div>
         </div>
       </div>
-      <Popup open={projectPopupOpen}>
+      <Popup open={projectPopupOpen} onClose={()=>{setProjectPopupOpen(false)}}>
         <CreateProject
           createdBy={user?.displayName || "John Doe"}
           onComplete={() => {

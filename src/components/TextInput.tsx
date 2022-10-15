@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 interface Props{
     disabled:boolean
@@ -11,12 +11,15 @@ interface Props{
 export const TextInput = ({disabled,onChange,onComplete,defaultValue}:Props)=>{
     const [focus,setFocus] = useState<boolean>(false)
     const [value,setValue] = useState<string>(defaultValue || '')
+    useEffect(() => {
+      if (defaultValue) setValue(defaultValue);
+    }, [defaultValue]);
     return (
       <div
         className={`transition-all w-full h-10 rounded-2xl
       ${
         focus&&!disabled ? "bg-white-5 px-6 break-all" : "px-2"
-      } py-3  hover:bg-white-5 flex flex-row gap-4 items-center`}
+      } py-3  ${!disabled?"hover:bg-white-5":""} flex flex-row gap-4 items-center`}
         onFocus={() => {
           if (!disabled) setFocus(true);
         }}//focus 鼠标移上去点击事件

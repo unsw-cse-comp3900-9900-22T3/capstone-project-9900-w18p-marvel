@@ -38,7 +38,8 @@ export const Landing = ({}: Props) => {
           } as User);
         }
 
-        setUser?.(user);
+        setUser?.({uid:user.uid,displayName:user.displayName,email: user.email,
+          photo: { downloadURL: "", storagePath: "" }} as User);
         setAuthorized?.(true);
         setTimeout(() => {
           navigate("/");
@@ -57,7 +58,6 @@ export const Landing = ({}: Props) => {
         if (credential) {
           const token = credential.accessToken;
           const user = result.user;
-          console.log(user)
           if (user.email && user.displayName) {
             const userInfo = await getUser(user.uid);
             console.log(userInfo)
@@ -68,7 +68,8 @@ export const Landing = ({}: Props) => {
                 photo: { downloadURL: "", storagePath: "" },
               } as User);
             }
-            setUser?.(user);
+            setUser?.({uid:user.uid,displayName:user.displayName,email: user.email,
+              photo: { downloadURL: "", storagePath: "" }} as User);
             setAuthorized?.(true);
             await delay(500);
             navigate("/");
@@ -90,7 +91,12 @@ export const Landing = ({}: Props) => {
           email: user.email,
           photo: { downloadURL: "", storagePath: "" },
         } as User);
-        setUser?.(user);
+        setUser?.({
+          uid: user.uid,
+          displayName: user.displayName,
+          email: user.email,
+          photo: { downloadURL: "", storagePath: "" },
+        } as User);
         setAuthorized?.(true);
         await delay(500);
         navigate("/");

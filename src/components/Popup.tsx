@@ -13,18 +13,26 @@ interface Props{
 
 export const Popup = ({onClose,open,children}:Props)=>{
     return (
-        <Modal
-            open={open}
-            onClose={onClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
+      <Modal
+        open={open}
+        onClose={onClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
         >
-            <div className='absoulte flex justify-center items-center w-full h-full' onClick={(e)=>{
-                e.stopPropagation()
-                onClose?.()
-            }}>
-                {children}
-            </div>
-        </Modal>
+          <div
+            className="absoulte flex justify-center items-center w-full h-full"
+          >
+            {children}
+          </div>
+        </Box>
+      </Modal>
     );
 }

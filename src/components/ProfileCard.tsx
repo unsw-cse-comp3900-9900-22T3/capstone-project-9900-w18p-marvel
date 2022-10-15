@@ -1,3 +1,4 @@
+import { CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import { User } from "../api/type";
 import { getUser, updateUserProfile } from "../api/user";
@@ -14,6 +15,7 @@ export const ProfileCard = ({}: Props) => {
   const [isEditing, setIsEditing] = useState(false);
   const { user,setUser } = useApp(); //useApp 数据中心老板写的函数，
   const [inputEmail, setInputEmail] = useState("");
+  const [uploading,setUploading] = useState<boolean>(false)
   
 
   return (
@@ -21,15 +23,36 @@ export const ProfileCard = ({}: Props) => {
       <div className="divide-y divide-gray-300">
         <div className="flex flex-basis auto ml-8 bg-white w-[690px] h-[100px]">
           <div className="transition-all mt-4 w-14 h-14 relative hover:scale-95">
-            <Avatar src={user?.photo?.downloadURL || ""} size="xl" rounded="sm" />
-            <input type={"file"} className="opacity-0 absolute inset-0 cursor-pointer" onChange={(e)=>{
-              const file = e.target.files?.[0]
-              if(file&&user?.uid){
-                updateUserProfile(user.uid,null,null,file,(user:User)=>{
-                  setUser?.({...user,uid:user.uid})
-                })
-              }
-            }}/>
+            <input
+              type={"file"}
+              className="opacity-0 absolute inset-0 cursor-pointer"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file && user?.uid) {
+                  setUploading(true);
+                  updateUserProfile(
+                    user.uid,
+                    null,
+                    null,
+                    file,
+                    (user: User) => {
+                      setUser?.({ ...user, uid: user.uid });
+                      setUploading(false);
+                    }
+                  );
+                }
+              }}
+            />
+            {uploading && (
+              <div className="absolute w-full h-full flex justify-center items-center text-white-100">
+                <CircularProgress color="primary" />
+              </div>
+            )}
+            <Avatar
+              src={user?.photo?.downloadURL || ""}
+              size="xl"
+              rounded="sm"
+            />
           </div>
           <div className="text-lg font-bold text-black mt-6 ml-6">
             {user?.displayName}
@@ -101,8 +124,8 @@ export const ProfileCard = ({}: Props) => {
                     null,
                     inputEmail,
                     null,
-                    (user:User) => {
-                      setUser?.({...user,uid:user.uid})
+                    (user: User) => {
+                      setUser?.({ ...user, uid: user.uid });
                     }
                   );
               }}

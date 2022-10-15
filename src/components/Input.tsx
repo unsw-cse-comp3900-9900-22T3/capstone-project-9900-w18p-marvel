@@ -30,9 +30,9 @@ export const Input = ({type,placeholder='',onChange,onComplete,defaultValue}:Pro
 
     return (
       <div
-        className={`w-full h-12 rounded-2xl ${
-          focus ? "bg-white-10" : "bg-white-5"
-        } px-6 py-3   flex flex-row gap-4 items-center`}
+        className={`transition w-full h-12 rounded-2xl
+          hover:bg-white-10 bg-white-5
+         px-6 py-3   flex flex-row gap-4 items-center`}
         onFocus={() => {
           setFocus(true);
         }}

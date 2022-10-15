@@ -1,3 +1,5 @@
+import { Avatar } from "./Avatar";
+
 interface TaskInfoBlockProps {
   TaskID: number;
   TaskName: string;
@@ -22,7 +24,7 @@ const TaskInfoBlock = ({ TaskName, TaskID, Assignee, DueDate, Description }: Tas
       <div className={`flex flex-row w-176 h-auto mt-10`}>
         <div className={`flex flex-col w-auto h-auto mb-10 mr-auto`}>
           <div className={`flex items-start text-gray-400 text-lg mt-2`}>ASSIGNED TO</div>
-          <div className={`flex items-start text-sm text-gray-400 rounded-2xl mt-5`}>{Assignee}</div>
+          <div className={`flex items-start text-sm text-gray-400 rounded-2xl mt-5`}><Avatar src="" size="sm" rounded="full" />{Assignee}</div>
 
         </div>
 

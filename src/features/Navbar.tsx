@@ -8,8 +8,12 @@ import { ProfileEntry } from "../components/ProfileEntry";
 import { LogoutIcon } from "../icons/LogoutIcon";
 import { PlusIcon } from "../icons/PlusIcon";
 
-export const Navbar = () => {
-  const { setUser } = useApp();
+interface Props{
+  onClickCreateProject:()=>void
+}
+
+export const Navbar = ({onClickCreateProject}:Props) => {
+  const { setUser,user,setAuthorized } = useApp();
   const auth = getAuth(getApp());
   const navigate = useNavigate();
   return (
@@ -19,18 +23,24 @@ export const Navbar = () => {
         label={"Start Project"}
         size={"hug"}
         prefix={<PlusIcon className={""}></PlusIcon>}
+        onClick={onClickCreateProject}
       ></Button>
       <ProfileEntry
         onClickLogout={() => {
           signOut(auth)
             .then(() => {
               setUser?.(undefined);
+              setAuthorized?.(false)
               navigate("/login");
             })
             .catch(() => {
               alert("Logout Failed");
             });
         }}
+        onClickProfile={() => {
+          navigate("/profile");
+        }}
+        photoURL={user?.photo?.downloadURL || ""}
       />
     </div>
   );

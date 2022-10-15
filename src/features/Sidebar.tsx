@@ -32,7 +32,7 @@ const MenuItem = ({ prefix, label, onClick }: MenuItemProps) => {
         }`}
       ></div>
       <div
-        className={`flex flex-row gap-4 ${
+        className={`flex flex-row gap-4 text-sm ${
           hover ? "text-blue-100" : "text-black"
         } `}
       >
@@ -54,9 +54,12 @@ export const Sidebar = () => {
   return (
     <div
       className={`relative transition-all overflow-hidden flex flex-col ${
-        collapse ? "w-16" : "w-56"
+        collapse ? "w-16 basis-16" : "w-56 basis-56"
       } bg-white-100 h-full`}
     >
+      <div className="absolute top-3 left-8">
+        <img src="/brand.png" className="w-16 h-16"/>
+      </div>
       <div className="absolute inset-0 pointer-events-none">
         <div className="w-full h-full flex justify-end items-center">
           <div className="pointer-events-auto"
@@ -71,7 +74,7 @@ export const Sidebar = () => {
       <div className="pt-36">
         <MenuItem
           prefix={<ProjectIcon className={""} />}
-          label={"Project"}
+          label={"projects"}
           onClick={() => {
             navigate("/projects");
           }}
@@ -80,7 +83,7 @@ export const Sidebar = () => {
           prefix={<DashboardIcon className={""} />}
           label={"Profile"}
           onClick={() => {
-            navigate("/projects");
+            navigate("/profile");
           }}
         ></MenuItem>
         <MenuItem
@@ -90,6 +93,13 @@ export const Sidebar = () => {
             navigate("/tasks");
           }}
         ></MenuItem>
+         {/* <MenuItem
+          prefix={<TaskIcon className={""} />}
+          label={"API"}
+          onClick={() => {
+            navigate("/api");
+          }}
+        ></MenuItem> */}
       </div>
     </div>
   );

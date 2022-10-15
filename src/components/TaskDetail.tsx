@@ -5,9 +5,13 @@ import { CommentBox } from "../components/CommentBox";
 import { NewCommentBox } from "../components/NewCommentBox";
 import { Button } from "./Button";
 import { TotalCommentItem } from "./TotalCommentItem";
+import { Popup } from "./Popup";
+import { UserList } from "./UserList";
+import { useState } from "react";
 
 
-interface TaskDetailProps { }
+interface TaskDetailProps {
+}
 
 
 const img_address = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL9LonfTfSW8SOAc8E7Fe982afR_kqYbwSuQ&usqp=CAU"
@@ -18,28 +22,27 @@ const uplodaicon = "https://cdn-icons-png.flaticon.com/128/1702/1702912.png"
 
 
 const TaskDetail = ({ }: TaskDetailProps) => {
+  const [open, setOpen] = useState(false)
   const TaskDetail = [
-    { TaskID: 1234, TaskName: "Marvel Task Management", Assignee: ['1', '2', '3'], DueDate: "22/02/2023", Description: desc }
+    { TaskID: 1234, TaskName: "Marvel Task Management", Assignee: "Lisa", DueDate: "22/02/2023", Description: "123kwnflkwfnlkwnfklwnflwln" }
   ]
 
 
   const CommentorData = [
-    { CommentorID: 1, Name: 'Linda Hsu', CommenterAvator: img_address, Comments: '@11', CommentDate: '10/12/2023' },
-    { CommentorID: 2, Name: 'Teddy', CommenterAvator: img_address, Comments: '@113', CommentDate: '10/12/2023' },
-    { CommentorID: 3, Name: 'Anthony', CommenterAvator: img_address, Comments: '@112', CommentDate: '10/12/2023' },
-    { CommentorID: 4, Name: 'Lisa', CommenterAvator: img_address, Comments: '@11', CommentDate: '10/12/2023' },
+    { CommentorID: '1', Name: 'Linda Hsu', CommenterAvator: img_address, Comments: '@11', CommentDate: '10/12/2023' },
+    { CommentorID: '2', Name: 'Teddy', CommenterAvator: img_address, Comments: '@113', CommentDate: '10/12/2023' },
+    { CommentorID: '3', Name: 'Anthony', CommenterAvator: img_address, Comments: '@112', CommentDate: '10/12/2023' },
+    { CommentorID: '4', Name: 'Lisa', CommenterAvator: img_address, Comments: '@11', CommentDate: '10/12/2023' },
   ]
 
   const UploadedCardDetails = [
-    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: 1, FileDownloadLink: "test" },
-    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: 2, FileDownloadLink: "test" },
-    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: 3, FileDownloadLink: "test" }
+    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: "1", FileDownloadLink: "test" },
+    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: "2", FileDownloadLink: "test" },
+    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: "3", FileDownloadLink: "test" }
 
   ]
 
-  const TotalComment = 1
-
-  const UserID = 1
+  const TotalComment = '1'
 
 
 
@@ -47,7 +50,7 @@ const TaskDetail = ({ }: TaskDetailProps) => {
   return (
     <>
 
-      <div className={`flex items-center flex-col w-190 h-5/6 overflow-auto gap-2 border-solid border-2 rounded-2xl relative`}>
+      <div className={`flex items-center flex-col w-full h-full overflow-auto gap-2 rounded-[32px] relative bg-white-100`}>
         <div className={`flex h-auto w-auto mt-5 left-8 absolute`}>
           <Button
             theme={"gray"}
@@ -59,7 +62,9 @@ const TaskDetail = ({ }: TaskDetailProps) => {
 
         </div>
 
-        <div className={`flex mt-20`}>
+        <div className={`flex mt-20`} onClick={() => {
+          setOpen(true)
+        }}>
           {TaskDetail.map((item) => (
             <TaskInfoBlock
               TaskID={item.TaskID}
@@ -72,15 +77,14 @@ const TaskDetail = ({ }: TaskDetailProps) => {
 
 
 
-        <div className={`flex flex-row w-176 h-auto mt-10 mb-5`}>
+        {/* <div className={`flex flex-row w-176 h-auto mt-5 mb-5`}>
           <div className={`flex font-bold text-2xl items-center`}>
             <img src={uplodaicon} className={`w-10 h-10 mr-3`} />Attachment
           </div>
-        </div>
+        </div> */}
 
         <div className={`flex flex-col`}>
           {UploadedCardDetails.map((item) => (
-
             <UploadedCard
               FilePic={item.FilePic}
               FileName={item.FileName}
@@ -96,13 +100,12 @@ const TaskDetail = ({ }: TaskDetailProps) => {
 
         <div className={`flex`}><NewUploadedCard /></div>
 
-        <div className={`ml-12 justify-items-start mt-10 mb-5`}>
+        <div className={`ml-12 justify-items-start mt-5 mb-5`}>
           <TotalCommentItem TotalComment={TotalComment}></TotalCommentItem>
         </div>
 
         <div className={`flex flex-col`}>
           {CommentorData.map((item) => (
-
             <CommentBox
               CommentorID={item.CommentorID}
               CommentDate={item.CommentDate}
@@ -125,6 +128,11 @@ const TaskDetail = ({ }: TaskDetailProps) => {
           ></Button>
         </div>
       </div>
+      <Popup open={open} onClose={() => { setOpen(false) }}>
+        <UserList taskId={""} onConfirm={function (collaborators: string[]): void {
+          setOpen(false)
+        }} />
+      </Popup>
     </>
 
 

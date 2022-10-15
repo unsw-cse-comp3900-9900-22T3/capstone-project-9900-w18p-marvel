@@ -22,9 +22,9 @@ const uplodaicon = "https://cdn-icons-png.flaticon.com/128/1702/1702912.png"
 
 
 const TaskDetail = ({ }: TaskDetailProps) => {
-  const [open,setOpen] = useState(false)
+  const [open, setOpen] = useState(false)
   const TaskDetail = [
-    { TaskID: 1234, TaskName: "Marvel Task Management", Assignee: "123", DueDate: "22/02/2023", Description: "123kwnflkwfnlkwnfklwnflwln" }
+    { TaskID: 1234, TaskName: "Marvel Task Management", Assignee: "Lisa", DueDate: "22/02/2023", Description: "123kwnflkwfnlkwnfklwnflwln" }
   ]
 
 
@@ -62,7 +62,7 @@ const TaskDetail = ({ }: TaskDetailProps) => {
 
         </div>
 
-        <div className={`flex mt-20`} onClick={()=>{
+        <div className={`flex mt-20`} onClick={() => {
           setOpen(true)
         }}>
           {TaskDetail.map((item) => (
@@ -128,10 +128,10 @@ const TaskDetail = ({ }: TaskDetailProps) => {
           ></Button>
         </div>
       </div>
-      <Popup open={open} onClose={()=>{setOpen(false)}}>
+      <Popup open={open} onClose={() => { setOpen(false) }}>
         <UserList taskId={""} onConfirm={function (collaborators: string[]): void {
           setOpen(false)
-        } }/>
+        }} />
       </Popup>
     </>
 

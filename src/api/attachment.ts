@@ -48,7 +48,7 @@ export const deleteAttachment = async (
   const attachment = await getAttachment(attachmentId);
   if (attachment) {
     deleteFile(
-      attachment.resource.storagePath,
+      attachment.image.storagePath,
       async (storagePath) => {
         await deleteDoc(doc(db, "comments", attachmentId));
         onComplete?.(storagePath);

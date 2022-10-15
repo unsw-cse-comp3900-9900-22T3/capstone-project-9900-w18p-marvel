@@ -1,5 +1,7 @@
 import { faker } from "@faker-js/faker"
 import { useState } from "react"
+import { uid } from "uid"
+import { Task } from "../api/type"
 import { TaskCard } from "./TaskCard"
 
 interface Props {
@@ -8,31 +10,66 @@ interface Props {
 }
 
 export const Lane = ({name,onClick}:Props)=>{
-    const [data, setData] = useState([
+    const [data, setData] = useState<Array<Task>>([
       {
-        title: faker.lorem.sentence(),
-        description: "",
-        dueDate: faker.date.recent(),
+        id: "",
+        createdAy: faker.date.recent(),
+        createdBy: "",
+        description: "string",
+        dueDate: faker.date.future(),
+        projectId: "string",
+        laneName: "string",
+        status: "start",
+        title: "string",
+        cover: { downloadURL: "", storagePath: "" },
       },
       {
-        title: faker.lorem.sentence(),
-        description: "",
-        dueDate: faker.date.recent(),
+        id: "",
+        createdAy: faker.date.recent(),
+        createdBy: "",
+        description: "string",
+        dueDate: faker.date.future(),
+        projectId: "string",
+        laneName: "string",
+        status: "start",
+        title: "string",
+        cover: { downloadURL: faker.image.cats(), storagePath: "" },
       },
       {
-        title: faker.lorem.sentence(),
-        description: "",
-        dueDate: faker.date.recent(),
+        id: "",
+        createdAy: faker.date.recent(),
+        createdBy: "",
+        description: "string",
+        dueDate: faker.date.future(),
+        projectId: "string",
+        laneName: "string",
+        status: "start",
+        title: "string",
+        cover: { downloadURL: faker.image.city(), storagePath: "" },
       },
       {
-        title: faker.lorem.sentence(),
-        description: "",
-        dueDate: faker.date.recent(),
+        id: "",
+        createdAy: faker.date.recent(),
+        createdBy: "",
+        description: "string",
+        dueDate: faker.date.future(),
+        projectId: "string",
+        laneName: "string",
+        status: "start",
+        title: "string",
+        cover: { downloadURL: faker.image.business(), storagePath: "" },
       },
       {
-        title: faker.lorem.sentence(),
-        description: "",
-        dueDate: faker.date.recent(),
+        id: "",
+        createdAy: faker.date.recent(),
+        createdBy: "",
+        description: "string",
+        dueDate: faker.date.future(),
+        projectId: "string",
+        laneName: "string",
+        status: "start",
+        title: "string",
+        cover: { downloadURL: "", storagePath: "" },
       },
     ]);
     return (
@@ -40,15 +77,18 @@ export const Lane = ({name,onClick}:Props)=>{
         <div className="absolute left-6 top-6 text-base text-gray-100 font-bold">
           {name}
         </div>
-        <div className="w-full h-fit pt-20 px-6 pb-6 h-full ">
+        <div className="w-full pt-20 px-6 pb-6 h-full ">
           <div className="w-full h-full overflow-scroll flex flex-col gap-4">
             {data.map((item: any) => (
-              <TaskCard
+              <TaskCard key={uid(4)}
                 title={item.title}
                 description={item.description}
                 dueDate={item.dueDate}
                 id={""}
+                status={item.status}
                 onClick={onClick}
+                collaborators={[]}
+                image={item.cover.downloadURL}
               />
             ))}
           </div>

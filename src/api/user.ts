@@ -53,14 +53,14 @@ export const updateUserProfile = async (
         uid: user.uid,
         displayName: user.displayName,
         email: user.email,
-        photoURL: { downloadURL: "", storagePath: "" },
+        photo: { downloadURL: "", storagePath: "" },
       } as User);
     }
     if (image) {
       const userInfo = await getUser(userId);
-      if (userInfo?.photoURL?.storagePath) {
+      if (userInfo?.photo?.storagePath) {
         deleteFile(
-          userInfo?.photoURL?.storagePath,
+          userInfo?.photo?.storagePath,
           () => {
             uploadFile(
               image,
@@ -82,7 +82,7 @@ export const updateUserProfile = async (
                     uid: user.uid,
                     displayName: user.displayName,
                     email: user.email,
-                    photoURL: { downloadURL: "", storagePath: "" },
+                    photo: { downloadURL: "", storagePath: "" },
                   } as User);
                 }
               }

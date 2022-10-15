@@ -7,7 +7,7 @@ export interface User {
     uid?:string
     displayName:string
     email:string
-    photoURL?:Resource
+    photo?:Resource
 }
 
 export interface Resource{
@@ -24,13 +24,14 @@ export interface Task {
     laneName:string
     status:Status
     title:string
+    cover?:Resource
 }
 
 export interface Project {
     id:string
     createdAy:Date
     createdBy:string
-    photoURL:Resource
+    cover:Resource
     title:string
 }
 
@@ -66,7 +67,7 @@ export interface Attachment{
     id:string
     createdAy:Date
     createdBy:string
-    resource:Resource
+    image:Resource
     taskId:string
 }
 

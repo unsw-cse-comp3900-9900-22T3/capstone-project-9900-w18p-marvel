@@ -34,7 +34,7 @@ export const Landing = ({}: Props) => {
           await createUser(user.uid, {
             displayName: user.displayName,
             email: user.email,
-            photoURL: { downloadURL: "", storagePath: "" },
+            photo: { downloadURL: "", storagePath: "" },
           } as User);
         }
 
@@ -65,7 +65,7 @@ export const Landing = ({}: Props) => {
               await createUser(user.uid,{
                 displayName: user.displayName,
                 email: user.email,
-                photoURL: { downloadURL: "", storagePath: "" },
+                photo: { downloadURL: "", storagePath: "" },
               } as User);
             }
             setUser?.(user);
@@ -88,7 +88,7 @@ export const Landing = ({}: Props) => {
         await createUser(user.uid,{
           displayName: user.displayName,
           email: user.email,
-          photoURL: { downloadURL: "", storagePath: "" },
+          photo: { downloadURL: "", storagePath: "" },
         } as User);
         setUser?.(user);
         setAuthorized?.(true);

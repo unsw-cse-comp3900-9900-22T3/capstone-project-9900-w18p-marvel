@@ -12,7 +12,7 @@ interface Props {}
 
 export const Tasks = ({}: Props) => {
   const { user } = useApp();
-  const [data, setData] = useState(["Todo", "On Going"]);
+  const [data, setData] = useState(["Todo", "In Progress", "Done"]);
   const [open, setOpen] = useState(false);
   return (
     <>

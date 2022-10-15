@@ -1,6 +1,8 @@
 import { faker } from "@faker-js/faker"
 import { useState } from "react"
 import { TaskCard } from "./TaskCard"
+// import { LaneData } from "./../assets/LaneData"
+
 
 interface Props {
     name:string
@@ -36,6 +38,9 @@ export const Lane = ({name,onClick}:Props)=>{
       },
     ]);
     return (
+      
+
+    
       <div className="relative w-96 h-full">
         <div className="absolute left-6 top-6 text-base text-gray-100 font-bold">
           {name}
@@ -54,5 +59,6 @@ export const Lane = ({name,onClick}:Props)=>{
           </div>
         </div>
       </div>
+     
     );
 }

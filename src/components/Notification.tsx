@@ -1,4 +1,4 @@
-import { AAvatar } from "./AAvatar"
+import { Avatar } from "./Avatar"
 import { Button } from "./Button"
 
 interface Props {
@@ -13,7 +13,7 @@ export const Notification = ({src,name,description}:Props)=>{
         <div className="flex flex-row items-center w-[432px] h-24 bg-gray-50 rounded-xl justify-between">
             <div className="flex">
                 <div className="ml-5">
-                    <AAvatar src={src} size="md" rounded="full"/>
+                    <Avatar src={src} size="md" rounded="full"/>
                 </div>
                 <div className="flex flex-col items-start ml-4">
                     <div className="text-sm font-bold">{name}</div>

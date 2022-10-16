@@ -4,42 +4,67 @@ import { uid } from "uid";
 import { queryMyProjects } from "../api/project";
 import { Project } from "../api/type";
 import { useApp } from "../App";
-import { ProjectCard } from "../components/ProjectCard"
+import { ProjectCard } from "../components/ProjectCard";
 
 interface ProjectProps {}
 
-const data=[
-  {image: '/Image.png', name:"Learning Maxon Cinema 4D - A Beginners Training Course", time:new Date()},
-  {image: '/Image-1.png', name:"Introduction to Community Management", time:new Date()},
-  {image: '/Image-2.png', name:"Content Creation and Editing for Instagram Stories", time:new Date()},
-  {image: '/Image-3.png', name:"Architectural Sketching with Watercolor and Ink", time:new Date()},
-  {image: '/Image-4.png', name:"Digital Fantasy Portraits with Photoshop", time:new Date()},
-  {image: '/Image-5.png', name:"Adobe Photoshop for Photo Editing and Retouching", time:new Date()},
-  {image: '/Image-6.png', name:"Design of Graphic Elements to Boost Your Brand", time:new Date()},
-]
-
+const data = [
+  {
+    image: "/Image.png",
+    name: "Learning Maxon Cinema 4D - A Beginners Training Course",
+    time: new Date(),
+  },
+  {
+    image: "/Image-1.png",
+    name: "Introduction to Community Management",
+    time: new Date(),
+  },
+  {
+    image: "/Image-2.png",
+    name: "Content Creation and Editing for Instagram Stories",
+    time: new Date(),
+  },
+  {
+    image: "/Image-3.png",
+    name: "Architectural Sketching with Watercolor and Ink",
+    time: new Date(),
+  },
+  {
+    image: "/Image-4.png",
+    name: "Digital Fantasy Portraits with Photoshop",
+    time: new Date(),
+  },
+  {
+    image: "/Image-5.png",
+    name: "Adobe Photoshop for Photo Editing and Retouching",
+    time: new Date(),
+  },
+  {
+    image: "/Image-6.png",
+    name: "Design of Graphic Elements to Boost Your Brand",
+    time: new Date(),
+  },
+];
 
 export const ProjectPage = ({}: ProjectProps) => {
+  const { user, projectId, setProjectId } = useApp();
 
-  const {user,projectId,setProjectId} = useApp()
-
-  const [data,setData] = useState<Array<Project>>([])
+  const [data, setData] = useState<Array<Project>>([]);
 
   const navigate = useNavigate();
 
-  const refetch = async ()=>{
-    if(user?.uid){
+  const refetch = async () => {
+    if (user?.uid) {
+      console.log("xxxxx");
       const data = await queryMyProjects(user.uid);
-      console.log(data)
+      console.log(data);
       setData(data);
     }
-  }
+  };
 
-  useEffect(()=>{
-    refetch()
-  },[user])
-
-
+  useEffect(() => {
+    refetch();
+  }, [user]);
 
   return (
     <div className="relative w-full h-full">
@@ -55,9 +80,9 @@ export const ProjectPage = ({}: ProjectProps) => {
               title={item.title}
               id={item.id}
               createdBy={item.createdBy}
-              onClick={(id)=>{
-                setProjectId?.(id)
-                navigate("/tasks")
+              onClick={(id) => {
+                setProjectId?.(id);
+                navigate("/tasks");
               }}
             />
           ))}

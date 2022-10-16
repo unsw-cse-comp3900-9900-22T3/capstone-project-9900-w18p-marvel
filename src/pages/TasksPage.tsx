@@ -27,9 +27,7 @@ export const TasksPage = ({}: Props) => {
         ))}
       </div>
       <Popup open={open} onClose={() => setOpen(false)}>
-        <div className="w-[800px] h-[1118px]">
-          <TaskDetail />
-        </div>
+        <TaskDetail />
       </Popup>
     </>
   );

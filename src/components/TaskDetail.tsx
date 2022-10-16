@@ -50,7 +50,7 @@ const TaskDetail = ({ }: TaskDetailProps) => {
   return (
     <>
 
-      <div className={`flex items-center flex-col w-full h-full overflow-auto gap-2 rounded-[32px] relative bg-white-100`}>
+      <div className={`flex items-center flex-col w-full my-20 overflow-auto gap-2 rounded-[32px] relative bg-white-100`}>
         <div className={`flex h-auto w-auto mt-5 left-8 absolute`}>
           <Button
             theme={"gray"}

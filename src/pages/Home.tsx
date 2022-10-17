@@ -23,7 +23,7 @@ export const Home = ({ children }: HomeProps) => {
               setProjectPopupOpen(true);
             }}
           />
-          <div className="w-full h-full bg-white-5 rounded-l-2xl relative">
+          <div className="w-full h-full bg-white-5 rounded-l-2xl relative overflow-hidden">
             {children}
           </div>
         </div>

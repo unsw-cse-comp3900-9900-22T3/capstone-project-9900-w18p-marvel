@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Lane } from "../components/Lane";
 import { Popup } from "../components/Popup";
 import { TaskDetail } from "../components/TaskDetail";
+import { DND } from "../components/DND";
 
 interface Props {}
 
@@ -16,15 +17,8 @@ export const TasksPage = ({}: Props) => {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <div className="w-full h-full flex flex-row gap-6">
-        {data.map((item: any) => (
-          <Lane
-            name={item}
-            onClick={(id) => {
-              setOpen(true);
-            }}
-          />
-        ))}
+      <div className="w-full h-full flex flex-row gap-6 bg-white-100">
+        <DND/>
       </div>
       <Popup open={open} onClose={() => setOpen(false)}>
         <TaskDetail />

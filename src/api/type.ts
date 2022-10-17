@@ -16,7 +16,7 @@ export interface Resource{
 }
 export interface Task {
     id:string
-    createdAy:Date
+    createdAt:Date
     createdBy:string
     description:string
     dueDate:Date
@@ -29,7 +29,7 @@ export interface Task {
 
 export interface Project {
     id:string
-    createdAy:Date
+    createdAt:Date
     createdBy:string
     cover:Resource
     title:string
@@ -37,21 +37,21 @@ export interface Project {
 
 export interface Invitation{
     id:string
-    createdAy:Date
+    createdAt:Date
     createdBy:string
     inviteeId:string
 }
 
 export interface Connection{
     id:string
-    createdAy:Date
+    createdAt:Date
     createdBy:string
     approvedBy:string
 }
 
 export interface Comment {
     id:string
-    createdAy:Date
+    createdAt:Date
     createdBy:string
     content:string
     taskId:string

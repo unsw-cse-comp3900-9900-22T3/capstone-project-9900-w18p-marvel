@@ -59,9 +59,9 @@ const TaskCard = ({id,image,title,description,dueDate,status,collaborators,onCli
         onClick?.(id);
       }}
     >
-      {image !== "" && (
-        <div className="h-20 w-50 bg-yellow-100 rounded-2xl overflow-hidden flex justify-center items-center">
-          <img src={image === "" ? "/cover.png" : image} className=""/>
+      {image && image !== "" && (
+        <div className="h-20 w-50 rounded-2xl overflow-hidden flex justify-center items-center">
+          <img src={image} className=""/>
         </div>
       )}
       <div className="h-2 w-8 bg-blue-100 rounded"></div>

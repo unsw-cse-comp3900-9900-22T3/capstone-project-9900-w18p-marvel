@@ -13,7 +13,7 @@ export const Lane = ({name,onClick}:Props)=>{
     const [data, setData] = useState<Array<Task>>([
       {
         id: "",
-        createdAy: faker.date.recent(),
+        createdAt: faker.date.recent(),
         createdBy: "",
         description: "string",
         dueDate: faker.date.future(),
@@ -25,7 +25,7 @@ export const Lane = ({name,onClick}:Props)=>{
       },
       {
         id: "",
-        createdAy: faker.date.recent(),
+        createdAt: faker.date.recent(),
         createdBy: "",
         description: "string",
         dueDate: faker.date.future(),
@@ -37,7 +37,7 @@ export const Lane = ({name,onClick}:Props)=>{
       },
       {
         id: "",
-        createdAy: faker.date.recent(),
+        createdAt: faker.date.recent(),
         createdBy: "",
         description: "string",
         dueDate: faker.date.future(),
@@ -49,7 +49,7 @@ export const Lane = ({name,onClick}:Props)=>{
       },
       {
         id: "",
-        createdAy: faker.date.recent(),
+        createdAt: faker.date.recent(),
         createdBy: "",
         description: "string",
         dueDate: faker.date.future(),
@@ -61,7 +61,7 @@ export const Lane = ({name,onClick}:Props)=>{
       },
       {
         id: "",
-        createdAy: faker.date.recent(),
+        createdAt: faker.date.recent(),
         createdBy: "",
         description: "string",
         dueDate: faker.date.future(),

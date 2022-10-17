@@ -37,12 +37,12 @@ export const updateUserProfile = async (
   const db = getFirestore(app);
   const auth = getAuth();
   const authUser = auth.currentUser;
-  
+
   if (authUser) {
-    const userInfo = await getUser(userId)
-    if(userInfo){
+    const userInfo = await getUser(userId);
+    if (userInfo) {
       // const credential = promptForCredentials();
-  
+
       // reauthenticateWithCredential(user, credential)
       // .then(async () => {
       if (username) {
@@ -50,20 +50,14 @@ export const updateUserProfile = async (
           name: username,
         });
         // await updateProfile(user, { displayName: username });
-        onComplete?.({...userInfo,
-          uid: userId,
-          displayName: username,
-        });
+        onComplete?.({ ...userInfo, uid: userId, displayName: username });
       }
       if (email) {
         await updateDoc(doc(db, "users", userId), {
           email: email,
         });
         // await updateEmail(user, email);
-        onComplete?.({...userInfo,
-          uid: userId,
-          email: email,
-        } as User);
+        onComplete?.({ ...userInfo, uid: userId, email: email } as User);
       }
       if (image) {
         if (userInfo?.photo) {
@@ -89,9 +83,9 @@ export const updateUserProfile = async (
                 } as Resource,
               });
               if (userInfo) {
-                
                 // await updateProfile(user, { photoURL: url });
-                onComplete?.({...userInfo,
+                onComplete?.({
+                  ...userInfo,
                   uid: userId,
                   photo: { downloadURL, storagePath },
                 } as User);
@@ -104,7 +98,6 @@ export const updateUserProfile = async (
       // .catch((error) => {
       //   alert(error)
       // });
-
     }
   } else {
     alert("user is null");
@@ -134,11 +127,15 @@ export const queryAllUsers: (keyword: string) => Promise<Array<User>> = async (
   const querySnapshot = await getDocs(collection(db, "users"));
   const data: any = [];
   querySnapshot.forEach((doc) => {
-    data.push({ id: doc.id, ...doc.data() });
+    data.push({ uid: doc.id, ...doc.data() });
   });
-  const fuse = new Fuse(data, { keys: ["name", "email"] });
-  const result = fuse.search(keyword);
-  return result.map((item) => item.item as User);
+  if (keyword === "") {
+    return data;
+  } else {
+    const fuse = new Fuse(data, { keys: ["name", "email"] });
+    const result = fuse.search(keyword);
+    return result.map((item) => item.item as User);
+  }
 };
 
 export const requestConnection = async (

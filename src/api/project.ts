@@ -38,28 +38,31 @@ export const queryMyProjects: (
   const querySnapshot = await getDocs(collection(db, "projects"));
   const projects: Array<Project> = [];
   querySnapshot.forEach((doc) => {
-    console.log("queryMyProjects:",doc.data())
     projects.push({ id: doc.id, ...doc.data() } as Project);
   });
 
+  console.log("all projects:", projects);
   const myProjects: Array<Project> = [];
   projects.forEach(async (p: Project) => {
-    if(p.createdBy === userId){
-      myProjects.push(p)
-    }else{
+    if (p.createdBy === userId) {
+      myProjects.push(p);
+    } else {
       const projectcollaborators = await queryAllCollaboratorsInProject(p.id);
       if (
-        projectcollaborators.find((c: ProjectCollaborator) => c.userId === userId)
+        projectcollaborators.find(
+          (c: ProjectCollaborator) => c.userId === userId
+        )
       ) {
         myProjects.push(p);
       }
     }
   });
+  console.log("queryMyProjects:", myProjects);
   return myProjects;
 };
 
-export const deleteProject = async (projectId:string)=>{
+export const deleteProject = async (projectId: string) => {
   const app = getApp();
   const db = getFirestore(app);
-  await deleteDoc(doc(db,"projects",projectId))
-}
+  await deleteDoc(doc(db, "projects", projectId));
+};

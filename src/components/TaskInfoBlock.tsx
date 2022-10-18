@@ -1,5 +1,5 @@
 import { Avatar } from "./Avatar";
-
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 interface TaskInfoBlockProps {
   TaskID: number;
   TaskName: string;
@@ -15,32 +15,32 @@ const img_address = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAA
 
 const TaskInfoBlock = ({ TaskName, TaskID, Assignee, DueDate, Description }: TaskInfoBlockProps) => {
   return (
-    <div className={`flex flex-col w-176 h-auto mt-5 ml-1`}>
+    <div className={`flex flex-col w-176 h-auto pt-5 pl-1`}>
       <div className={`flex flex-col w-176 h-auto`}>
         <div className={`flex items-center text-2xl`}>{TaskName}</div>
-        <div className={`flex items-center text-gray-400 text-sm mt-2`}>TaskID: {TaskID}</div>
+        <div className={`flex items-center text-gray-400 text-sm pt-2`}>TaskID: {TaskID}</div>
       </div>
 
-      <div className={`flex flex-row w-176 h-auto mt-10`}>
-        <div className={`flex flex-col w-auto h-auto mb-10 mr-auto`}>
-          <div className={`flex items-start text-gray-400 text-lg mt-2`}>ASSIGNED TO</div>
-          <div className={`flex items-start text-sm text-gray-400 rounded-2xl mt-5`}><Avatar src="" size="sm" rounded="full" />{Assignee}</div>
+      <div className={`flex flex-row w-176 h-auto pt-10 justify-between`}>
+        <div className={`flex flex-col w-auto h-auto pb-10 pr-auto`}>
+          <div className={`flex items-start text-gray-400 text-xs`}>ASSIGNED TO</div>
+          <div className={`flex items-start text-sm text-gray-400 rounded-2xl pt-5`}><Avatar src="" size="sm" rounded="full" />{Assignee}</div>
 
         </div>
 
-        <div className={`flex flex-col w-auto h-auto mb-10`}>
-          <div className={`flex items-end text-gray-400 text-lg mt-2`}>DUE DATE</div>
-          <div className={`flex items-end text-sm text-gray-400 bg-gray-50 rounded-2xl mt-5`}>{DueDate}</div>
+        <div className={`flex flex-col w-auto h-auto pb-10`}>
+          <div className={`flex text-gray-400 text-xs`}>DUE DATE</div>
+          <div className={`flex text-sm text-gray-400 bg-gray-50 rounded-2xl pt-5`}>{DueDate}</div>
 
         </div>
 
 
       </div>
-      <div className={`flex flex-col w-176 h-auto mt-10`}>
-        <div className={`flex font-bold text-2xl items-center`}><img src={img_address} className={`w-10 h-10 mr-3`} />Description</div>
+      <div className={`flex flex-col w-176 h-auto pt-5`}>
+        <div className={`flex font-bold text-lg text-zinc-600 items-center gap-4`}><DescriptionOutlinedIcon fontSize="large" />Description</div>
       </div>
 
-      <div className={`flex item-start w-166 h-auto text-justify text-gray-400 rounded-2xl mt-6 ml-5`}>
+      <div className={`flex item-start w-166 h-auto text-justify text-gray-500 rounded-2xl pt-3 pl-5`}>
         {Description}
       </div>
 

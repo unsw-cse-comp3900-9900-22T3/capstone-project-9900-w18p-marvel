@@ -1,3 +1,6 @@
+import { TextInput } from "./TextInput";
+import { useState } from "react";
+import SendIcon from '@mui/icons-material/Send';
 interface NewCommentBoxProps {
     MyAvator: string;
 
@@ -6,20 +9,37 @@ interface NewCommentBoxProps {
 
 //const img_address = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL9LonfTfSW8SOAc8E7Fe982afR_kqYbwSuQ&usqp=CAU"
 
-const NewCommentBox = ({ MyAvator }: NewCommentBoxProps) => {
+export const NewCommentBox = ({ MyAvator }: NewCommentBoxProps) => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [inputcomment, setInputComment] = useState("");
     return (
-        <div className={`flex flex-col w-176 h-auto mb-5`}>
+        <div className={`flex flex-col w-full h-auto mb-5`}>
 
-            <div className={`flex item-start flex-row w-176 h-20 bg-gray-50 items-center rounded-2xl relative`}>
+            <div className={`flex item-start flex-row w-full bg-gray-50 items-center rounded-2xl relative`}>
                 <div className={`flex w-20`}>
                     <img src={MyAvator} className={`ml-5 w-10 h-10 rounded-full`} />
                 </div>
+                <div className={`ml-5 h-auto w-full rounded-full break-all`}
+                    onClick={() => {
+                        setIsEditing(true);
+                    }}>
+                    <TextInput
+                        placeholder="Write a Comment!..."
+                        disabled={isEditing ? false : true}
+                        onChange={(val) => {
+                            setInputComment(val);
+                        }}
 
-                <input className={`placeholder:italic placeholder:text-slate-400 w-150 block bg-white h-10 border border-slate-200 rounded-sx py-2 pl-4 pr-3 focus:outline-none focus:border-sky-200 focus:ring-sky-500 focus:ring-1 sm:text-sm" `} placeholder="Write a Comment!..." type="text" name="Comments" />
 
+                    /></div>
+                <div className={`flex pr-5`}>
+                    <SendIcon onClick={() => {
+                        setIsEditing(false);
+                    }} />
+                </div>
             </div>
         </div>
     );
 };
 
-export { NewCommentBox };
+//export { NewCommentBox };

@@ -1,3 +1,4 @@
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 interface UploadedCardProps {
   FileID: number;
   FilePic?: string; //Depending on the file format for different Pic
@@ -25,7 +26,7 @@ const UploadedCard = ({ FileID, FilePic, FileName, FileAddedTime, FileDownloadLi
           <div className={`text-xs text-gray-100`}>Added at {FileAddedTime}</div>
         </div>
         <div className={`flex flex-row absolute right-5 items-center`}>
-          <img src={waste_icon} className={`flex w-5 h-5`} />
+          <DeleteForeverOutlinedIcon />
         </div>
 
       </div>

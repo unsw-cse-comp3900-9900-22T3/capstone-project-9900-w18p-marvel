@@ -1,3 +1,6 @@
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+
+
 interface CommentboxProps {
     CommentorID: number;
     Name: string;
@@ -29,7 +32,7 @@ const CommentBox = ({ Name, CommenterAvator, Comments, CommentDate, CommentorID 
                 </div>
                 <div className={`flex flex-row absolute right-5 items-center`}>
                     <div className={`flex pr-2 text-xs text-gray-100`}>{CommentDate}</div>
-                    <img src={waste_icon} className={`flex w-5 h-5`} />
+                    <DeleteForeverOutlinedIcon />
                 </div>
 
             </div>

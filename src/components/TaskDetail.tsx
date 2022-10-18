@@ -8,6 +8,9 @@ import { TotalCommentItem } from "./TotalCommentItem";
 import { Popup } from "./Popup";
 import { UserList } from "./UserList";
 import { useState } from "react";
+import { TextInput } from "./TextInput";
+import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
+
 
 
 interface TaskDetailProps {
@@ -21,8 +24,11 @@ const uploadedcardpic = "https://icons.veryicon.com/png/o/miscellaneous/real-coo
 const uplodaicon = "https://cdn-icons-png.flaticon.com/128/1702/1702912.png"
 
 
-const TaskDetail = ({ }: TaskDetailProps) => {
+export const TaskDetail = ({ }: TaskDetailProps) => {
+  const [isEditing, setIsEditing] = useState(true);
   const [open, setOpen] = useState(false)
+  const [inputcomment, setInputComment] = useState("");
+
   const TaskDetail = [
     { TaskID: 1234, TaskName: "Marvel Task Management", Assignee: "Lisa", DueDate: "22/02/2023", Description: "123kwnflkwfnlkwnfklwnflwln" }
   ]
@@ -46,93 +52,96 @@ const TaskDetail = ({ }: TaskDetailProps) => {
 
 
 
-
   return (
     <>
 
-      <div className={`flex items-center flex-col w-full my-20 overflow-auto gap-2 rounded-[32px] relative bg-white-100`}>
-        <div className={`flex h-auto w-auto mt-5 left-8 absolute`}>
-          <Button
-            theme={"gray"}
-            label={"Mark as Complete"}
-            onClick={() => {
-            }}
-            size={"fill"}
-          ></Button>
+      <div className={`flex items-center w-200 rounded-[32px]  bg-white-100`}>
+        <div className={`flex justify-items-start flex-col py-20 px-12 overflow-auto relative`}>
+          <div className={`flex h-auto  absolute`}>
+            <Button
+              theme={"gray"}
+              label={"Mark as Complete"}
+              onClick={() => {
+              }}
+              size={"fill"}
+            ></Button>
 
-        </div>
-
-        <div className={`flex mt-20`} onClick={() => {
-          setOpen(true)
-        }}>
-          {TaskDetail.map((item) => (
-            <TaskInfoBlock
-              TaskID={item.TaskID}
-              TaskName={item.TaskName}
-              Assignee={item.Assignee}
-              DueDate={item.DueDate}
-              Description={item.Description} />
-          ))}
-        </div>
-
-
-
-        {/* <div className={`flex flex-row w-176 h-auto mt-5 mb-5`}>
-          <div className={`flex font-bold text-2xl items-center`}>
-            <img src={uplodaicon} className={`w-10 h-10 mr-3`} />Attachment
           </div>
-        </div> */}
 
-        <div className={`flex flex-col`}>
-          {UploadedCardDetails.map((item) => (
-            <UploadedCard
-              FilePic={item.FilePic}
-              FileName={item.FileName}
-              FileAddedTime={item.FileAddedTime}
-              FileID={item.FileID}
-              FileDownloadLink={item.FileDownloadLink} >
+          <div className={`flex pt-20`} onClick={() => {
+            setOpen(true)
+          }}>
+            {TaskDetail.map((item) => (
+              <TaskInfoBlock
+                TaskID={item.TaskID}
+                TaskName={item.TaskName}
+                Assignee={item.Assignee}
+                DueDate={item.DueDate}
+                Description={item.Description} />
+            ))}
+          </div>
 
-            </UploadedCard>
-          ))}
 
+
+
+
+          <div className={`flex flex-row w-176 h-auto pl-1 pt-20 pb-5`}>
+            <div className={`flex font-bold text-lg text-zinc-600 items-center gap-4`}>
+              <AttachFileOutlinedIcon fontSize="large" />Attachment
+            </div>
+          </div>
+
+          <div className={`flex flex-col gap-4`}>
+            {UploadedCardDetails.map((item) => (
+              <UploadedCard
+                FilePic={item.FilePic}
+                FileName={item.FileName}
+                FileAddedTime={item.FileAddedTime}
+                FileID={item.FileID}
+                FileDownloadLink={item.FileDownloadLink} >
+
+              </UploadedCard>
+            ))}
+
+          </div>
+
+
+          <div className={`flex`}><NewUploadedCard /></div>
+
+          <div className={`ustify-items-start pt-20 pb-5`}>
+            <TotalCommentItem TotalComment={TotalComment}></TotalCommentItem>
+          </div>
+
+          <div className={`flex flex-col gap-4`}>
+            {CommentorData.map((item) => (
+              <CommentBox
+                CommentorID={item.CommentorID}
+                CommentDate={item.CommentDate}
+                Name={item.Name}
+                CommenterAvator={item.CommenterAvator}
+                Comments={item.Comments}>
+
+              </CommentBox>
+            ))}
+
+          </div>
+          <div className={`flex`}><NewCommentBox MyAvator={img_address} /></div>
+          <div className={`flex w-auto pb-5 justify-items-center`}>
+            <Button
+              theme={"blue"}
+              label={"Create"}
+              onClick={() => {
+              }}
+              size={"fill"}
+            ></Button>
+          </div>
         </div>
-
-
-        <div className={`flex`}><NewUploadedCard /></div>
-
-        <div className={`ml-12 justify-items-start mt-5 mb-5`}>
-          <TotalCommentItem TotalComment={TotalComment}></TotalCommentItem>
-        </div>
-
-        <div className={`flex flex-col`}>
-          {CommentorData.map((item) => (
-            <CommentBox
-              CommentorID={item.CommentorID}
-              CommentDate={item.CommentDate}
-              Name={item.Name}
-              CommenterAvator={item.CommenterAvator}
-              Comments={item.Comments}>
-
-            </CommentBox>
-          ))}
-
-        </div>
-        <div className={`flex`}><NewCommentBox MyAvator={img_address} /></div>
-        <div className={`flex w-60 mb-5`}>
-          <Button
-            theme={"blue"}
-            label={"Create"}
-            onClick={() => {
-            }}
-            size={"fill"}
-          ></Button>
-        </div>
+        <Popup open={open} onClose={() => { setOpen(false) }}>
+          <UserList taskId={""} onConfirm={function (collaborators: string[]): void {
+            setOpen(false)
+          }} />
+        </Popup>
       </div>
-      <Popup open={open} onClose={() => { setOpen(false) }}>
-        <UserList taskId={""} onConfirm={function (collaborators: string[]): void {
-          setOpen(false)
-        }} />
-      </Popup>
     </>
 
 
@@ -140,4 +149,4 @@ const TaskDetail = ({ }: TaskDetailProps) => {
   );
 };
 
-export { TaskDetail };
+//export { TaskDetail };

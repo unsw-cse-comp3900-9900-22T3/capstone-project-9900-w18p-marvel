@@ -37,7 +37,7 @@ export const TaskDetail = ({ }: TaskDetailProps) => {
   const CommentorData = [
     { CommentorID: '1', Name: 'Linda Hsu', CommenterAvator: img_address, Comments: '@11', CommentDate: '10/12/2023' },
     { CommentorID: '2', Name: 'Teddy', CommenterAvator: img_address, Comments: '@113', CommentDate: '10/12/2023' },
-    { CommentorID: '3', Name: 'Anthony', CommenterAvator: img_address, Comments: '@112', CommentDate: '10/12/2023' },
+    { CommentorID: '3', Name: 'Anthony', CommenterAvator: img_address, Comments: '@1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojn1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojn1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelf1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnwelj1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojnnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojnnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojn fo12', CommentDate: '10/12/2023' },
     { CommentorID: '4', Name: 'Lisa', CommenterAvator: img_address, Comments: '@11', CommentDate: '10/12/2023' },
   ]
 
@@ -55,8 +55,8 @@ export const TaskDetail = ({ }: TaskDetailProps) => {
   return (
     <>
 
-      <div className={`flex items-center w-200 rounded-[32px]  bg-white-100`}>
-        <div className={`flex justify-items-start flex-col py-20 px-12 overflow-auto relative`}>
+      <div className={`flex items-center w-200 rounded-[32px] h-4/5 bg-white-100`}>
+        <div className={`flex justify-items-start flex-col px-12 h-full py-5 overflow-auto relative`}>
           <div className={`flex h-auto  absolute`}>
             <Button
               theme={"gray"}
@@ -85,7 +85,7 @@ export const TaskDetail = ({ }: TaskDetailProps) => {
 
 
 
-          <div className={`flex flex-row w-176 h-auto pl-1 pt-20 pb-5`}>
+          <div className={`flex flex-row w-175 h-auto pl-1 pt-20 pb-5`}>
             <div className={`flex font-bold text-lg text-zinc-600 items-center gap-4`}>
               <AttachFileOutlinedIcon fontSize="large" />Attachment
             </div>
@@ -106,13 +106,13 @@ export const TaskDetail = ({ }: TaskDetailProps) => {
           </div>
 
 
-          <div className={`flex`}><NewUploadedCard /></div>
+          <div className={`flex pl-2 pt-3`}><NewUploadedCard /></div>
 
           <div className={`ustify-items-start pt-20 pb-5`}>
             <TotalCommentItem TotalComment={TotalComment}></TotalCommentItem>
           </div>
 
-          <div className={`flex flex-col gap-4`}>
+          <div className={`flex w-176 h-auto flex-col gap-4`}>
             {CommentorData.map((item) => (
               <CommentBox
                 CommentorID={item.CommentorID}
@@ -125,7 +125,7 @@ export const TaskDetail = ({ }: TaskDetailProps) => {
             ))}
 
           </div>
-          <div className={`flex`}><NewCommentBox MyAvator={img_address} /></div>
+          <div className={`flex pt-3`}><NewCommentBox MyAvator={img_address} /></div>
           <div className={`flex w-auto pb-5 justify-items-center`}>
             <Button
               theme={"blue"}

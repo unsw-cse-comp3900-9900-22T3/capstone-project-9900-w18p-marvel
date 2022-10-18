@@ -21,13 +21,13 @@ const CommentBox = ({ Name, CommenterAvator, Comments, CommentDate, CommentorID 
         <div className={`flex flex-col w-176 h-auto mb-2`}>
 
 
-            <div className={`flex item-start flex-row w-176 h-32 pl-5 pt-5 bg-gray-50 rounded-2xl relative`}>
+            <div className={`flex item-start flex-row w-176 h-auto pl-5 py-5 bg-gray-50 rounded-2xl relative`}>
                 <div className={`flex w-20`}>
                     <img src={CommenterAvator} className={`w-10 h-10 gap-5 rounded-full`} />
                 </div>
-                <div className={`flex flex-col w-auto h-auto gap-3`}>
+                <div className={`flex flex-col w-176 h-auto gap-3`}>
                     <div className={`text-sm font-bold text-lg`}>{Name}</div>
-                    <div className={`text-xs text-gray-100`}>{Comments}</div>
+                    <div className={`text-xs w-149 break-all pr-10 h-auto text-gray-100`}>{Comments}</div>
                     <div className={`text-xs text-gray-100 pt-1`}>Reply</div>
                 </div>
                 <div className={`flex flex-row absolute right-5 items-center`}>

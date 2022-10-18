@@ -15,11 +15,11 @@ export const NewCommentBox = ({ MyAvator }: NewCommentBoxProps) => {
     return (
         <div className={`flex flex-col w-full h-auto mb-5`}>
 
-            <div className={`flex item-start flex-row w-full bg-gray-50 items-center rounded-2xl relative`}>
+            <div className={`flex item-start flex-row w-full py-5 bg-gray-50 items-center rounded-2xl relative`}>
                 <div className={`flex w-20`}>
                     <img src={MyAvator} className={`ml-5 w-10 h-10 rounded-full`} />
                 </div>
-                <div className={`ml-5 h-auto w-full rounded-full break-all`}
+                <div className={`ml-5 h-auto w-140 rounded-full break-all`}
                     onClick={() => {
                         setIsEditing(true);
                     }}>

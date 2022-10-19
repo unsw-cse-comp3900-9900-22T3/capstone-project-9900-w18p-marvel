@@ -53,7 +53,7 @@ export const Sidebar = () => {
   const navigate = useNavigate();
   return (
     <div
-      className={`relative transition-all overflow-hidden flex flex-col ${
+      className={`relative transition-all overflow-hidden flex flex-col shrink-0 ${
         collapse ? "w-16 basis-16" : "w-56 basis-56"
       } bg-white-100 h-full`}
     >
@@ -93,13 +93,13 @@ export const Sidebar = () => {
             navigate("/tasks");
           }}
         ></MenuItem>
-         {/* <MenuItem
+         <MenuItem
           prefix={<TaskIcon className={""} />}
           label={"API"}
           onClick={() => {
             navigate("/api");
           }}
-        ></MenuItem> */}
+        ></MenuItem>
       </div>
     </div>
   );

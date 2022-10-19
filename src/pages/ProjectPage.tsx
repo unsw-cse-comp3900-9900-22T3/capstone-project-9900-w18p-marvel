@@ -55,9 +55,7 @@ export const ProjectPage = ({}: ProjectProps) => {
 
   const refetch = async () => {
     if (user?.uid) {
-      console.log("xxxxx");
       const data = await queryMyProjects(user.uid);
-      console.log(data);
       setData(data);
     }
   };

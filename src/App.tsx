@@ -199,7 +199,7 @@ export function App() {
                 </Interceptor>
               }
             ></Route>
-            {/* <Route
+            <Route
               path="api"
               element={
                 <Interceptor>
@@ -208,7 +208,7 @@ export function App() {
                   </Home>
                 </Interceptor>
               }
-            ></Route> */}
+            ></Route>
             <Route path="login" element={<Landing />}></Route>
             <Route path="components">
               <Route path="peter">

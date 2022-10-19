@@ -29,6 +29,19 @@ export const createProject = async (
   });
 };
 
+export const queryAllProjects: () => Promise<Array<Project>> = async () => {
+  const app = getApp();
+  const db = getFirestore(app);
+
+  const querySnapshot = await getDocs(collection(db, "projects"));
+  const projects: Array<Project> = [];
+  querySnapshot.forEach((doc) => {
+    projects.push({ id: doc.id, ...doc.data() } as Project);
+  });
+
+  return projects;
+};
+
 export const queryMyProjects: (
   userId: string
 ) => Promise<Array<Project>> = async (userId: string) => {
@@ -41,7 +54,6 @@ export const queryMyProjects: (
     projects.push({ id: doc.id, ...doc.data() } as Project);
   });
 
-  console.log("all projects:", projects);
   const myProjects: Array<Project> = [];
   projects.forEach(async (p: Project) => {
     if (p.createdBy === userId) {
@@ -57,7 +69,6 @@ export const queryMyProjects: (
       }
     }
   });
-  console.log("queryMyProjects:", myProjects);
   return myProjects;
 };
 
@@ -65,4 +76,15 @@ export const deleteProject = async (projectId: string) => {
   const app = getApp();
   const db = getFirestore(app);
   await deleteDoc(doc(db, "projects", projectId));
+};
+
+export const deleteAllProject = async () => {
+  const app = getApp();
+  const db = getFirestore(app);
+  const projects = await queryAllProjects();
+  projects.forEach(async (p) => {
+    if (p.id !== "00000000") {
+      await deleteDoc(doc(db, "projects", p.id));
+    }
+  });
 };

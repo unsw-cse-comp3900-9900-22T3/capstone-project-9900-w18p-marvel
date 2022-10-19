@@ -1,56 +1,81 @@
-import { Avatar, AvatarGroup, LinearProgress} from "@mui/material";
-import AttachFileIcon from '@mui/icons-material/AttachFile';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { Avatar, AvatarGroup, LinearProgress } from "@mui/material";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { faker } from "@faker-js/faker";
 import { Chip, Theme } from "./Chip";
 import { AttachFile } from "@mui/icons-material";
 import moment from "moment";
 import { Status, TaskCollaborator } from "../api/type";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getUser } from "../api/user";
 import { uid } from "uid";
 
 interface TaskCardProps {
-  id:string
+  id: string;
   title: string;
   description: string;
   dueDate: Date;
-  image?:string;
-  status?:Status;
-  collaborators:Array<TaskCollaborator>
-  onClick?:(id:string)=>void
+  image?: string;
+  status?: Status;
+  collaborators: Array<TaskCollaborator>;
+  onClick?: (id: string) => void;
 }
-const TaskCard = ({id,image,title,description,dueDate,status,collaborators,onClick}: TaskCardProps) => {
-
-  let timeLeft = ""
-  let timeTheme:Theme = "default"
-  const day =  moment(dueDate).diff(moment(),"days")
-  if(day <= 0){
-    timeLeft = "Overdue"
-    timeTheme = "error"
-  }else{
-    timeLeft = `${day} days left`
-    if(day > 2){
-      timeTheme = "default"
-    }else{
-      timeTheme = "warning"
+const TaskCard = ({
+  id,
+  image,
+  title,
+  description,
+  dueDate,
+  status,
+  collaborators,
+  onClick,
+}: TaskCardProps) => {
+  let timeLeft = "";
+  let timeTheme: Theme = "default";
+  const day = moment(dueDate).diff(moment(), "days");
+  if (day <= 0) {
+    timeLeft = "Overdue";
+    timeTheme = "error";
+  } else {
+    timeLeft = `${day} days left`;
+    if (day > 2) {
+      timeTheme = "default";
+    } else {
+      timeTheme = "warning";
     }
   }
-  const progress = status === "start"?0:status==="blocked"?20:status==="complete"?100:0
+  const progress =
+    status === "start"
+      ? 0
+      : status === "blocked"
+      ? 20
+      : status === "complete"
+      ? 100
+      : 0;
 
-  const [avatars,setAvatars] = useState<Array<string>>()
-  const getAvatars = async (_avatars:Array<string>)=> {
-    const list:Array<string> = []
-    _avatars.forEach(async a=>{
-      const userInfo = await getUser(a)
-      if(userInfo){
-        list.push(userInfo.photo?.downloadURL!)
-      }else{
-        list.push("")
-      }
-    })
-    setAvatars(list)
-  }
+  const [avatars, setAvatars] = useState<Array<string>>();
+  const getAvatars = async (_avatars: Array<string>) => {
+    const list: Array<string> = [];
+    await Promise.all(
+      _avatars.map(async (a) => {
+        const userInfo = await getUser(a);
+        if (userInfo) {
+          list.push(userInfo.photo?.downloadURL!);
+        } else {
+          list.push("");
+        }
+      })
+    );
+
+    setAvatars(list);
+  };
+
+  useEffect(() => {
+    if (collaborators?.length > 0) {
+      const uids = collaborators.map((item) => item.userId);
+      getAvatars(uids);
+    }
+  }, [collaborators]);
 
   return (
     <div
@@ -61,7 +86,7 @@ const TaskCard = ({id,image,title,description,dueDate,status,collaborators,onCli
     >
       {image && image !== "" && (
         <div className="h-20 w-50 rounded-2xl overflow-hidden flex justify-center items-center">
-          <img src={image} className=""/>
+          <img src={image} className="" />
         </div>
       )}
       <div className="h-2 w-8 bg-blue-100 rounded"></div>
@@ -90,7 +115,7 @@ const TaskCard = ({id,image,title,description,dueDate,status,collaborators,onCli
       <LinearProgress variant="determinate" value={progress} />
       <div className="h-fit w-fit">
         {collaborators?.length > 0 && (
-          <AvatarGroup sx={{ height: 24 }}>
+          <AvatarGroup sx={{ height: 24 }} max={10}>
             {avatars?.map((c) => (
               <Avatar key={uid(4)} sx={{ width: 24, height: 24 }} src={c} />
             ))}

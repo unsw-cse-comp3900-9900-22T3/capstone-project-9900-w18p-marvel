@@ -31,7 +31,7 @@ export const TaskDetail = ({ }: TaskDetailProps) => {
   const [inputcomment, setInputComment] = useState("");
 
   const TaskDetail = [
-    { TaskID: 1234, TaskName: "Marvel Task Management", Assignee: "Lisa", DueDate: "22/02/2023", Description: "123kwnflkwfnlkwnfklwnflwln" }
+    { TaskID: 1234, TaskName: "Marvel Task Management", Assignee: [{ name: "Lisa", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }], DueDate: "22/02/2023", Description: "123kwnflkwfnlkwnfklwnflwln" }
   ]
 
 
@@ -75,8 +75,6 @@ export const TaskDetail = ({ }: TaskDetailProps) => {
                 Description={item.Description} />
             ))}
           </div>
-
-
 
 
 
@@ -131,11 +129,7 @@ export const TaskDetail = ({ }: TaskDetailProps) => {
             ></Button>
           </div>
         </div>
-        <Popup open={open} onClose={() => { setOpen(false) }}>
-          <UserList taskId={""} onConfirm={function (collaborators: string[]): void {
-            setOpen(false)
-          }} />
-        </Popup>
+
       </div>
     </>
 

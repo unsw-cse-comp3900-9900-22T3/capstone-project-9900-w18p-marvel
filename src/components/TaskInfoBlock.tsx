@@ -1,4 +1,9 @@
-import { Avatar } from "./Avatar";
+//import { Avatar } from "./Avatar";
+import Avatar from '@mui/material/Avatar';
+import AvatarGroup from '@mui/material/AvatarGroup';
+import { Popup } from "./Popup";
+import { UserList } from "./UserList";
+import { useState } from "react";
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 interface TaskInfoBlockProps {
   TaskID: number;
@@ -14,6 +19,7 @@ const img_address = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAA
 
 
 const TaskInfoBlock = ({ TaskName, TaskID, Assignee, DueDate, Description }: TaskInfoBlockProps) => {
+  const [open, setOpen] = useState(false)
   return (
     <div className={`flex flex-col w-176 h-auto pt-5 pl-1`}>
       <div className={`flex flex-col w-176 h-auto`}>
@@ -24,8 +30,23 @@ const TaskInfoBlock = ({ TaskName, TaskID, Assignee, DueDate, Description }: Tas
       <div className={`flex flex-row w-176 h-auto pt-10 justify-between`}>
         <div className={`flex flex-col w-auto h-auto pb-10 pr-auto`}>
           <div className={`flex items-start text-gray-400 text-xs`}>ASSIGNED TO</div>
-          <div className={`flex items-start text-sm text-gray-400 rounded-2xl pt-5`}><Avatar src="" size="sm" rounded="full" />{Assignee}</div>
+          {<div className={`flex items-start text-sm text-gray-400 rounded-2xl pt-5`} onClick={() => {
+            setOpen(true)
+          }}><AvatarGroup total={Assignee.length}>
+              {Assignee.map((item) => (
+                <Avatar alt={item.name} src={item.AssigneePic} />
 
+              ))}
+              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+              <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
+              <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+              <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
+              <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
+            </AvatarGroup>
+
+
+          </div>
+          }
         </div>
 
         <div className={`flex flex-col w-auto h-auto pb-10`}>
@@ -44,7 +65,11 @@ const TaskInfoBlock = ({ TaskName, TaskID, Assignee, DueDate, Description }: Tas
         {Description}
       </div>
 
-
+      <Popup open={open} onClose={() => { setOpen(false) }}>
+        <UserList taskId={""} onConfirm={function (collaborators: string[]): void {
+          setOpen(false)
+        }} />
+      </Popup>
 
     </div>
 

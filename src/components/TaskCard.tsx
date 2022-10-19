@@ -89,7 +89,11 @@ const TaskCard = ({
           <img src={image} className="" />
         </div>
       )}
-      <div className="h-2 w-8 bg-blue-100 rounded"></div>
+
+      <div className="flex gap-2 items-baseline w-full justify-between">
+        <div className="h-2 w-8 bg-blue-100 rounded"></div>
+        <span className="text-xs text-gray-200 font-extralight">{id}</span>
+      </div>
       <div className="font-bold text-base">{title}</div>
       <div className="font-semibold text-xs">{description}</div>
       <div className="h-fit w-fit flex flex-row gap-4">

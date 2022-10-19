@@ -1,4 +1,5 @@
 import { User as FirebaseUser } from "firebase/auth";
+import { Timestamp } from "firebase/firestore";
 
 export type Status = "start" | "blocked" | "complete";
 export type Role = "owner" | "editor" | "viewer"
@@ -16,10 +17,10 @@ export interface Resource{
 }
 export interface Task {
     id:string
-    createdAt:Date
+    createdAt:Date|Timestamp
     createdBy:string
     description:string
-    dueDate:Date
+    dueDate:Date|Timestamp
     projectId:string
     laneName:string
     status:Status
@@ -29,7 +30,7 @@ export interface Task {
 
 export interface Project {
     id:string
-    createdAt:Date
+    createdAt:Date|Timestamp
     createdBy:string
     cover:Resource
     title:string
@@ -37,21 +38,21 @@ export interface Project {
 
 export interface Invitation{
     id:string
-    createdAt:Date
+    createdAt:Date|Timestamp
     createdBy:string
     inviteeId:string
 }
 
 export interface Connection{
     id:string
-    createdAt:Date
+    createdAt:Date|Timestamp
     createdBy:string
     approvedBy:string
 }
 
 export interface Comment {
     id:string
-    createdAt:Date
+    createdAt:Date|Timestamp
     createdBy:string
     content:string
     taskId:string
@@ -65,7 +66,7 @@ export interface TaskCollaborator{
 
 export interface Attachment{
     id:string
-    createdAy:Date
+    createdAy:Date|Timestamp
     createdBy:string
     image:Resource
     taskId:string

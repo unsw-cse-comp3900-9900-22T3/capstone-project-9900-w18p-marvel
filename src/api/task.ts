@@ -9,6 +9,7 @@ import {
   onSnapshot,
   query,
   setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { uid } from "uid";
@@ -25,7 +26,7 @@ import { Status, Task } from "./type";
 import { uploadFile } from "./storage";
 
 export const createTask = async (
-  id:string,
+  id: string,
   title: string,
   status: Status,
   dueData: Date,
@@ -84,6 +85,14 @@ export const queryAllTasks: () => Promise<Array<Task>> = async () => {
   });
 
   return data;
+};
+
+export const updateLane = async (taskId: string, laneName: string) => {
+  const app = getApp();
+  const db = getFirestore(app);
+  await updateDoc(doc(db, "tasks", taskId), {
+    laneName: laneName,
+  });
 };
 
 export const queryAllTasksByProjectId: (

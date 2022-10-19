@@ -74,7 +74,6 @@ export const queryCollaboratorsInTask: (
   );
 
   const querySnapshot = await getDocs(q);
-  console.log("x", querySnapshot,taskId);
   const data: Array<TaskCollaborator> = [];
   querySnapshot.forEach((doc) => {
     data.push({ id: doc.id, ...doc.data() } as TaskCollaborator);

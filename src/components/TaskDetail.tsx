@@ -10,6 +10,7 @@ import { UserList } from "./UserList";
 import { useState } from "react";
 import { TextInput } from "./TextInput";
 import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
+import Dropdownlist_mui from "./Dropdownlist_mui";
 
 
 
@@ -58,13 +59,7 @@ export const TaskDetail = ({ }: TaskDetailProps) => {
       <div className={`flex items-center w-200 rounded-[32px] h-4/5 bg-white-100`}>
         <div className={`flex justify-items-start flex-col px-12 h-full py-5 overflow-auto relative`}>
           <div className={`flex h-auto  absolute`}>
-            <Button
-              theme={"gray"}
-              label={"Mark as Complete"}
-              onClick={() => {
-              }}
-              size={"fill"}
-            ></Button>
+            <Dropdownlist_mui />
 
           </div>
 

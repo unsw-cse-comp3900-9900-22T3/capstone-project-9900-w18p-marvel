@@ -1,3 +1,4 @@
+import { delay } from "lodash";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { uid } from "uid";
@@ -55,9 +56,7 @@ export const ProjectPage = ({}: ProjectProps) => {
 
   const refetch = async () => {
     if (user?.uid) {
-      console.log("xxxxx");
       const data = await queryMyProjects(user.uid);
-      console.log(data);
       setData(data);
     }
   };
@@ -80,9 +79,9 @@ export const ProjectPage = ({}: ProjectProps) => {
               title={item.title}
               id={item.id}
               createdBy={item.createdBy}
-              onClick={(id) => {
-                setProjectId?.(id);
-                navigate("/tasks");
+              onClick={async () => {
+                setProjectId?.(item.id);
+                navigate("/projects/"+item.id);
               }}
             />
           ))}

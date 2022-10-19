@@ -1,16 +1,29 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Task, User } from "../api/type";
+import { Project, Task, TaskCollaborator, User } from "../api/type";
 import { uid } from "uid";
 import { faker } from "@faker-js/faker";
 import { queryAllUsers } from "../api/user";
 import { reorder, sample } from "../utils/array";
-import { queryMyProjects } from "../api/project";
+import {
+  deleteAllProject,
+  queryAllProjects,
+  queryMyProjects,
+} from "../api/project";
 import { useApp } from "../App";
-import { createTask, queryAllTasksByProjectId } from "../api/task";
+import {
+  createTask,
+  deleteAllTask,
+  queryAllTasksByProjectId,
+} from "../api/task";
 import _ from "lodash";
 import { TaskCard } from "./TaskCard";
+import {
+  queryCollaboratorsInTask,
+  updateCollaborators,
+} from "../api/collaborator";
+import { urlToFile } from "../utils/converter";
 
 /**
  * Moves an item from one list to another list.
@@ -53,65 +66,41 @@ const getListStyle = (isDraggingOver) => ({
   width: 250,
 });
 
-export function DND() {
+export function DND(props) {
   const [data, setData] = useState<{}>({});
+  const [collaboratorLists, setCollaboratorLists] =
+    useState<Map<string, Array<TaskCollaborator>>>();
   const { user } = useApp();
 
-  const genData = async () => {
-    const allUsers = await queryAllUsers("");
-    console.log(allUsers);
-    const allProjects = await queryMyProjects(user?.uid!);
-    const dummyTasks = Array(25)
-      .fill(0)
-      .map(
-        (n) =>
-          ({
-            id: uid(8),
-            createdAt: faker.date.recent(),
-            createdBy: sample(allUsers).uid,
-            description: faker.lorem.sentence(),
-            dueDate: faker.date.future(),
-            projectId: sample(allProjects).id,
-            laneName: sample(["Todo", "Ongoing", "QA", "Done"]),
-            status: "start",
-            title: faker.lorem.slug(),
-            cover: { downloadURL: "", storagePath: "" },
-          } as Task)
-      );
-    console.log(dummyTasks);
-    dummyTasks.forEach((t) => {
-      createTask(
-        t.title,
-        t.status,
-        t.dueDate,
-        t.description,
-        t.createdBy,
-        t.createdAt,
-        t.projectId,
-        t.laneName,
-        null
-      );
-    });
-  };
-
   const fetchData = async () => {
-    const allProjects = await queryMyProjects(user?.uid!);
-    const tasks = await queryAllTasksByProjectId(sample(allProjects).id);
+    console.log(props.id)
+    const tasks = await queryAllTasksByProjectId(props.id);
     const lanes: any = {};
-    tasks.forEach((t) => {
-      if (!(t.laneName in lanes)) {
-        lanes[t.laneName] = [];
-      }
-      lanes[t.laneName].push(t);
-    });
+    const map = new Map<string, Array<TaskCollaborator>>();
+    await Promise.all(
+      tasks.map(async (t) => {
+        if (!(t.laneName in lanes)) {
+          lanes[t.laneName] = [];
+        }
+        lanes[t.laneName].push(t);
+      })
+    );
+    await Promise.all(
+      tasks.map(async (t) => {
+        const collaborators = await queryCollaboratorsInTask(t.id);
+        console.log(collaborators);
+        collaborators.map((c) => {
+          map.set(t.id, collaborators);
+        });
+      })
+    );
+    setCollaboratorLists(map);
     setData(lanes);
-    console.log(lanes);
   };
 
   useEffect(() => {
-    // genData()
     fetchData();
-  }, [user]);
+  }, []);
 
   function onDragEnd(result) {
     const { source, destination } = result;
@@ -153,7 +142,9 @@ export function DND() {
             <Droppable key={key} droppableId={`${key}`}>
               {(provided: any, snapshot: any) => (
                 <div className="h-full py-[72px] px-6 rounded-3xl bg-gray-50 relative">
-                  <div className="absolute left-6 top-6 font-bold text-base text-gray-100">{key}</div>
+                  <div className="absolute left-6 top-6 font-bold text-base text-gray-100">
+                    {key}
+                  </div>
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
@@ -177,7 +168,10 @@ export function DND() {
                               title={item.title}
                               description={item.description}
                               dueDate={item.dueDate}
-                              collaborators={[]}
+                              collaborators={
+                                collaboratorLists?.get(item.id) || []
+                              }
+                              image={item.cover?.downloadURL}
                             />
                           </div>
                         )}

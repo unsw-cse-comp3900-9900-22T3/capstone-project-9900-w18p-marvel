@@ -25,6 +25,7 @@ import { Status, Task } from "./type";
 import { uploadFile } from "./storage";
 
 export const createTask = async (
+  id:string,
   title: string,
   status: Status,
   dueData: Date,
@@ -33,7 +34,7 @@ export const createTask = async (
   createdAt: Date,
   projectId: string,
   laneName: string,
-  cover: File|null
+  cover: File | null
 ) => {
   const app = getApp();
   const db = getFirestore(app);
@@ -44,7 +45,7 @@ export const createTask = async (
       (prog) => {},
       (err) => {},
       async (downloadURL, storagePath) => {
-        await setDoc(doc(db, "tasks", uid(20)), {
+        await setDoc(doc(db, "tasks", id), {
           title: title,
           status: status,
           projectId: projectId,
@@ -58,7 +59,7 @@ export const createTask = async (
       }
     );
   } else {
-    await setDoc(doc(db, "tasks", uid(20)), {
+    await setDoc(doc(db, "tasks", id), {
       title: title,
       status: status,
       projectId: projectId,
@@ -70,6 +71,19 @@ export const createTask = async (
       cover: { downloadURL: "", storagePath: "" },
     });
   }
+  console.log("creating task:", id);
+};
+
+export const queryAllTasks: () => Promise<Array<Task>> = async () => {
+  const app = getApp();
+  const db = getFirestore(app);
+  const querySnapshot = await getDocs(collection(db, "tasks"));
+  const data: Array<Task> = [];
+  querySnapshot.forEach((doc) => {
+    data.push({ id: doc.id, ...doc.data() } as Task);
+  });
+
+  return data;
 };
 
 export const queryAllTasksByProjectId: (
@@ -111,5 +125,17 @@ export const deleteLane: (laneName: string, projectId: string) => void = async (
   });
   data.forEach(async (item) => {
     await deleteDoc(doc(db, "tasks", item.id));
+  });
+};
+
+export const deleteAllTask = async () => {
+  const app = getApp();
+  const db = getFirestore(app);
+  const tasks = await queryAllTasks();
+  tasks.forEach((t) => {
+    if (t.id !== "00000000") {
+      deleteTask(t.id);
+      console.log("deleting task:", t.id);
+    }
   });
 };

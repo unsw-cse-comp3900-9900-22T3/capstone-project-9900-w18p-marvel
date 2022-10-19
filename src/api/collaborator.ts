@@ -12,7 +12,13 @@ import {
 } from "firebase/firestore";
 import Fuse from "fuse.js";
 import { queryAllTasksByProjectId } from "./task";
-import { TaskCollaborator, Role, Task, User, ProjectCollaborator } from "./type";
+import {
+  TaskCollaborator,
+  Role,
+  Task,
+  User,
+  ProjectCollaborator,
+} from "./type";
 
 export const updateCollaborators = async (
   uids: Array<string>,
@@ -20,13 +26,13 @@ export const updateCollaborators = async (
 ) => {
   const app = getApp();
   const db = getFirestore(app);
-  const collaborators = await queryCollaboratorsInTask(taskId)
-  collaborators.forEach(async (c:TaskCollaborator)=>{
-    await removeCollaborator(c.userId,taskId)
-  })
-  uids.forEach(async (id:string)=>{
-    await addCollaborator(id,taskId)
-  })
+  const collaborators = await queryCollaboratorsInTask(taskId);
+  collaborators.map(async (c: TaskCollaborator) => {
+    await removeCollaborator(c.userId, taskId);
+  });
+  uids.map(async (id: string) => {
+    await addCollaborator(id, taskId);
+  });
 };
 
 export const queryActiveCollaboratorsInProject = async (projectId: string) => {
@@ -68,6 +74,7 @@ export const queryCollaboratorsInTask: (
   );
 
   const querySnapshot = await getDocs(q);
+  console.log("x", querySnapshot,taskId);
   const data: Array<TaskCollaborator> = [];
   querySnapshot.forEach((doc) => {
     data.push({ id: doc.id, ...doc.data() } as TaskCollaborator);
@@ -83,13 +90,21 @@ export const queryAllCollaborators: (
   const userSnapshot = await getDocs(collection(db, "users"));
   const users: Array<User> = [];
   userSnapshot.forEach((doc) => {
-    users.push({ id: doc.id, ...doc.data() as User } as User);
+    users.push({ uid: doc.id, ...(doc.data() as User) } as User);
   });
-  const fuse = new Fuse(users, { keys: ["name", "email"] });
-  const result = fuse.search(keyword);
-  const ids = result.map((item) => item.item.uid);
-
-  const q = query(collection(db, "taskcollaborators"), where("userId", "in", ids));
+  let ids = []
+  if(keyword === ""){
+    ids = users.map((item) => item.uid);
+  }else{
+    const fuse = new Fuse(users, { keys: ["name", "email"] });
+    const result = fuse.search(keyword);
+    ids = result.map((item) => item.item.uid);
+  }
+  
+  const q = query(
+    collection(db, "taskcollaborators"),
+    where("userId", "in", ids)
+  );
 
   const querySnapshot = await getDocs(q);
   const data: Array<TaskCollaborator> = [];
@@ -99,24 +114,45 @@ export const queryAllCollaborators: (
   return data;
 };
 
-export const addCollaborator:(userId:string,taskId:string)=>void = async (userId:string,taskId:string)=>{
+export const addCollaborator: (userId: string, taskId: string) => void = async (
+  userId: string,
+  taskId: string
+) => {
   const app = getApp();
   const db = getFirestore(app);
-  await addDoc(collection(db, "taskcollaborators"), {taskId,userId} as TaskCollaborator);
-}
+  await addDoc(collection(db, "taskcollaborators"), {
+    taskId,
+    userId,
+  } as TaskCollaborator);
+};
 
-export const removeCollaborator:(userId:string,taskId:string)=>void = async (userId:string,taskId:string)=>{
+export const removeCollaborator: (
+  userId: string,
+  taskId: string
+) => void = async (userId: string, taskId: string) => {
   const app = getApp();
   const db = getFirestore(app);
   const q = query(
     collection(db, "taskcollaborators"),
     where("taskId", "==", taskId),
-    where("userId", "==", userId),
+    where("userId", "==", userId)
   );
 
   const querySnapshot = await getDocs(q);
-  querySnapshot.forEach(async (snapshot)=>{
-    const id = snapshot.id
-    await deleteDoc(doc(db,"taskcollaborators",id))
-  })
-}
+  querySnapshot.forEach(async (snapshot) => {
+    const id = snapshot.id;
+    deleteDoc(doc(db, "taskcollaborators", id));
+  });
+};
+
+export const removeAllCollaborator: () => void = async () => {
+  const app = getApp();
+  const db = getFirestore(app);
+  const coll = await queryAllCollaborators("");
+
+  coll.forEach(async (c) => {
+    if (c.id !== "00000000") {
+      deleteDoc(doc(db, "taskcollaborators", c.id));
+    }
+  });
+};

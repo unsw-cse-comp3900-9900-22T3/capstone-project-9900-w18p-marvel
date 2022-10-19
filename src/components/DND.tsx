@@ -66,14 +66,15 @@ const getListStyle = (isDraggingOver) => ({
   width: 250,
 });
 
-export function DND() {
+export function DND(props) {
   const [data, setData] = useState<{}>({});
   const [collaboratorLists, setCollaboratorLists] =
     useState<Map<string, Array<TaskCollaborator>>>();
-  const { user, projectId } = useApp();
+  const { user } = useApp();
 
   const fetchData = async () => {
-    const tasks = await queryAllTasksByProjectId(projectId!);
+    console.log(props.id)
+    const tasks = await queryAllTasksByProjectId(props.id);
     const lanes: any = {};
     const map = new Map<string, Array<TaskCollaborator>>();
     await Promise.all(

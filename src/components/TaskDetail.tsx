@@ -126,7 +126,7 @@ export const TaskDetail = ({ }: TaskDetailProps) => {
 
           </div>
           <div className={`flex pt-3`}><NewCommentBox MyAvator={img_address} /></div>
-          <div className={`flex w-auto pb-5 justify-items-center`}>
+          <div className={`flex pb-5 w-auto justify-items-center`}>
             <Button
               theme={"blue"}
               label={"Create"}

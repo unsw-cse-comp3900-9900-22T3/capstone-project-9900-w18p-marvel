@@ -12,8 +12,8 @@ interface Props {
 }
 
 export const Signin = ({onClickLogin,onClickGoogle,onSwitchMode}:Props)=>{
-    const [email,setEmail] = useState<string>('z5330802@ad.unsw.edu.au')
-    const [password,setPassword] = useState<string>('szh66668888')
+    const [email,setEmail] = useState<string>('')
+    const [password,setPassword] = useState<string>('')
     return (
       <div className="flex flex-col gap-10 w-96 h-fit px-8 py-10 bg-white-100 rounded-[48px]">
         <div className="w-full flex flex-col gap-3 items-center">

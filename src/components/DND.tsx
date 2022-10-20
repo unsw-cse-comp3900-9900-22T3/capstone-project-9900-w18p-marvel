@@ -16,6 +16,7 @@ import {
   createTask,
   deleteAllTask,
   queryAllTasksByProjectId,
+  updateLane,
 } from "../api/task";
 import _ from "lodash";
 import { TaskCard } from "./TaskCard";
@@ -24,6 +25,9 @@ import {
   updateCollaborators,
 } from "../api/collaborator";
 import { urlToFile } from "../utils/converter";
+import { Timestamp } from "firebase/firestore";
+import { CircularProgress } from "@mui/material";
+import { delay } from "../utils/promise";
 
 /**
  * Moves an item from one list to another list.
@@ -34,15 +38,15 @@ const move = (
   droppableSource: any,
   droppableDestination: any
 ) => {
-  const sourceClone = Array.from(source);
-  const destClone = Array.from(destination);
+  const sourceClone = Array.from(source.items);
+  const destClone = Array.from(destination.items);
   const [removed] = sourceClone.splice(droppableSource.index, 1);
 
   destClone.splice(droppableDestination.index, 0, removed);
 
   const result = {};
-  result[droppableSource.droppableId] = sourceClone;
-  result[droppableDestination.droppableId] = destClone;
+  result[droppableSource.droppableId].items = sourceClone;
+  result[droppableDestination.droppableId].items = destClone;
 
   return result;
 };
@@ -66,6 +70,18 @@ const getListStyle = (isDraggingOver) => ({
   width: 250,
 });
 
+const sortByDueDate = (list: Array<Task>) => {
+  const _list = _.cloneDeep(list);
+  console.log(
+    list.map((l) => {
+      const timestamp = l.dueDate as Timestamp;
+      return timestamp;
+    })
+  );
+  // _list.sort((a: Task, b: Task) => a.dueDate.getTime() - b.dueDate.getTime());
+  return _list;
+};
+
 export function DND(props) {
   const [data, setData] = useState<{}>({});
   const [collaboratorLists, setCollaboratorLists] =
@@ -73,75 +89,95 @@ export function DND(props) {
   const { user } = useApp();
 
   const fetchData = async () => {
-    console.log(props.id)
+    console.log(props.id);
     const tasks = await queryAllTasksByProjectId(props.id);
     const lanes: any = {};
     const map = new Map<string, Array<TaskCollaborator>>();
-    await Promise.all(
-      tasks.map(async (t) => {
-        if (!(t.laneName in lanes)) {
-          lanes[t.laneName] = [];
-        }
-        lanes[t.laneName].push(t);
-      })
-    );
+    tasks.map((t) => {
+      if (!(t.laneName in lanes)) {
+        lanes[t.laneName] = { loading: true, items: [] };
+      }
+      lanes[t.laneName].items.push(t);
+    });
     await Promise.all(
       tasks.map(async (t) => {
         const collaborators = await queryCollaboratorsInTask(t.id);
-        console.log(collaborators);
         collaborators.map((c) => {
           map.set(t.id, collaborators);
         });
       })
     );
+    
     setCollaboratorLists(map);
-    setData(lanes);
+    console.log("1",lanes)
+    // setData(lanes);
+    await delay(2000)
+    for (const [key, value] of Object.entries(lanes)) {
+      lanes[key].loading = false;
+    }
+    console.log("2",lanes)
+    setData(lanes)
   };
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  function onDragEnd(result) {
+  async function onDragEnd(result) {
     const { source, destination } = result;
 
     // dropped outside the list
     if (!destination) {
       return;
     }
+
     const sourceId = source.droppableId;
     const destinationId = destination.droppableId;
-    console.log(sourceId, destinationId);
-
+    let newState = _.cloneDeep(data);
+    newState[sourceId].loading = true
+    newState[destinationId].loading = true
     if (sourceId === destinationId) {
-      const items = reorder(data[sourceId], source.index, destination.index);
-      const newState = _.cloneDeep(data);
-      newState[sourceId] = items;
+      let items = reorder(data[sourceId].items, source.index, destination.index);
+      items = sortByDueDate(items);
+      newState[sourceId].items = items;
       setData(newState);
     } else {
+      updateLane(data[sourceId].items[source.index].id, destinationId);
       const result = move(
         data[sourceId],
         data[destinationId],
         source,
         destination
       );
-      console.log(result);
-      const newState = _.cloneDeep(data);
-      newState[sourceId] = result[sourceId];
-      newState[destinationId] = result[destinationId];
+      newState[sourceId] = sortByDueDate(result[sourceId]);
+      newState[destinationId] = sortByDueDate(result[destinationId]);
 
       setData(newState);
     }
+    for (const [key, value] of Object.entries(newState)) {
+      newState[key].loading = false;
+    }
+    await delay(1000)
+    setData(newState);
+
   }
 
   return (
     <div>
       <div className="flex flex-row h-full gap-4">
         <DragDropContext onDragEnd={onDragEnd}>
-          {Object.entries(data).map(([key, tasks]) => (
+          {Object.entries(data).map(([key, lane]) => (
             <Droppable key={key} droppableId={`${key}`}>
               {(provided: any, snapshot: any) => (
-                <div className="h-full py-[72px] px-6 rounded-3xl bg-gray-50 relative">
+                <div className="h-full py-[72px] px-6 rounded-3xl bg-gray-50 relative overflow-hidden">
+                  {lane?.loading && (
+                    <div className="transition absolute inset-0 bg-white-100 opacity-95 z-50">
+                      <div className="flex w-full h-full flex-col justify-center items-center gap-4">
+                        <span>Reordering By Due Date</span>
+                        <CircularProgress />
+                      </div>
+                    </div>
+                  )}
                   <div className="absolute left-6 top-6 font-bold text-base text-gray-100">
                     {key}
                   </div>
@@ -150,7 +186,7 @@ export function DND(props) {
                     {...provided.droppableProps}
                     className="scroll flex flex-col h-full gap-4 overflow-scroll overflow-x-hidden "
                   >
-                    {tasks?.map((item: Task, index: number) => (
+                    {lane?.items?.map((item: Task, index: number) => (
                       <Draggable
                         key={item.id}
                         draggableId={item.id}

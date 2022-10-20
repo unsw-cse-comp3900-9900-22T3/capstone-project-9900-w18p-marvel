@@ -1,4 +1,5 @@
 import { User as FirebaseUser } from "firebase/auth";
+import { Timestamp } from "firebase/firestore";
 
 export type Status = "start" | "blocked" | "complete";
 export type Role = "owner" | "editor" | "viewer"

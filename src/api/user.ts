@@ -70,7 +70,7 @@ export const updateUserProfile = async (
           }
           uploadFile(
             image,
-            "image",
+            "avatar",
             () => {},
             (error) => {
               console.log("updateUser:error:", error);

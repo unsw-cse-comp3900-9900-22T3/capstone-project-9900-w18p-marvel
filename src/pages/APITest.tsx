@@ -2,9 +2,12 @@ import { faker } from "@faker-js/faker";
 import { useEffect, useState } from "react";
 import { uid } from "uid";
 import {
+  queryAllCollaborators,
+  queryCollaboratorsInTask,
   removeAllCollaborator,
   updateCollaborators,
 } from "../api/collaborator";
+import { addComment, deleteAllComment } from "../api/comment";
 import {
   createProject,
   deleteAllProject,
@@ -14,9 +17,10 @@ import { deleteAllFile, downloadFile, uploadFile } from "../api/storage";
 import {
   createTask,
   deleteAllTask,
+  queryAllTasks,
   queryAllTasksByProjectId,
 } from "../api/task";
-import { Project, Task } from "../api/type";
+import { Comment, Project, Task } from "../api/type";
 import {
   getUser,
   queryAllUsers,
@@ -154,6 +158,17 @@ export const APITest = () => {
       });
   };
 
+  const genComment = async ()=>{
+    await deleteAllComment()
+    const collaborators = await queryAllCollaborators("")
+    await Promise.all(collaborators.map(async (c)=>{
+      console.log(c)
+      const cm = {id:uid(20),createdAt:new Date(),createdBy:c.userId,content:faker.lorem.sentence(),taskId:c.taskId} as Comment
+      addComment(cm.id,cm.taskId,cm.createdBy,cm.content)
+    }))
+    console.log("operation complete")
+  }
+
   return (
     <div className="flex flex-col gap-2 p-4">
       <Button
@@ -238,6 +253,18 @@ export const APITest = () => {
         onClick={() => {
           if (user?.uid) {
             deleteAll();
+          } else {
+            alert("user is null");
+          }
+        }}
+      />
+        <Button
+        theme={"blue"}
+        size={"hug"}
+        label={"Gen Comments"}
+        onClick={() => {
+          if (user?.uid) {
+            genComment();
           } else {
             alert("user is null");
           }

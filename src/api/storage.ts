@@ -127,17 +127,17 @@ export const deleteAllFile = (
       // Uh-oh, an error occurred!
     });
 
-  // listAll(fileRef)
-  //   .then((res) => {
-  //     res.prefixes.forEach((folderRef) => {
-  //       // All the prefixes under listRef.
-  //       // You may call listAll() recursively on them.
-  //     });
-  //     res.items.forEach((itemRef) => {
-  //       deleteObject(itemRef);
-  //     });
-  //   })
-  //   .catch((error) => {
-  //     // Uh-oh, an error occurred!
-  //   });
+  listAll(fileRef)
+    .then((res) => {
+      res.prefixes.forEach((folderRef) => {
+        // All the prefixes under listRef.
+        // You may call listAll() recursively on them.
+      });
+      res.items.forEach((itemRef) => {
+        deleteObject(itemRef);
+      });
+    })
+    .catch((error) => {
+      // Uh-oh, an error occurred!
+    });
 };

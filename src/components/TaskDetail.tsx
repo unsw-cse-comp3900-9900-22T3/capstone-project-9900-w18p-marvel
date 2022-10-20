@@ -27,7 +27,6 @@ const uplodaicon = "https://cdn-icons-png.flaticon.com/128/1702/1702912.png"
 
 export const TaskDetail = ({ }: TaskDetailProps) => {
   const [isEditing, setIsEditing] = useState(true);
-  const [open, setOpen] = useState(false)
   const [inputcomment, setInputComment] = useState("");
 
   const TaskDetail = [
@@ -63,9 +62,7 @@ export const TaskDetail = ({ }: TaskDetailProps) => {
 
           </div>
 
-          <div className={`flex pt-20`} onClick={() => {
-            setOpen(true)
-          }}>
+          <div className={`flex pt-20`}>
             {TaskDetail.map((item) => (
               <TaskInfoBlock
                 TaskID={item.TaskID}
@@ -101,7 +98,7 @@ export const TaskDetail = ({ }: TaskDetailProps) => {
 
           <div className={`flex pl-2 pt-3`}><NewUploadedCard /></div>
 
-          <div className={`ustify-items-start pt-20 pb-5`}>
+          <div className={`justify-items-start pt-20 pb-5`}>
             <TotalCommentItem TotalComment={TotalComment}></TotalCommentItem>
           </div>
 
@@ -119,13 +116,13 @@ export const TaskDetail = ({ }: TaskDetailProps) => {
 
           </div>
           <div className={`flex pt-3`}><NewCommentBox MyAvator={img_address} /></div>
-          <div className={`flex pb-5 w-auto justify-items-center`}>
+          <div className={`flex pb-5 w-auto items-end`}>
             <Button
               theme={"blue"}
               label={"Create"}
               onClick={() => {
               }}
-              size={"fill"}
+              size={"hug"}
             ></Button>
           </div>
         </div>

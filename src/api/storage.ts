@@ -8,7 +8,7 @@ import {
 } from "firebase/storage";
 import { uid } from "uid";
 
-export type FileType = "image" | "file" | "avatar";
+export type FileType = "image" | "file" | "avatar"|"attachment";
 export type DownloadType = "url" | "file";
 
 export const uploadFile = (
@@ -26,6 +26,8 @@ export const uploadFile = (
       folderName = "images";
     } else if (type === "avatar") {
       folderName = "avatars";
+    }else if (type === "attachment") {
+      folderName = "attachments";
     }
     const storage = getStorage();
     const name = uid(20);

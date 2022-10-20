@@ -25,8 +25,8 @@ export const addAttachment = async (
   const db = getFirestore(app);
 
   if (file) {
-    uploadFile(file, "file", onProgress, onError, async (url) => {
-      await addDoc(collection(db, "comments"), {
+    uploadFile(file, "attachment", onProgress, onError, async (url) => {
+      await addDoc(collection(db, "attachments"), {
         createdAt: new Date(),
         createdBy: userId,
         resourceUrl: url,
@@ -48,9 +48,9 @@ export const deleteAttachment = async (
   const attachment = await getAttachment(attachmentId);
   if (attachment) {
     deleteFile(
-      attachment.image.storagePath,
+      attachment.resource.storagePath,
       async (storagePath) => {
-        await deleteDoc(doc(db, "comments", attachmentId));
+        await deleteDoc(doc(db, "attachments", attachmentId));
         onComplete?.(storagePath);
       },
       (error) => {
@@ -58,6 +58,28 @@ export const deleteAttachment = async (
       }
     );
   }
+};
+
+export const deleteAllAttachment = async () => {
+  const app = getApp();
+  const db = getFirestore(app);
+
+  const querySnapshot = await getDocs(collection(db, "attachments"));
+  const data: Array<Attachment> = [];
+  querySnapshot.forEach((doc) => {
+    data.push({ id: doc.id, ...doc.data(),createdAt:doc.data().createdAt.toDate() } as Attachment);
+  });
+  data.forEach((d) => {
+    if(d.resource?.storagePath){
+      deleteFile(
+        d.resource.storagePath,
+        async (storagePath) => {
+          await deleteDoc(doc(db, "attachments", d.id));
+        },
+        (error) => {}
+      );
+    }
+  });
 };
 
 export const getAttachment: (
@@ -69,7 +91,7 @@ export const getAttachment: (
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    return { id: attachmentId, ...docSnap.data() } as Attachment;
+    return { id: attachmentId, ...docSnap.data(),createdAt:doc.data().createdAt.toDate() } as Attachment;
   } else {
     return null;
   }
@@ -77,15 +99,15 @@ export const getAttachment: (
 
 export const queryAttachment: (
   taskId: string
-) => Promise<Array<Comment>> = async (taskId: string) => {
+) => Promise<Array<Attachment>> = async (taskId: string) => {
   const app = getApp();
   const db = getFirestore(app);
-  const q = query(collection(db, "comments"), where("taskId", "==", taskId));
+  const q = query(collection(db, "attachments"), where("taskId", "==", taskId));
 
   const querySnapshot = await getDocs(q);
-  const data: Array<Comment> = [];
+  const data: Array<Attachment> = [];
   querySnapshot.forEach((doc) => {
-    data.push({ id: doc.id, ...(doc.data() as Comment) } as Comment);
+    data.push({ id: doc.id, ...doc.data(),createdAt:doc.data().createdAt.toDate() } as Attachment);
   });
   return data;
 };

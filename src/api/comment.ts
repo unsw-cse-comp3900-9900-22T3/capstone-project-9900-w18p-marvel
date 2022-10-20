@@ -41,7 +41,7 @@ export const queryAllComments: () => Promise<Array<Comment>> = async () => {
   const querySnapshot = await getDocs(collection(db, "comments"));
   const data: Array<Comment> = [];
   querySnapshot.forEach((doc) => {
-    data.push({ id: doc.id, ...doc.data() } as Comment);
+    data.push({ id: doc.id, ...doc.data(),createdAt:doc.data().createdAt.toDate() } as Comment);
   });
 
   return data;
@@ -57,7 +57,7 @@ export const queryComment: (taskId: string) => Promise<Array<Comment>> = async (
   const querySnapshot = await getDocs(q);
   const data: Array<Comment> = [];
   querySnapshot.forEach((doc) => {
-    data.push({ id: doc.id, ...doc.data() } as Comment);
+    data.push({ id: doc.id, ...doc.data(),createdAt:doc.data().createdAt.toDate() } as Comment);
   });
   return data;
 };

@@ -81,7 +81,12 @@ export const queryAllTasks: () => Promise<Array<Task>> = async () => {
   const querySnapshot = await getDocs(collection(db, "tasks"));
   const data: Array<Task> = [];
   querySnapshot.forEach((doc) => {
-    data.push({ id: doc.id, ...doc.data() } as Task);
+    data.push({
+      id: doc.id,
+      ...doc.data(),
+      dueDate: doc.data().dueData.toDate(),
+      createdAt: doc.data().createdAt.toDate(),
+    } as Task);
   });
 
   return data;
@@ -105,7 +110,12 @@ export const queryAllTasksByProjectId: (
   const querySnapshot = await getDocs(q);
   const data: Array<Task> = [];
   querySnapshot.forEach((doc) => {
-    data.push({ id: doc.id, ...doc.data() } as Task);
+    data.push({
+      id: doc.id,
+      ...doc.data(),
+      dueDate: doc.data().dueData.toDate(),
+      createdAt: doc.data().createdAt.toDate(),
+    } as Task);
   });
   return data;
 };
@@ -130,7 +140,12 @@ export const deleteLane: (laneName: string, projectId: string) => void = async (
   const querySnapshot = await getDocs(q);
   const data: Array<Task> = [];
   querySnapshot.forEach((doc) => {
-    data.push({ id: doc.id, ...doc.data() } as Task);
+    data.push({
+      id: doc.id,
+      ...doc.data(),
+      dueDate: doc.data().dueData.toDate(),
+      createdAt: doc.data().createdAt.toDate(),
+    } as Task);
   });
   data.forEach(async (item) => {
     await deleteDoc(doc(db, "tasks", item.id));

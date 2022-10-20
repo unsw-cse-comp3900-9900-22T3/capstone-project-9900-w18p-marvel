@@ -66,9 +66,9 @@ export interface TaskCollaborator{
 
 export interface Attachment{
     id:string
-    createdAy:Date
+    createdAt:Date
     createdBy:string
-    image:Resource
+    resource:Resource
     taskId:string
 }
 

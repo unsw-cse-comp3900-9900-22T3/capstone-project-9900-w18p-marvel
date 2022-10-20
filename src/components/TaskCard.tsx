@@ -9,6 +9,7 @@ import { Status, TaskCollaborator } from "../api/type";
 import { useEffect, useState } from "react";
 import { getUser } from "../api/user";
 import { uid } from "uid";
+import { queryAttachment } from "../api/attachment";
 
 interface TaskCardProps {
   id: string;
@@ -54,6 +55,7 @@ const TaskCard = ({
       : 0;
 
   const [avatars, setAvatars] = useState<Array<string>>();
+  const [attachmentCount, setAttachmentCount] = useState<number>(0);
   const getAvatars = async (_avatars: Array<string>) => {
     const list: Array<string> = [];
     await Promise.all(
@@ -69,6 +71,12 @@ const TaskCard = ({
 
     setAvatars(list);
   };
+  const getAttachmentCount = async (taskId: string) => {
+    const attachments = await queryAttachment(taskId);
+    if (attachments) {
+      setAttachmentCount(attachments.length);
+    }
+  };
 
   useEffect(() => {
     if (collaborators?.length > 0) {
@@ -76,6 +84,10 @@ const TaskCard = ({
       getAvatars(uids);
     }
   }, [collaborators]);
+
+  useEffect(() => {
+    getAttachmentCount(id);
+  }, []);
 
   return (
     <div
@@ -103,7 +115,7 @@ const TaskCard = ({
               sx={{ width: "16px", height: "16px", textColor: "inherit" }}
             />
           }
-          label="5"
+          label={attachmentCount.toString()}
           theme="default"
         />
         <Chip

@@ -36,7 +36,7 @@ export const queryAllProjects: () => Promise<Array<Project>> = async () => {
   const querySnapshot = await getDocs(collection(db, "projects"));
   const projects: Array<Project> = [];
   querySnapshot.forEach((doc) => {
-    projects.push({ id: doc.id, ...doc.data() } as Project);
+    projects.push({ id: doc.id, ...doc.data(),createdAt:doc.data().createdAt.toDate() } as Project);
   });
 
   return projects;
@@ -51,7 +51,7 @@ export const queryMyProjects: (
   const querySnapshot = await getDocs(collection(db, "projects"));
   const projects: Array<Project> = [];
   querySnapshot.forEach((doc) => {
-    projects.push({ id: doc.id, ...doc.data() } as Project);
+    projects.push({ id: doc.id, ...doc.data(),createdAt:doc.data().createdAt.toDate() } as Project);
   });
 
   const myProjects: Array<Project> = [];

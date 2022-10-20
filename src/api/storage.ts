@@ -2,6 +2,7 @@ import {
   deleteObject,
   getDownloadURL,
   getStorage,
+  listAll,
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
@@ -15,14 +16,14 @@ export const uploadFile = (
   type: FileType,
   onProgress: (progress: number) => void,
   onError: (error: any) => void,
-  onComplete: (downloadURL:string,storagePath: string) => void
+  onComplete: (downloadURL: string, storagePath: string) => void
 ) => {
   if (file) {
     let folderName = "";
     if (type === "file") {
-      folderName = "file";
+      folderName = "files";
     } else if (type === "image") {
-      folderName = "image";
+      folderName = "images";
     }
     const storage = getStorage();
     const name = uid(20);
@@ -34,16 +35,12 @@ export const uploadFile = (
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes);
-          onProgress?.(progress);
-        console.log("Upload is " + progress + "% done");
+        const progress = snapshot.bytesTransferred / snapshot.totalBytes;
+        onProgress?.(progress);
         switch (snapshot.state) {
           case "paused":
-            console.log("Upload is paused");
             break;
           case "running":
-            console.log("Upload is running");
             break;
         }
       },
@@ -51,10 +48,10 @@ export const uploadFile = (
         onError?.(error);
       },
       () => {
-        getDownloadURL(ref(storage, storagePath)).then((url)=>{
-          console.log("upload complete:",url)
-          onComplete?.(url,storagePath);
-        })
+        getDownloadURL(ref(storage, storagePath)).then((url) => {
+          console.log("upload complete:", url);
+          onComplete?.(url, storagePath);
+        });
       }
     );
   }
@@ -103,4 +100,42 @@ export const deleteFile = (
     .catch((error) => {
       onError?.(error);
     });
+};
+
+export const deleteAllFile = (
+  onComplete?: (storagePath: string) => void,
+  onError?: (error: any) => void
+) => {
+  const storage = getStorage();
+  const imgRef = ref(storage, "image");
+  const fileRef = ref(storage, "files");
+
+  // Find all the prefixes and items.
+  listAll(imgRef)
+    .then((res) => {
+      res.prefixes.forEach((folderRef) => {
+        // All the prefixes under listRef.
+        // You may call listAll() recursively on them.
+      });
+      res.items.forEach((itemRef) => {
+        deleteObject(itemRef);
+      });
+    })
+    .catch((error) => {
+      // Uh-oh, an error occurred!
+    });
+
+  // listAll(fileRef)
+  //   .then((res) => {
+  //     res.prefixes.forEach((folderRef) => {
+  //       // All the prefixes under listRef.
+  //       // You may call listAll() recursively on them.
+  //     });
+  //     res.items.forEach((itemRef) => {
+  //       deleteObject(itemRef);
+  //     });
+  //   })
+  //   .catch((error) => {
+  //     // Uh-oh, an error occurred!
+  //   });
 };

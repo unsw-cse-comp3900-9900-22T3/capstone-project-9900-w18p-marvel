@@ -17,10 +17,10 @@ export interface Resource{
 }
 export interface Task {
     id:string
-    createdAt:Date|Timestamp
+    createdAt:Date
     createdBy:string
     description:string
-    dueDate:Date|Timestamp
+    dueDate:Date
     projectId:string
     laneName:string
     status:Status
@@ -30,7 +30,7 @@ export interface Task {
 
 export interface Project {
     id:string
-    createdAt:Date|Timestamp
+    createdAt:Date
     createdBy:string
     cover:Resource
     title:string
@@ -38,21 +38,21 @@ export interface Project {
 
 export interface Invitation{
     id:string
-    createdAt:Date|Timestamp
+    createdAt:Date
     createdBy:string
     inviteeId:string
 }
 
 export interface Connection{
     id:string
-    createdAt:Date|Timestamp
+    createdAt:Date
     createdBy:string
     approvedBy:string
 }
 
 export interface Comment {
     id:string
-    createdAt:Date|Timestamp
+    createdAt:Date
     createdBy:string
     content:string
     taskId:string
@@ -66,7 +66,7 @@ export interface TaskCollaborator{
 
 export interface Attachment{
     id:string
-    createdAy:Date|Timestamp
+    createdAy:Date
     createdBy:string
     image:Resource
     taskId:string

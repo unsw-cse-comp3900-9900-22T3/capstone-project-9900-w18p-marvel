@@ -1,13 +1,16 @@
 import { faker } from "@faker-js/faker";
 import { useEffect, useState } from "react";
 import { uid } from "uid";
-import { removeAllCollaborator, updateCollaborators } from "../api/collaborator";
+import {
+  removeAllCollaborator,
+  updateCollaborators,
+} from "../api/collaborator";
 import {
   createProject,
   deleteAllProject,
   queryAllProjects,
 } from "../api/project";
-import { downloadFile, uploadFile } from "../api/storage";
+import { deleteAllFile, downloadFile, uploadFile } from "../api/storage";
 import {
   createTask,
   deleteAllTask,
@@ -22,7 +25,7 @@ import {
 } from "../api/user";
 import { useApp } from "../App";
 import { Button } from "../components/Button";
-import { sample } from "../utils/array";
+import { sample, sampleMultiple } from "../utils/array";
 import { urlToFile } from "../utils/converter";
 
 export const APITest = () => {
@@ -37,11 +40,18 @@ export const APITest = () => {
   }, [user]);
   const [file, setFile] = useState<File>();
 
+  const deleteAll = ()=>{
+    deleteAllProject();
+    removeAllCollaborator();
+    deleteAllTask();
+    deleteAllFile();
+  }
+
   const genProjects = async () => {
     await deleteAllProject();
     const allUsers = await queryAllUsers("");
     console.log("alluser:", allUsers);
-    const dummyImageURL = Array(100)
+    const dummyImageURL = Array(500)
       .fill(0)
       .map((n) => faker.image.image(500, 500, true));
     let files: Array<File> = [];
@@ -53,7 +63,7 @@ export const APITest = () => {
     );
     console.log("image gened:", files);
 
-    const dummyProjects = Array(25)
+    const dummyProjects = Array(100)
       .fill(0)
       .map((n) => {
         const file = sample(files);
@@ -82,12 +92,12 @@ export const APITest = () => {
   };
 
   const genTasks = async () => {
-    await removeAllCollaborator()
+    await removeAllCollaborator();
     await deleteAllTask();
     const allUsers = await queryAllUsers("");
     console.log("alluser:", allUsers);
     const projects = await queryAllProjects();
-    const dummyImageURL = Array(100)
+    const dummyImageURL = Array(200)
       .fill(0)
       .map((n) => faker.image.image(500, 500, true));
     let files: Array<File> = [];
@@ -98,7 +108,7 @@ export const APITest = () => {
       })
     );
     console.log("image gened:", files);
-    const dummyTasks = Array(500)
+    const dummyTasks = Array(5000)
       .fill(0)
       .map((n) => {
         const file = sample(files);
@@ -133,7 +143,10 @@ export const APITest = () => {
               file
             );
             await updateCollaborators(
-              allUsers!.map((u) => u.uid),
+              sampleMultiple(
+                allUsers!.map((u) => u.uid),
+                Math.floor(Math.random() * 9) + 1
+              ),
               data.id
             );
           }
@@ -206,13 +219,25 @@ export const APITest = () => {
           }
         }}
       />
-       <Button
+      <Button
         theme={"blue"}
         size={"hug"}
         label={"Gen Fake Tasks"}
         onClick={() => {
           if (user?.uid) {
             genTasks();
+          } else {
+            alert("user is null");
+          }
+        }}
+      />
+      <Button
+        theme={"blue"}
+        size={"hug"}
+        label={"Delete All!!!"}
+        onClick={() => {
+          if (user?.uid) {
+            deleteAll();
           } else {
             alert("user is null");
           }

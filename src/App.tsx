@@ -38,6 +38,8 @@ interface ContextProps {
   user: User | null;
   setUser: Function | null;
   invitations: Array<any>;
+  projectId:string;
+  setProjectId:Function|null;
 }
 
 const AppContext = React.createContext<ContextProps>({
@@ -47,6 +49,8 @@ const AppContext = React.createContext<ContextProps>({
   user: null,
   setUser: null,
   invitations: [],
+  projectId:"",
+  setProjectId:null,
 });
 
 export function useApp() {
@@ -58,6 +62,7 @@ export function App() {
   const [user, setUser] = useState<User | null>(null);
   const [invitations, setInvitations] = useState<Array<any>>([]);
   const [inited, setInited] = useState<boolean>(false);
+  const [projectId, setProjectId] = useState<string>("");
 
   const firebaseConfig = {
     apiKey: "AIzaSyB71hVo6nDG7esBu5XAmwmwBGj0WC3eXys",
@@ -141,6 +146,8 @@ export function App() {
       user,
       setUser,
       invitations,
+      projectId,
+      setProjectId,
     };
   }, [authorized, user, invitations]);
 

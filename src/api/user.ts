@@ -8,6 +8,7 @@ import {
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -174,4 +175,6 @@ export const answerConnection = async (
     }
   } else {
   }
+
+  await deleteDoc(doc(db, "invitations", invitationId));
 };

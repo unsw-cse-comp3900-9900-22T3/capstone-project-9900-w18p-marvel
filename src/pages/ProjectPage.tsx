@@ -79,7 +79,7 @@ export const ProjectPage = ({}: ProjectProps) => {
               title={item.title}
               id={item.id}
               createdBy={item.createdBy}
-              onClick={async () => {
+              onClick={() => {
                 setProjectId?.(item.id);
                 navigate("/projects/"+item.id);
               }}

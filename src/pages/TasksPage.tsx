@@ -9,6 +9,7 @@ import { Popup } from "../components/Popup";
 import { TaskDetail } from "../components/TaskDetail";
 import { DND } from "../components/DND";
 import { useParams } from "react-router-dom";
+import { ProjectUserList } from "../components/ProjectUserList";
 
 interface Props {}
 
@@ -17,6 +18,7 @@ export const TasksPage = ({}: Props) => {
   const { user } = useApp();
   const [data, setData] = useState(["Todo", "On Going"]);
   const [open, setOpen] = useState(false);
+  
   return (
     <>
       <div className="w-full h-full flex flex-row gap-6 bg-white-100">
@@ -25,6 +27,7 @@ export const TasksPage = ({}: Props) => {
       <Popup open={open} onClose={() => setOpen(false)}>
         <TaskDetail />
       </Popup>
+      
     </>
   );
 };

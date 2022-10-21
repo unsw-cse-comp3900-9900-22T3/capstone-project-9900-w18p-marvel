@@ -4,28 +4,65 @@ import { Input } from "./Input";
 import { useEffect, useState } from "react";
 import { delay } from "../utils/promise";
 import _ from "lodash";
+import {
+  queryActiveCollaboratorsInProject,
+  queryAllCollaborators,
+} from "../api/collaborator";
+import { getUser, queryAllUsers } from "../api/user";
 
 interface Props {
-  taskId: string;
+  projectId: string;
   onConfirm: (collaborators: Array<string>) => void;
 }
 
-export const UserList = ({ taskId, onConfirm }: Props) => {
+export const ProjectUserList = ({ projectId, onConfirm }: Props) => {
   const [data, setData] = useState<any>([]);
+  const [keyword, setKeyword] = useState<string>("");
   const [selected, setSelected] = useState<Array<string>>([]);
+
+  const fetch = async () => {
+    const collaborators = await (
+      await queryAllUsers(keyword)
+    ).map((c) => c.uid);
+    const activeCollabs = await (
+      await queryActiveCollaboratorsInProject(projectId)
+    ).map((c) => c.userId);
+    const unselected = collaborators
+      .filter((x) => !activeCollabs.includes(x!))
+      .map((item) => ({ id: item, selected: false }));
+    const selected = collaborators
+      .filter((x) => activeCollabs.includes(x!))
+      .map((x) => ({ id: x, selected: true }));
+    const all = unselected.concat(selected);
+    let users: any = [];
+    await Promise.all(
+      all.map(async (c) => {
+        const info = await getUser(c.id!);
+        users.push({ ...info, selected: c.selected });
+      })
+    );
+    setData(users);
+  };
+
+  useEffect(() => {}, [projectId]);
 
   return (
     <div className="flex flex-col gap-0 w-72 bg-white-100 rounded-3xl">
       <div className="h-20 w-full py-3 px-3">
-        <Input type={"text"} onChange={async (val: string) => {}} />
+        <Input
+          type={"text"}
+          onChange={async (val: string) => {
+            setKeyword(val);
+          }}
+        />
       </div>
       <div className="h-0 w-full border-t border-gray-100"></div>
       <div className="w-full flex flex-col pt-6 pb-7 pl-7 pr-9 gap-6">
         {data.map((item: any) => (
           <UserListItem
-            src={item.src}
-            name={item.name}
-            description={item.description}
+            src={item.photo.downloadURL}
+            name={item.displayName}
+            description={item.email}
             onValueChange={(val: boolean) => {
               if (val) {
                 const _copy = _.cloneDeep(selected);
@@ -38,6 +75,7 @@ export const UserList = ({ taskId, onConfirm }: Props) => {
                 setSelected(_copy);
               }
             }}
+            defaultSelected={item.selected}
           ></UserListItem>
         ))}
       </div>

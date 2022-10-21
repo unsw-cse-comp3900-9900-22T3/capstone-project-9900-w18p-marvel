@@ -6,9 +6,10 @@ interface Props {
     name:string
     description:string
     onValueChange?:(val:boolean)=>void
+    defaultSelected:boolean
 }
 
-export const UserListItem = ({src,name,description,onValueChange}:Props)=>{
+export const UserListItem = ({src,name,description,onValueChange,defaultSelected}:Props)=>{
     return (
         <div className="flex flex-row items-center w-fill h-11 justify-between">
             <div className="flex items-center">
@@ -20,7 +21,7 @@ export const UserListItem = ({src,name,description,onValueChange}:Props)=>{
             </div>
             
             <div className="flex">
-                <div><Checkbox defaultValue={false} onValueChange={(val:boolean)=>{onValueChange?.(val)}}/></div>
+                <div><Checkbox defaultValue={defaultSelected} onValueChange={(val:boolean)=>{onValueChange?.(val)}}/></div>
             </div>
         </div>
     )

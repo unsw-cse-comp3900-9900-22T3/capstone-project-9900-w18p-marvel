@@ -14,7 +14,7 @@ type Rounded =
 interface Props{
     size:Size
     rounded:Rounded
-    src:string
+    src?:string
     onClick?:()=>void
 }
 
@@ -37,7 +37,7 @@ const roundedMapping = new Map<Rounded,string>(
 
 const hover = ""
 
-export const Avatar = ({ size, rounded, src, onClick }: Props) => {
+export const Avatar = ({ size, rounded, src="", onClick }: Props) => {
   return (
     <div className="select-none">
       <img

@@ -18,7 +18,7 @@ export const Home = ({ children }: HomeProps) => {
   const [projectPopupOpen, setProjectPopupOpen] = useState<boolean>(false);
   const [memberPopupOpen, setMemberPopupOpen] = useState<boolean>(false);
   useEffect(() => {
-    console.log(projectId);
+    console.log("xxxyyy",projectId);
   }, [projectId]);
   return (
     <>

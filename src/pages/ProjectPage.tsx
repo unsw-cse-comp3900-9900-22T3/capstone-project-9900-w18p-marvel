@@ -80,6 +80,7 @@ export const ProjectPage = ({}: ProjectProps) => {
               id={item.id}
               createdBy={item.createdBy}
               onClick={() => {
+                console.log("zzz",setProjectId,item.id)
                 setProjectId?.(item.id);
                 navigate("/projects/"+item.id);
               }}

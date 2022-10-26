@@ -6,8 +6,8 @@ interface TotalCommentItemProps {
     TotalComment: string;
 }
 
-const TotalCommentItem = ({ }: TotalCommentItemProps) => {
-    const TotalComment = '2'
+const TotalCommentItem = ({ TotalComment }: TotalCommentItemProps) => {
+
     return (
 
         <div className={`flex flex-row w-full gap-4 pl-2`}>

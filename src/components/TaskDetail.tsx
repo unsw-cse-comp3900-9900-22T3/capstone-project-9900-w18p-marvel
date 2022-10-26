@@ -7,14 +7,24 @@ import { Button } from "./Button";
 import { TotalCommentItem } from "./TotalCommentItem";
 import { Popup } from "./Popup";
 import { UserList } from "./UserList";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextInput } from "./TextInput";
 import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
 import Dropdownlist_mui from "./Dropdownlist_mui";
+import { getUser } from "../api/user";
+import { useApp } from "../App";
+
+
+
+import {
+  queryComment
+} from "../api/comment";
+import { Timestamp } from "firebase/firestore";
 
 
 
 interface TaskDetailProps {
+  id: string;
 }
 
 
@@ -25,9 +35,31 @@ const uploadedcardpic = "https://icons.veryicon.com/png/o/miscellaneous/real-coo
 const uplodaicon = "https://cdn-icons-png.flaticon.com/128/1702/1702912.png"
 
 
-export const TaskDetail = ({ }: TaskDetailProps) => {
+//export const TaskDetail = ({ }: TaskDetailProps) => {
+//const props = [{ id: "144d3881144d702d618d" }]
+export function TaskDetail({
+  id = "144d3881144d702d618d"
+}: TaskDetailProps) {
+
+
   const [isEditing, setIsEditing] = useState(true);
-  const [inputcomment, setInputComment] = useState("");
+  const [inputcomment, setInputComment] = useState(true);
+  const { user, setUser } = useApp(); //useApp
+
+
+
+
+
+  const fetchData = async () => {
+    console.log(id);
+    const allcomments = await queryComment(id);
+    console.log(allcomments)
+    setInputComment(allcomments)
+
+
+  }
+
+
 
   const TaskDetail = [
     { TaskID: 1234, TaskName: "Marvel Task Management", Assignee: [{ name: "Lisa", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }], DueDate: "22/02/2023", Description: "123kwnflkwfnlkwnfklwnflwln" }
@@ -35,10 +67,10 @@ export const TaskDetail = ({ }: TaskDetailProps) => {
 
 
   const CommentorData = [
-    { CommentorID: '1', Name: 'Linda Hsu', CommenterAvator: img_address, Comments: '@11', CommentDate: '10/12/2023' },
-    { CommentorID: '2', Name: 'Teddy', CommenterAvator: img_address, Comments: '@113', CommentDate: '10/12/2023' },
-    { CommentorID: '3', Name: 'Anthony', CommenterAvator: img_address, Comments: '@1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojn1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojn1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelf1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnwelj1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojnnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojnnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojn fo12', CommentDate: '10/12/2023' },
-    { CommentorID: '4', Name: 'Lisa', CommenterAvator: img_address, Comments: '@11', CommentDate: '10/12/2023' },
+    { CommentorID: '1', Name: 'Linda Hsu', CommenterAvator: img_address, content: '@11', CommentDate: '10/12/2023' },
+    { CommentorID: '2', Name: 'Teddy', CommenterAvator: img_address, content: '@113', CommentDate: '10/12/2023' },
+    { CommentorID: '3', Name: 'Anthony', CommenterAvator: img_address, content: '@1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojn1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojn1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelf1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnwelj1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojnnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojnnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojn fo12', CommentDate: '10/12/2023' },
+    { CommentorID: '4', Name: 'Lisa', CommenterAvator: img_address, content: '@11', CommentDate: '10/12/2023' },
   ]
 
   const UploadedCardDetails = [
@@ -48,13 +80,14 @@ export const TaskDetail = ({ }: TaskDetailProps) => {
 
   ]
 
-  const TotalComment = '1'
 
+  useEffect(() => {
+    fetchData();
+  }, []);
 
 
   return (
     <>
-
       <div className={`flex items-center w-200 rounded-[32px] h-4/5 bg-white-100`}>
         <div className={`flex justify-items-start flex-col px-12 h-full py-5 overflow-auto relative`}>
           <div className={`flex h-auto  absolute`}>
@@ -99,19 +132,24 @@ export const TaskDetail = ({ }: TaskDetailProps) => {
           <div className={`flex pl-2 pt-3`}><NewUploadedCard /></div>
 
           <div className={`justify-items-start pt-20 pb-5`}>
-            <TotalCommentItem TotalComment={TotalComment}></TotalCommentItem>
+            <TotalCommentItem TotalComment={inputcomment.length}></TotalCommentItem>
           </div>
 
           <div className={`flex w-176 h-auto flex-col gap-4`}>
-            {CommentorData.map((item) => (
-              <CommentBox
-                CommentorID={item.CommentorID}
-                CommentDate={item.CommentDate}
-                Name={item.Name}
-                CommenterAvator={item.CommenterAvator}
-                Comments={item.Comments}>
 
+            {inputcomment?.length > 0 && inputcomment.map((item) => (
+
+              < CommentBox
+                TakeId={item.id}
+                CommentorID={item.createdBy}
+                //CommentDate={new Date(item.createdAt?.map((test) => (test.seconds)))}
+                //CommentDate={new Date(item.createdAt.values[seconds])}
+                CommentDate={item.createdAt.seconds.toTime}
+                Comments={item.content}
+                OwnerID={user.uid}
+              >
               </CommentBox>
+
             ))}
 
           </div>
@@ -134,5 +172,5 @@ export const TaskDetail = ({ }: TaskDetailProps) => {
 
   );
 };
-
+<TaskDetail />
 //export { TaskDetail };

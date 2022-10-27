@@ -7,32 +7,39 @@ import { Sidebar } from "../features/Sidebar";
 import { UserList } from "../components/UserList";
 import { ProjectUserList } from "../components/ProjectUserList";
 import { requestConnection } from "../api/user";
+import { Notification } from "../components/Notification";
 
 interface HomeProps {
   children: JSX.Element;
 }
 
 export const Home = ({ children }: HomeProps) => {
-  const { user, projectId } = useApp();
+  const { user, projectId, invitations } = useApp();
   const [collapse, setCollpase] = useState<boolean>(false);
   const [projectPopupOpen, setProjectPopupOpen] = useState<boolean>(false);
   const [memberPopupOpen, setMemberPopupOpen] = useState<boolean>(false);
+  const [notificationPopupOpen, setNotificationPopupOpen] =
+    useState<boolean>(false);
   useEffect(() => {
-    console.log("xxxyyy",projectId);
+    console.log("xxxyyy", projectId);
   }, [projectId]);
   return (
     <>
       <div className="flex flex-row w-full h-full">
         <Sidebar
           onClickManageMember={() => {
-            console.log(projectId);
-            setMemberPopupOpen(true);
+            if (projectId !== "") {
+              setMemberPopupOpen(true);
+            }
           }}
         ></Sidebar>
         <div className="flex flex-col w-full">
           <Navbar
             onClickCreateProject={() => {
               setProjectPopupOpen(true);
+            }}
+            onClickNotification={() => {
+              setNotificationPopupOpen(true);
             }}
           />
           <div className="w-full h-full bg-white-5 rounded-l-2xl relative overflow-hidden">
@@ -52,6 +59,14 @@ export const Home = ({ children }: HomeProps) => {
             setProjectPopupOpen(false);
           }}
         />
+      </Popup>
+      <Popup
+        open={notificationPopupOpen}
+        onClose={() => {
+          setNotificationPopupOpen(false);
+        }}
+      >
+        <Notification invitaions={invitations} userId={user?.uid || ""} />
       </Popup>
       <Popup
         open={memberPopupOpen}

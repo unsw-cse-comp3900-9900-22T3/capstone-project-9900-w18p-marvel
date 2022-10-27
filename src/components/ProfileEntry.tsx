@@ -41,7 +41,7 @@ export const ProfileEntry = ({photoURL,onClickLogout,onClickProfile}:Props)=>{
           ></Avatar>
         </div>
         <div
-          className={`transition-all rounded-2xl absolute bg-white-100 drop-shadow-2xl flex flex-col justify-center items-start w-24 ${
+          className={`transition-all z-50 rounded-2xl absolute bg-white-100 drop-shadow-2xl flex flex-col justify-center items-start w-24 ${
             open ? "h-fit py-2" : "h-0"
           }  top-14 -right-4  overflow-hidden`}
         >

@@ -5,17 +5,19 @@ import { useEffect, useState } from "react";
 import { delay } from "../utils/promise";
 import _ from "lodash";
 import {
+  addCollaborator,
   queryActiveCollaboratorsInProject,
   queryAllCollaborators,
+  queryCollaboratorsInTask,
+  removeCollaborator,
 } from "../api/collaborator";
 import { getUser, queryAllUsers } from "../api/user";
 
 interface Props {
-  projectId: string;
-  onConfirm: (collaborators: Array<string>) => void;
+  taskId: string;
 }
 
-export const ProjectUserList = ({ projectId, onConfirm }: Props) => {
+export const TaskUserList = ({ taskId }: Props) => {
   const [data, setData] = useState<any>([]);
   const [keyword, setKeyword] = useState<string>("");
   const [selected, setSelected] = useState<Array<string>>([]);
@@ -23,7 +25,8 @@ export const ProjectUserList = ({ projectId, onConfirm }: Props) => {
   const fetch = async (keyword: string) => {
     const allUsers = await queryAllUsers(keyword);
     const collaborators = allUsers.map((c) => c.uid);
-    const activeUserIds = await queryActiveCollaboratorsInProject(projectId);
+    const activeCollabs = await queryCollaboratorsInTask(taskId);
+    const activeUserIds = activeCollabs.map((c) => c.userId);
     const unselected = collaborators
       .filter((x) => !activeUserIds.includes(x!))
       .map((item) => ({ id: item, selected: false }));
@@ -41,9 +44,18 @@ export const ProjectUserList = ({ projectId, onConfirm }: Props) => {
     setData(users);
   };
 
+  const onConfirm = async (selected: Array<string>, taskId: string) => {
+    const activeCollabs = await queryCollaboratorsInTask(taskId);
+    const activeUserIds = activeCollabs.map((c) => c.userId);
+    const add = selected.filter((x) => !activeUserIds.includes(x!));
+    const sub = activeUserIds.filter((x) => !selected.includes(x!));
+    add.forEach((id) => addCollaborator(id, taskId));
+    sub.forEach((id) => removeCollaborator(id, taskId));
+  };
+
   useEffect(() => {
     fetch(keyword);
-  }, [projectId]);
+  }, [taskId]);
 
   return (
     <div className="flex flex-col gap-0 w-72 bg-white-100 rounded-3xl ">
@@ -76,7 +88,7 @@ export const ProjectUserList = ({ projectId, onConfirm }: Props) => {
               }
             }}
             defaultSelected={item.selected}
-            checkboxDisabled={item.selected}
+            checkboxDisabled={false}
           ></UserListItem>
         ))}
       </div>
@@ -88,7 +100,7 @@ export const ProjectUserList = ({ projectId, onConfirm }: Props) => {
           rounded="2xl"
           label={"Confirm"}
           onClick={async () => {
-            if (selected.length > 0) onConfirm(selected);
+            onConfirm(selected, taskId);
           }}
         ></Button>
       </div>

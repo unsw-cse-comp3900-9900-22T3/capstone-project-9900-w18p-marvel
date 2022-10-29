@@ -2,17 +2,27 @@ import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined
 import { Avatar } from "./Avatar";
 import { getUser, updateUserProfile } from "../api/user";
 import React, { useEffect, useState } from "react";
+import { useApp } from "../App";
 
 import {
     deleteComment
 } from "../api/comment";
 
+
+
+import {
+    queryComment
+} from "../api/comment";
+
+
 interface CommentboxProps {
-    TakeId?: string;
+    TaskId?: string;
+    CommentId?: string;
     CommentorID?: string;
     Comments?: string;
     CommentDate?: string;
-    OwnerID?: string;
+    OwnerId?: string;
+
 
 }
 
@@ -21,13 +31,29 @@ const img_address = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL9Lo
 
 const waste_icon = "https://freesvg.org/img/trash.png"
 
-const CommentBox = ({ TakeId, Comments, CommentDate, CommentorID, OwnerID }: CommentboxProps) => {
-    const [user, setuser] = useState(true);
+const CommentBox = ({ TaskId, Comments, CommentDate, CommentorID, CommentId, OwnerId }: CommentboxProps) => {
+    const [commnetuser, setcommnetuser] = useState(true);
+    const { user, setUser } = useApp();
+    const [inputcomment, setInputComment] = useState(true);
+
     const fetchData = async () => {
         const userinfo = await getUser(CommentorID);
         console.log(userinfo)
-        setuser(userinfo)
+        setcommnetuser(userinfo)
+        console.log(TaskId)
+        console.log(user?.uid)
+
+
+        const allcomments = await queryComment(TaskId);
+
+        setInputComment(allcomments)
+        console.log(allcomments)
     }
+
+
+
+
+
 
     useEffect(() => {
         fetchData();
@@ -40,16 +66,16 @@ const CommentBox = ({ TakeId, Comments, CommentDate, CommentorID, OwnerID }: Com
             <div className={`flex item-start flex-row w-176 h-auto pl-5 py-5 bg-gray-50 rounded-2xl relative`}>
                 <div className={`flex w-20`}>
                     <Avatar
-                        src={user?.photo?.downloadURL || ""}
+                        src={commnetuser?.photo?.downloadURL || ""}
                         size="lg"
                         rounded="full"
                     />
 
                 </div>
                 <div className={`flex flex-col w-176 h-auto gap-3`}>
-                    <div className={`text-sm font-bold text-lg`}>{user?.displayName ? user?.displayName : "Anonymous"}</div>
+                    <div className={`text-sm font-bold text-lg`}>{commnetuser?.displayName ? commnetuser?.displayName : "Anonymous"}</div>
                     <div className={`text-xs w-149 break-all pr-10 h-auto text-gray-100`}>{Comments}</div>
-                    <div className={`text-xs text-gray-100 pt-1`}>Reply</div>
+
                 </div>
                 <div className={`flex flex-row absolute right-5 items-center`}>
                     <div className={`flex pr-2 text-xs text-gray-100`}>{CommentDate}</div>
@@ -57,7 +83,8 @@ const CommentBox = ({ TakeId, Comments, CommentDate, CommentorID, OwnerID }: Com
                     <div>
 
                         <DeleteForeverOutlinedIcon onClick={() => {
-                            deleteComment(TakeId);
+                            deleteComment(CommentId);
+                            fetchData();
                         }} />
                     </div>
 

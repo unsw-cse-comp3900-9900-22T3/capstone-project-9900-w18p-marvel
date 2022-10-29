@@ -14,6 +14,7 @@ import Dropdownlist_mui from "./Dropdownlist_mui";
 import { getUser } from "../api/user";
 import { useApp } from "../App";
 
+import { User } from "../api/type";
 
 
 import {
@@ -38,13 +39,14 @@ const uplodaicon = "https://cdn-icons-png.flaticon.com/128/1702/1702912.png"
 //export const TaskDetail = ({ }: TaskDetailProps) => {
 //const props = [{ id: "144d3881144d702d618d" }]
 export function TaskDetail({
-  id = "144d3881144d702d618d"
+  id = "14eb2cdbde763a91d3fb"
 }: TaskDetailProps) {
 
 
   const [isEditing, setIsEditing] = useState(true);
   const [inputcomment, setInputComment] = useState(true);
   const { user, setUser } = useApp(); //useApp
+  console.log(user?.uid);
 
 
 
@@ -140,20 +142,21 @@ export function TaskDetail({
             {inputcomment?.length > 0 && inputcomment.map((item) => (
 
               < CommentBox
-                TakeId={item.id}
+                TaskId={item.taskId}
+                CommentId={item.id}
                 CommentorID={item.createdBy}
                 //CommentDate={new Date(item.createdAt?.map((test) => (test.seconds)))}
                 //CommentDate={new Date(item.createdAt.values[seconds])}
                 CommentDate={item.createdAt.seconds.toTime}
                 Comments={item.content}
-                OwnerID={user.uid}
+                OwnerID={user?.uid}
               >
               </CommentBox>
 
             ))}
 
           </div>
-          <div className={`flex pt-3`}><NewCommentBox MyAvator={img_address} /></div>
+          <div className={`flex pt-3`}><NewCommentBox TaskId={id} /></div>
           <div className={`flex pb-5 w-auto items-end`}>
             <Button
               theme={"blue"}

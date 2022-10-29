@@ -13,8 +13,8 @@ export default function Dropdownlist_mui() {
     };
 
     return (
-        <Box sx={{ minWidth: 160 }}>
-            <FormControl variant="filled" sx={{ m: 1, minWidth: 160 }}>
+        <Box className={`w-40 px-1  bg-sky-200/100 hover:bg-sky-600 rounded-[14px]`}>
+            <FormControl variant="standard" className={`w-full`}>
                 <InputLabel id="task_status">Status</InputLabel>
                 <Select
                     labelId="task_status-label"
@@ -27,6 +27,6 @@ export default function Dropdownlist_mui() {
                     <MenuItem value={1}>Complete!</MenuItem>
                 </Select>
             </FormControl>
-        </Box>
+        </Box >
     );
 }

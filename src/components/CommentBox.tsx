@@ -3,6 +3,7 @@ import { Avatar } from "./Avatar";
 import { getUser, updateUserProfile } from "../api/user";
 import React, { useEffect, useState } from "react";
 import { useApp } from "../App";
+import Box from '@mui/material/Box';
 
 import {
     deleteComment
@@ -80,13 +81,12 @@ const CommentBox = ({ TaskId, Comments, CommentDate, CommentorID, CommentId, Own
                 <div className={`flex flex-row absolute right-5 items-center`}>
                     <div className={`flex pr-2 text-xs text-gray-100`}>{CommentDate}</div>
 
-                    <div>
-
+                    <Box className={`hover:bg-slate-300 text-slate-500 rounded-[14px]`}>
                         <DeleteForeverOutlinedIcon onClick={() => {
                             deleteComment(CommentId);
                             fetchData();
                         }} />
-                    </div>
+                    </Box>
 
 
 

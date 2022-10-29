@@ -147,7 +147,7 @@ export function TaskDetail({
                 CommentorID={item.createdBy}
                 //CommentDate={new Date(item.createdAt?.map((test) => (test.seconds)))}
                 //CommentDate={new Date(item.createdAt.values[seconds])}
-                CommentDate={item.createdAt.seconds.toTime}
+                CommentDate={item.createdAt.toDateString(item)}
                 Comments={item.content}
                 OwnerID={user?.uid}
               >

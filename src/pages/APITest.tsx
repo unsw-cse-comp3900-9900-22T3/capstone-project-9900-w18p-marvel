@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { useEffect, useState } from "react";
 import { uid } from "uid";
+import { addAttachment, deleteAllAttachment } from "../api/attachment";
 import {
   queryAllCollaborators,
   queryCollaboratorsInTask,
@@ -42,7 +43,7 @@ export const APITest = () => {
   useEffect(() => {
     console.log("user:", user);
   }, [user]);
-  const [file, setFile] = useState<File>();
+  const [files, setFiles] = useState<Array<File>>([]);
 
   const deleteAll = ()=>{
     deleteAllProject();
@@ -169,6 +170,20 @@ export const APITest = () => {
     console.log("operation complete")
   }
 
+  const genAttachments = async ()=>{
+    await deleteAllAttachment()
+    const collaborators = await queryAllCollaborators("")
+    collaborators.map((c)=>{
+      const rand = Math.random()
+      if(rand >0.35){
+        addAttachment(c.taskId,c.userId,sample(files),()=>{},()=>{},()=>{})
+        if(rand < 0.7){
+          addAttachment(c.taskId,c.userId,sample(files),()=>{},()=>{},()=>{})
+        }
+      }
+    })
+  }
+
   return (
     <div className="flex flex-col gap-2 p-4">
       <Button
@@ -195,30 +210,18 @@ export const APITest = () => {
         <input
           type={"file"}
           onChange={(e) => {
-            if (e.target.files?.[0]) {
-              setFile(e.target.files[0]);
+            if (e.target.files?.length) {
+              setFiles(Array.from(e.target.files));
             }
           }}
+          multiple
         />
         <Button
           theme={"blue"}
           size={"hug"}
-          label={"Update My Photo"}
-          onClick={async () => {
-            if (user?.uid && file) {
-              await updateUserProfile(
-                user.uid,
-                undefined,
-                undefined,
-                file,
-                (user) => {
-                  console.log("xxx", user, setUser);
-                  setUser?.(user);
-                }
-              );
-            } else {
-              alert("user is null");
-            }
+          label={"Gen Attachments"}
+          onClick={()=>{
+            genAttachments()
           }}
         />
       </div>

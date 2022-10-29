@@ -7,17 +7,20 @@ import { Button } from "../components/Button";
 import { ProfileEntry } from "../components/ProfileEntry";
 import { LogoutIcon } from "../icons/LogoutIcon";
 import { PlusIcon } from "../icons/PlusIcon";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import { Badge } from "@mui/material";
 
-interface Props{
-  onClickCreateProject:()=>void
+interface Props {
+  onClickCreateProject: () => void;
+  onClickNotification:()=>void;
 }
 
-export const Navbar = ({onClickCreateProject}:Props) => {
-  const { setUser,user,setAuthorized } = useApp();
+export const Navbar = ({ onClickCreateProject,onClickNotification }: Props) => {
+  const { setUser, user, setAuthorized, invitations } = useApp();
   const auth = getAuth(getApp());
   const navigate = useNavigate();
   return (
-    <div className="flex flex-row justify-end items-center gap-9 w-full h-24 p-6">
+    <div className="flex flex-row justify-end items-center gap-9 w-full h-24 p-6 shrink-0 grow-0">
       <Button
         theme={"blue"}
         label={"Start Project"}
@@ -25,12 +28,19 @@ export const Navbar = ({onClickCreateProject}:Props) => {
         prefix={<PlusIcon className={""}></PlusIcon>}
         onClick={onClickCreateProject}
       ></Button>
+      {invitations?.length > 0 && (
+        <div className="w-24 h-24 relative hover:animate-shake" onClick={onClickNotification}>
+          <Badge badgeContent={invitations?.length} color="primary">
+            <NotificationsIcon color="action" />
+          </Badge>
+        </div>
+      )}
       <ProfileEntry
         onClickLogout={() => {
           signOut(auth)
             .then(() => {
               setUser?.(undefined);
-              setAuthorized?.(false)
+              setAuthorized?.(false);
               navigate("/login");
             })
             .catch(() => {

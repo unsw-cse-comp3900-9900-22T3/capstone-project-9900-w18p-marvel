@@ -8,6 +8,7 @@ import {
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -132,7 +133,7 @@ export const queryAllUsers: (keyword: string) => Promise<Array<User>> = async (
   if (keyword === "") {
     return data;
   } else {
-    const fuse = new Fuse(data, { keys: ["name", "email"] });
+    const fuse = new Fuse(data, { keys: ["email"] });
     const result = fuse.search(keyword);
     return result.map((item) => item.item as User);
   }
@@ -174,4 +175,6 @@ export const answerConnection = async (
     }
   } else {
   }
+
+  await deleteDoc(doc(db, "invitations", invitationId));
 };

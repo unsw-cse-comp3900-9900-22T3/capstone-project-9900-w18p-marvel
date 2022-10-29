@@ -38,11 +38,14 @@ export const updateCollaborators = async (
 export const queryActiveCollaboratorsInProject = async (projectId: string) => {
   const tasks = await queryAllTasksByProjectId(projectId);
   let data: Array<TaskCollaborator> = [];
-  tasks.forEach(async (t: Task) => {
-    const collaborators = await queryCollaboratorsInTask(t.id);
-    data = data.concat(collaborators);
-  });
-  return data;
+  await Promise.all(
+    tasks.map(async (t: Task) => {
+      const collaborators = await queryCollaboratorsInTask(t.id);
+      data = data.concat(collaborators);
+    })
+  );
+  const result = [...new Set(data.map(d=>d.userId))]
+  return result;
 };
 
 export const queryAllCollaboratorsInProject: (
@@ -91,15 +94,15 @@ export const queryAllCollaborators: (
   userSnapshot.forEach((doc) => {
     users.push({ uid: doc.id, ...(doc.data() as User) } as User);
   });
-  let ids = []
-  if(keyword === ""){
+  let ids = [];
+  if (keyword === "") {
     ids = users.map((item) => item.uid);
-  }else{
+  } else {
     const fuse = new Fuse(users, { keys: ["name", "email"] });
     const result = fuse.search(keyword);
     ids = result.map((item) => item.item.uid);
   }
-  
+
   const q = query(
     collection(db, "taskcollaborators"),
     where("userId", "in", ids)

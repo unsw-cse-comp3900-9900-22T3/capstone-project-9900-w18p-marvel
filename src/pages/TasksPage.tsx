@@ -21,7 +21,7 @@ export const TasksPage = ({}: Props) => {
   
   return (
     <>
-      <div className="w-full h-full flex flex-row gap-6 bg-white-100">
+      <div className="w-full h-full bg-white-100 overflow-hidden border-4 border-yellow-200">
         <DND id={id}/>
       </div>
       <Popup open={open} onClose={() => setOpen(false)}>

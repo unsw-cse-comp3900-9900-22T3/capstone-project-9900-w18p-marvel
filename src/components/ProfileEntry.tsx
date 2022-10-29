@@ -18,6 +18,7 @@ export const ProfileEntry = ({photoURL,onClickLogout,onClickProfile}:Props)=>{
        */
       function handleClickOutside(event:any) {
         if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+          console.log("click outside")
           setOpen(false)
         }
       }
@@ -29,8 +30,8 @@ export const ProfileEntry = ({photoURL,onClickLogout,onClickProfile}:Props)=>{
       };
     }, [wrapperRef]);
     return (
-      <div className="relative">
-        <div ref={wrapperRef}>
+      <div className="relative" ref={wrapperRef}>
+        <div >
           <Avatar
             size={"lg"}
             rounded={"full"}
@@ -41,7 +42,7 @@ export const ProfileEntry = ({photoURL,onClickLogout,onClickProfile}:Props)=>{
           ></Avatar>
         </div>
         <div
-          className={`transition-all z-50 rounded-2xl absolute bg-white-100 drop-shadow-2xl flex flex-col justify-center items-start w-24 ${
+          className={`z-50 transition-all rounded-2xl absolute bg-white-100 drop-shadow-2xl flex flex-col justify-center items-start w-24 ${
             open ? "h-fit py-2" : "h-0"
           }  top-14 -right-4  overflow-hidden`}
         >
@@ -61,6 +62,7 @@ export const ProfileEntry = ({photoURL,onClickLogout,onClickProfile}:Props)=>{
             label={"Logout"}
             rounded={"none"}
             onClick={() => {
+              console.log("xxxxxx")
               onClickLogout?.();
               setOpen(false);
             }}

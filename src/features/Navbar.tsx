@@ -20,7 +20,7 @@ export const Navbar = ({ onClickCreateProject,onClickNotification }: Props) => {
   const auth = getAuth(getApp());
   const navigate = useNavigate();
   return (
-    <div className="flex flex-row justify-end items-center gap-9 w-full h-24 p-6">
+    <div className="flex flex-row justify-end items-center gap-9 w-full h-24 p-6 shrink-0 grow-0">
       <Button
         theme={"blue"}
         label={"Start Project"}

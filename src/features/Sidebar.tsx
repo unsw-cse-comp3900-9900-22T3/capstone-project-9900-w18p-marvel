@@ -61,9 +61,9 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
   const {setProjectId} = useApp()
   return (
     <div
-      className={`relative transition-all overflow-hidden shrink-0 ${
+      className={`relative transition-all overflow-hidden shrink-0 grow-0 ${
         collapse ? "w-16 basis-16" : "w-56 basis-56"
-      } bg-white-100 h-full`}
+      } bg-white-100 h-full `}
     >
       <div className="absolute top-3 left-8">
         <img src="/brand.png" className="w-16 h-16" />

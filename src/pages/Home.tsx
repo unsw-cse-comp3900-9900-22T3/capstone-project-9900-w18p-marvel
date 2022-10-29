@@ -20,12 +20,10 @@ export const Home = ({ children }: HomeProps) => {
   const [memberPopupOpen, setMemberPopupOpen] = useState<boolean>(false);
   const [notificationPopupOpen, setNotificationPopupOpen] =
     useState<boolean>(false);
-  useEffect(() => {
-    console.log("xxxyyy", projectId);
-  }, [projectId]);
+  useEffect(() => {}, [projectId]);
   return (
     <>
-      <div className="flex flex-row w-full h-full">
+      <div className="flex flex-row w-full h-full overflow-hidden">
         <Sidebar
           onClickManageMember={() => {
             if (projectId !== "") {
@@ -33,16 +31,18 @@ export const Home = ({ children }: HomeProps) => {
             }
           }}
         ></Sidebar>
-        <div className="flex flex-col w-full">
-          <Navbar
-            onClickCreateProject={() => {
-              setProjectPopupOpen(true);
-            }}
-            onClickNotification={() => {
-              setNotificationPopupOpen(true);
-            }}
-          />
-          <div className="w-full h-full bg-white-5 rounded-l-2xl relative overflow-hidden">
+        <div className="flex flex-col w-full h-full shrink-0 grow-0 overflow-hidden">
+          <div className="h-24 shrink-0 grow-0">
+            <Navbar
+              onClickCreateProject={() => {
+                setProjectPopupOpen(true);
+              }}
+              onClickNotification={() => {
+                setNotificationPopupOpen(true);
+              }}
+            />
+          </div>
+          <div className="w-full h-full bg-white-5 rounded-l-2xl relative overflow-hidden  shrink-0 grow-0  border-4 border-orange-600">
             {children}
           </div>
         </div>

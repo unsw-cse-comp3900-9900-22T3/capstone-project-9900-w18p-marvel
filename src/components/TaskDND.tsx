@@ -104,6 +104,7 @@ export function TaskDND({}: Props) {
   const [collaboratorLists, setCollaboratorLists] =
     useState<Map<string, Array<TaskCollaborator>>>();
   const { user } = useApp();
+  const [selectedTaskId,setSelectedTaskId] = useState<string|null>(null)
 
   const fetchData = async () => {
     if (projectId) {
@@ -238,6 +239,10 @@ export function TaskDND({}: Props) {
                                 collaboratorLists?.get(item.id) || []
                               }
                               image={item.cover?.downloadURL}
+                              onClick={()=>{
+                                setOpen(true)
+                                setSelectedTaskId(item.id)
+                              }}
                             />
                           </div>
                         )}

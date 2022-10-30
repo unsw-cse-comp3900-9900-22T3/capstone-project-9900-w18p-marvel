@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { useEffect, useState } from "react";
 import { uid } from "uid";
-import { addAttachment, deleteAllAttachments as deleteAllAttachment,  } from "../api/attachment";
+import { addAttachment, deleteAllAttachment as deleteAllAttachment,  } from "../api/attachment";
 import {
   queryTaskCollaboratorsByKeyword,
   queryCollaboratorsInTask,
@@ -138,6 +138,7 @@ export const APITest = () => {
               cover: { downloadURL: URL, storagePath: path },
             } as Task;
             await createTask(
+              data.id,
               data.title,
               data.status,
               data.dueDate,
@@ -159,6 +160,8 @@ export const APITest = () => {
         );
       });
   };
+
+
 
   const genComment = async ()=>{
     await deleteAllComment()
@@ -270,6 +273,54 @@ export const APITest = () => {
         onClick={() => {
           if (user?.uid) {
             genComment();
+          } else {
+            alert("user is null");
+          }
+        }}
+      />
+       <Button
+        theme={"blue"}
+        size={"hug"}
+        label={"Del Comments"}
+        onClick={() => {
+          if (user?.uid) {
+            deleteAllComment();
+          } else {
+            alert("user is null");
+          }
+        }}
+      />
+       <Button
+        theme={"blue"}
+        size={"hug"}
+        label={"Del Attach"}
+        onClick={() => {
+          if (user?.uid) {
+            deleteAllAttachment();
+          } else {
+            alert("user is null");
+          }
+        }}
+      />
+      <Button
+        theme={"blue"}
+        size={"hug"}
+        label={"Del TaskCollabs"}
+        onClick={() => {
+          if (user?.uid) {
+            removeAllTaskCollaborator();
+          } else {
+            alert("user is null");
+          }
+        }}
+      />
+       <Button
+        theme={"blue"}
+        size={"hug"}
+        label={"Del Tasks"}
+        onClick={() => {
+          if (user?.uid) {
+            deleteAllTask();
           } else {
             alert("user is null");
           }

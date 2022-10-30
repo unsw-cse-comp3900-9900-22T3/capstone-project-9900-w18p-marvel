@@ -301,7 +301,13 @@ export function TaskDND({}: Props) {
         />
       </div>
       {selectedTaskId && (
-        <Popup open={open} onClose={() => setOpen(false)}>
+        <Popup
+          open={open}
+          onClose={() => {
+            setOpen(false);
+            fetchData();
+          }}
+        >
           <TaskDetail id={selectedTaskId} />
         </Popup>
       )}

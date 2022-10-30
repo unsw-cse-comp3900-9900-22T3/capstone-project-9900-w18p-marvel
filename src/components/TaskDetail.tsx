@@ -20,7 +20,12 @@ import { User } from "../api/type";
 import {
   queryComment
 } from "../api/comment";
-import { Timestamp } from "firebase/firestore";
+
+
+import {
+  queryAttachment
+} from "../api/attachment";
+
 
 
 
@@ -44,23 +49,46 @@ export function TaskDetail({
 
 
   const [isEditing, setIsEditing] = useState(true);
-  const [inputcomment, setInputComment] = useState(true);
+  const [inputcomment, setInputComment] = useState({});
+  const [inputattachments, setAttachment] = useState({});
   const { user, setUser } = useApp(); //useApp
+  const [loading, setLoading] = useState(false);
   console.log(user?.uid);
 
 
+  useEffect(() => {
+    setLoading(true);
+  }, []);
+
+
+  useEffect(() => {
+    handleGetComment();
+    handleGetattached();
+  }, []);
 
 
 
-  const fetchData = async () => {
+
+  const handleGetComment = async () => {
     console.log(id);
     const allcomments = await queryComment(id);
     console.log(allcomments)
     setInputComment(allcomments)
+    setLoading(false);
 
 
   }
 
+
+
+  const handleGetattached = async () => {
+
+    const allattachments = await queryAttachment(id);
+    setAttachment(allattachments)
+    console.log(allattachments)
+
+
+  }
 
 
   const TaskDetail = [
@@ -83,9 +111,6 @@ export function TaskDetail({
   ]
 
 
-  useEffect(() => {
-    fetchData();
-  }, []);
 
 
   return (
@@ -117,15 +142,19 @@ export function TaskDetail({
           </div>
 
           <div className={`flex flex-col gap-4`}>
-            {UploadedCardDetails.map((item) => (
-              <UploadedCard
+
+            {inputattachments?.length > 0 && inputattachments.map((item) => (
+
+              < UploadedCard
                 FilePic={item.FilePic}
                 FileName={item.FileName}
-                FileAddedTime={item.FileAddedTime}
-                FileID={item.FileID}
-                FileDownloadLink={item.FileDownloadLink} >
-
+                FileAddedTime={item.createdAt.toDateString()}
+                FileID={item.id}
+                FileDownloadLink={item.resourceUrl}
+                UploadedBy={item.Createby}
+              >
               </UploadedCard>
+
             ))}
 
           </div>
@@ -147,16 +176,18 @@ export function TaskDetail({
                 CommentorID={item.createdBy}
                 //CommentDate={new Date(item.createdAt?.map((test) => (test.seconds)))}
                 //CommentDate={new Date(item.createdAt.values[seconds])}
-                CommentDate={item.createdAt.toDateString(item)}
+                CommentDate={item.createdAt.toDateString()}
                 Comments={item.content}
                 OwnerID={user?.uid}
+                handleGetComment={handleGetComment}
+
               >
               </CommentBox>
 
             ))}
 
           </div>
-          <div className={`flex pt-3`}><NewCommentBox TaskId={id} /></div>
+          <div className={`flex pt-3`}><NewCommentBox TaskId={id} handleGetComment={handleGetComment} /></div>
           <div className={`flex pb-5 w-auto items-end`}>
             <Button
               theme={"blue"}

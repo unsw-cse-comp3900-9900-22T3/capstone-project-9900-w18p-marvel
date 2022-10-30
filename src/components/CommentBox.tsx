@@ -23,6 +23,7 @@ interface CommentboxProps {
     Comments?: string;
     CommentDate?: string;
     OwnerId?: string;
+    handleGetComment: any;
 
 
 }
@@ -32,10 +33,10 @@ const img_address = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL9Lo
 
 const waste_icon = "https://freesvg.org/img/trash.png"
 
-const CommentBox = ({ TaskId, Comments, CommentDate, CommentorID, CommentId, OwnerId }: CommentboxProps) => {
-    const [commnetuser, setcommnetuser] = useState(true);
+const CommentBox = ({ TaskId, Comments, CommentDate, CommentorID, CommentId, OwnerId, handleGetComment }: CommentboxProps) => {
+    const [commnetuser, setcommnetuser] = useState({});
     const { user, setUser } = useApp();
-    const [inputcomment, setInputComment] = useState(true);
+    const [inputcomment, setInputComment] = useState({});
 
     const fetchData = async () => {
         const userinfo = await getUser(CommentorID);
@@ -45,12 +46,14 @@ const CommentBox = ({ TaskId, Comments, CommentDate, CommentorID, CommentId, Own
         console.log(user?.uid)
 
 
-        const allcomments = await queryComment(TaskId);
 
-        setInputComment(allcomments)
-        console.log(allcomments)
     }
 
+
+    const handleDelete = async () => {
+        await deleteComment(CommentId);
+        await handleGetComment();
+    };
 
 
 
@@ -82,10 +85,7 @@ const CommentBox = ({ TaskId, Comments, CommentDate, CommentorID, CommentId, Own
                     <div className={`flex pr-2 text-xs text-gray-100`}>{CommentDate}</div>
 
                     <Box className={`hover:bg-slate-300 text-slate-500 rounded-[14px]`}>
-                        <DeleteForeverOutlinedIcon onClick={() => {
-                            deleteComment(CommentId);
-                            fetchData();
-                        }} />
+                        <DeleteForeverOutlinedIcon onClick={handleDelete} />
                     </Box>
 
 

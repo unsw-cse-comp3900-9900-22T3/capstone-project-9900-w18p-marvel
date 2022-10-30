@@ -30,7 +30,6 @@ export const ProjectCard = ({ id, src, title, createdBy, onClick }: Props) => {
   return (
     <div
       onClick={() => {
-        console.log("???????")
         onClick?.();
       }}
       className="transition-all hover:scale-95 flex flex-col justify-start w-64 h-fit items-center gap-4 p-4 pb-6 bg-white-100 rounded-2xl"

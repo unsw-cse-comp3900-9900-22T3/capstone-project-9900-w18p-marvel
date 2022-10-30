@@ -126,13 +126,11 @@ export function TaskDND({}: Props) {
       );
 
       setCollaboratorLists(map);
-      console.log("1", lanes);
       // setData(lanes);
       await delay(2000);
       for (const [key, value] of Object.entries(lanes)) {
         lanes[key].loading = false;
       }
-      console.log("2", lanes);
       setData(lanes);
     }
   };

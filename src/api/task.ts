@@ -26,7 +26,6 @@ import { Status, Task } from "./type";
 import { uploadFile } from "./storage";
 
 export const createTask = async (
-  id: string,
   title: string,
   status: Status,
   dueData: Date,
@@ -39,6 +38,7 @@ export const createTask = async (
 ) => {
   const app = getApp();
   const db = getFirestore(app);
+  const id = uid(20)
   if (cover) {
     uploadFile(
       cover,
@@ -81,12 +81,14 @@ export const queryAllTasks: () => Promise<Array<Task>> = async () => {
   const querySnapshot = await getDocs(collection(db, "tasks"));
   const data: Array<Task> = [];
   querySnapshot.forEach((doc) => {
-    data.push({
-      id: doc.id,
-      ...doc.data(),
-      dueDate: doc.data().dueData.toDate(),
-      createdAt: doc.data().createdAt.toDate(),
-    } as Task);
+    if(doc.id !== "placeholder"){
+      data.push({
+        id: doc.id,
+        ...doc.data(),
+        dueDate: doc.data().dueData.toDate(),
+        createdAt: doc.data().createdAt.toDate(),
+      } as Task);
+    }
   });
 
   return data;
@@ -157,9 +159,7 @@ export const deleteAllTask = async () => {
   const db = getFirestore(app);
   const tasks = await queryAllTasks();
   tasks.forEach((t) => {
-    if (t.id !== "00000000") {
       deleteTask(t.id);
       console.log("deleting task:", t.id);
-    }
   });
 };

@@ -10,7 +10,7 @@ import {
   where,
 } from "firebase/firestore";
 import { uid } from "uid";
-import { queryAllCollaboratorsInProject } from "./taskcollaborator";
+import { queryProjectCollaboratorsByProjectId } from "./projectCollaborator";
 import { Project, ProjectCollaborator, Resource, Task } from "./type";
 
 export const createProject = async (
@@ -36,11 +36,13 @@ export const queryAllProjects: () => Promise<Array<Project>> = async () => {
   const querySnapshot = await getDocs(collection(db, "projects"));
   const projects: Array<Project> = [];
   querySnapshot.forEach((doc) => {
-    projects.push({
-      id: doc.id,
-      ...doc.data(),
-      createdAt: doc.data().createdAt.toDate(),
-    } as Project);
+    if (doc.id !== "placeholder") {
+      projects.push({
+        id: doc.id,
+        ...doc.data(),
+        createdAt: doc.data().createdAt.toDate(),
+      } as Project);
+    }
   });
 
   return projects;
@@ -55,11 +57,11 @@ export const queryMyProjects: (
   const querySnapshot = await getDocs(collection(db, "projects"));
   const projects: Array<Project> = [];
   querySnapshot.forEach((doc) => {
-    const data = doc.data()
+    const data = doc.data();
     projects.push({
       id: doc.id,
       ...data,
-      createdAt:data.createdAt,
+      createdAt: data.createdAt,
     } as Project);
   });
 
@@ -68,7 +70,7 @@ export const queryMyProjects: (
     if (p.createdBy === userId) {
       myProjects.push(p);
     } else {
-      const projectcollaborators = await queryAllCollaboratorsInProject(p.id);
+      const projectcollaborators = await queryProjectCollaboratorsByProjectId(p.id);
       if (
         projectcollaborators.find(
           (c: ProjectCollaborator) => c.userId === userId
@@ -92,8 +94,6 @@ export const deleteAllProject = async () => {
   const db = getFirestore(app);
   const projects = await queryAllProjects();
   projects.forEach(async (p) => {
-    if (p.id !== "00000000") {
-      await deleteDoc(doc(db, "projects", p.id));
-    }
+    await deleteDoc(doc(db, "projects", p.id));
   });
 };

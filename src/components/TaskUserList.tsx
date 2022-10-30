@@ -7,7 +7,7 @@ import _ from "lodash";
 import {
   addCollaborator,
   queryActiveCollaboratorsInProject,
-  queryAllCollaborators,
+  queryTaskCollaboratorsByKeyword,
   queryCollaboratorsInTask,
   removeCollaborator,
 } from "../api/taskcollaborator";

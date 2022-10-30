@@ -20,7 +20,7 @@ export const addComment = async (
 ) => {
   const app = getApp();
   const db = getFirestore(app);
-  await setDoc(doc(db, "comments",uid(20)), {
+  await setDoc(doc(db, "comments", uid(20)), {
     createdAt: new Date(),
     createdBy: userId,
     content: content,
@@ -41,7 +41,13 @@ export const queryAllComments: () => Promise<Array<Comment>> = async () => {
   const querySnapshot = await getDocs(collection(db, "comments"));
   const data: Array<Comment> = [];
   querySnapshot.forEach((doc) => {
-    data.push({ id: doc.id, ...doc.data(),createdAt:doc.data().createdAt.toDate() } as Comment);
+    if (doc.id !== "placeholder") {
+      data.push({
+        id: doc.id,
+        ...doc.data(),
+        createdAt: doc.data().createdAt.toDate(),
+      } as Comment);
+    }
   });
 
   return data;
@@ -57,7 +63,11 @@ export const queryComment: (taskId: string) => Promise<Array<Comment>> = async (
   const querySnapshot = await getDocs(q);
   const data: Array<Comment> = [];
   querySnapshot.forEach((doc) => {
-    data.push({ id: doc.id, ...doc.data(),createdAt:doc.data().createdAt.toDate() } as Comment);
+    data.push({
+      id: doc.id,
+      ...doc.data(),
+      createdAt: doc.data().createdAt.toDate(),
+    } as Comment);
   });
   return data;
 };
@@ -67,8 +77,7 @@ export const deleteAllComment = async () => {
   const db = getFirestore(app);
   const comments = await queryAllComments();
   comments.forEach(async (c) => {
-    if (c.id !== "00000000") {
-      await deleteDoc(doc(db, "comments", c.id));
-    }
+    console.log("deleting attachment:", c.id);
+    await deleteDoc(doc(db, "comments", c.id));
   });
 };

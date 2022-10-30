@@ -58,16 +58,16 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
   const [collapse, setCollpase] = useState<boolean>(false);
   const menuItems = [];
   const navigate = useNavigate();
-  const {setProjectId} = useApp()
+  const { projectId, setProjectId } = useApp();
   return (
     <div
       className={`relative transition-all overflow-hidden shrink-0 grow-0 ${
         collapse ? "w-16 basis-16" : "w-56 basis-56"
       } bg-white-100 h-full `}
     >
-      <div className="absolute top-3 left-8">
+      {/* <div className="absolute top-3 left-8">
         <img src="/brand.png" className="w-16 h-16" />
-      </div>
+      </div> */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="w-full h-full flex justify-end items-center">
           <div
@@ -86,7 +86,7 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
             prefix={<ProjectIcon className={""} />}
             label={"projects"}
             onClick={() => {
-              setProjectId?.("")
+              setProjectId?.(null);
               navigate("/projects");
             }}
           ></MenuItem>
@@ -112,21 +112,19 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
             }}
           ></MenuItem>
         </div>
-        <div className="px-4 w-full">
-          <Button
-            theme={"gray"}
-            size={"fill"}
-            label={"Manage Members"}
-            prefix={
-              <PlusIcon
-                className=""
-              />
-            }
-            onClick={() => {
-              onClickManageMember?.();
-            }}
-          />
-        </div>
+        {projectId && (
+          <div className="px-4 w-full">
+            <Button
+              theme={"gray"}
+              size={"fill"}
+              label={"Manage Members"}
+              prefix={<PlusIcon className="" />}
+              onClick={() => {
+                onClickManageMember?.();
+              }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import {
 } from "firebase/storage";
 import { uid } from "uid";
 
-export type FileType = "image" | "file" | "avatar"|"attachment";
+export type FileType = "image" | "file" | "avatar";
 export type DownloadType = "url" | "file";
 
 export const uploadFile = (
@@ -26,8 +26,6 @@ export const uploadFile = (
       folderName = "images";
     } else if (type === "avatar") {
       folderName = "avatars";
-    }else if (type === "attachment") {
-      folderName = "attachments";
     }
     const storage = getStorage();
     const name = uid(20);
@@ -111,7 +109,7 @@ export const deleteAllFile = (
   onError?: (error: any) => void
 ) => {
   const storage = getStorage();
-  const imgRef = ref(storage, "image");
+  const imgRef = ref(storage, "images");
   const fileRef = ref(storage, "files");
 
   // Find all the prefixes and items.
@@ -142,4 +140,5 @@ export const deleteAllFile = (
     .catch((error) => {
       // Uh-oh, an error occurred!
     });
+
 };

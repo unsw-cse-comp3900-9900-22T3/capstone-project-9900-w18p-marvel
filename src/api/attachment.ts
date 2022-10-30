@@ -25,15 +25,22 @@ export const addAttachment = async (
   const db = getFirestore(app);
 
   if (file) {
-    uploadFile(file, "attachment", onProgress, onError, async (downloadURL,storagePath) => {
-      await addDoc(collection(db, "attachments"), {
-        createdAt: new Date(),
-        createdBy: userId,
-        resource: {downloadURL,storagePath},
-        taskId: taskId,
-      } as Attachment);
-      onComplete?.(downloadURL);
-    });
+    uploadFile(
+      file,
+      "file",
+      onProgress,
+      onError,
+      async (downloadURL, storagePath) => {
+        await addDoc(collection(db, "attachments"), {
+          createdAt: new Date(),
+          createdBy: userId,
+          resource: { downloadURL, storagePath },
+          taskId: taskId,
+          title: file.name,
+        } as Attachment);
+        onComplete?.(downloadURL);
+      }
+    );
   }
 };
 
@@ -60,25 +67,34 @@ export const deleteAttachment = async (
   }
 };
 
-export const deleteAllAttachment = async () => {
+export const queryAllAttachments: () => Promise<
+  Array<Attachment>
+> = async () => {
   const app = getApp();
   const db = getFirestore(app);
 
   const querySnapshot = await getDocs(collection(db, "attachments"));
-  const data: Array<Attachment> = [];
+  const items: Array<Attachment> = [];
   querySnapshot.forEach((doc) => {
-    data.push({ id: doc.id, ...doc.data(),createdAt:doc.data().createdAt.toDate() } as Attachment);
-  });
-  data.forEach((d) => {
-    if(d.resource?.storagePath){
-      deleteFile(
-        d.resource.storagePath,
-        async (storagePath) => {
-          await deleteDoc(doc(db, "attachments", d.id));
-        },
-        (error) => {}
-      );
+    if (doc.id !== "placeholder") {
+      items.push({
+        id: doc.id,
+        ...doc.data(),
+        createdAt: doc.data().createdAt.toDate(),
+      } as Attachment);
     }
+  });
+
+  return items;
+};
+
+export const deleteAllAttachments = async () => {
+  const app = getApp();
+  const db = getFirestore(app);
+  const projects = await queryAllAttachments();
+  projects.forEach(async (p) => {
+    console.log("deleting attachment:", p.id);
+    await deleteDoc(doc(db, "attachments", p.id));
   });
 };
 
@@ -91,7 +107,11 @@ export const getAttachment: (
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    return { id: attachmentId, ...docSnap.data(),createdAt:doc.data().createdAt.toDate() } as Attachment;
+    return {
+      id: attachmentId,
+      ...docSnap.data(),
+      createdAt: docSnap.data().createdAt.toDate(),
+    } as Attachment;
   } else {
     return null;
   }
@@ -107,7 +127,11 @@ export const queryAttachment: (
   const querySnapshot = await getDocs(q);
   const data: Array<Attachment> = [];
   querySnapshot.forEach((doc) => {
-    data.push({ id: doc.id, ...doc.data(),createdAt:doc.data().createdAt.toDate() } as Attachment);
+    data.push({
+      id: doc.id,
+      ...doc.data(),
+      createdAt: doc.data().createdAt.toDate(),
+    } as Attachment);
   });
   return data;
 };

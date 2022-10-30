@@ -62,7 +62,6 @@ export const ProfileEntry = ({photoURL,onClickLogout,onClickProfile}:Props)=>{
             label={"Logout"}
             rounded={"none"}
             onClick={() => {
-              console.log("xxxxxx")
               onClickLogout?.();
               setOpen(false);
             }}

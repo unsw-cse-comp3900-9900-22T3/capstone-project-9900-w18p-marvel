@@ -23,7 +23,7 @@ export const Home = ({ children }: HomeProps) => {
   useEffect(() => {}, [projectId]);
   return (
     <>
-      <div className="flex flex-row w-full h-full overflow-hidden">
+      <div className="flex flex-row w-full h-full justify-between overflow-hidden">
         <Sidebar
           onClickManageMember={() => {
             if (projectId !== "") {
@@ -31,8 +31,7 @@ export const Home = ({ children }: HomeProps) => {
             }
           }}
         ></Sidebar>
-        <div className="flex flex-col w-full h-full shrink-0 grow-0 overflow-hidden">
-          <div className="h-24 shrink-0 grow-0">
+        <div className="flex flex-col w-full h-full shrink-1 grow-0 overflow-hidden">
             <Navbar
               onClickCreateProject={() => {
                 setProjectPopupOpen(true);
@@ -41,8 +40,7 @@ export const Home = ({ children }: HomeProps) => {
                 setNotificationPopupOpen(true);
               }}
             />
-          </div>
-          <div className="w-full h-full bg-white-5 rounded-l-2xl relative overflow-hidden  shrink-0 grow-0  border-4 border-orange-600">
+          <div className=" h-full bg-white-5 rounded-l-2xl relative overflow-hidden shrink-1">
             {children}
           </div>
         </div>

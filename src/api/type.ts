@@ -42,6 +42,7 @@ export interface Invitation{
     createdBy:string
     inviteeId:string
     projectId:string
+    role:Role
 }
 
 export interface Connection{
@@ -67,6 +68,7 @@ export interface TaskCollaborator{
 
 export interface Attachment{
     id:string
+    title:string
     createdAt:Date
     createdBy:string
     resource:Resource

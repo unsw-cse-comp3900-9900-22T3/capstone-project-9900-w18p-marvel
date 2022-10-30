@@ -1,11 +1,11 @@
 import { faker } from "@faker-js/faker";
 import { useEffect, useState } from "react";
 import { uid } from "uid";
-import { addAttachment, deleteAllAttachment } from "../api/attachment";
+import { addAttachment, deleteAllAttachments as deleteAllAttachment,  } from "../api/attachment";
 import {
-  queryAllCollaborators,
+  queryTaskCollaboratorsByKeyword,
   queryCollaboratorsInTask,
-  removeAllCollaborator,
+  removeAllTaskCollaborator,
   updateCollaborators,
 } from "../api/taskcollaborator";
 import { addComment, deleteAllComment } from "../api/comment";
@@ -47,18 +47,20 @@ export const APITest = () => {
 
   const deleteAll = ()=>{
     deleteAllProject();
-    removeAllCollaborator();
+    removeAllTaskCollaborator();
     deleteAllTask();
     deleteAllFile();
+    deleteAllAttachment();
+    deleteAllComment();
   }
 
   const genProjects = async () => {
     await deleteAllProject();
     const allUsers = await queryAllUsers("");
     console.log("alluser:", allUsers);
-    const dummyImageURL = Array(500)
+    const dummyImageURL = Array(100)
       .fill(0)
-      .map((n) => faker.image.image(500, 500, true));
+      .map((n) => faker.image.image(256, 256, true));
     let files: Array<File> = [];
     await Promise.all(
       dummyImageURL.map(async (url) => {
@@ -68,7 +70,7 @@ export const APITest = () => {
     );
     console.log("image gened:", files);
 
-    const dummyProjects = Array(100)
+    const dummyProjects = Array(50)
       .fill(0)
       .map((n) => {
         const file = sample(files);
@@ -97,12 +99,12 @@ export const APITest = () => {
   };
 
   const genTasks = async () => {
-    await removeAllCollaborator();
+    await removeAllTaskCollaborator();
     await deleteAllTask();
     const allUsers = await queryAllUsers("");
     console.log("alluser:", allUsers);
     const projects = await queryAllProjects();
-    const dummyImageURL = Array(200)
+    const dummyImageURL = Array(100)
       .fill(0)
       .map((n) => faker.image.image(500, 500, true));
     let files: Array<File> = [];
@@ -113,7 +115,7 @@ export const APITest = () => {
       })
     );
     console.log("image gened:", files);
-    const dummyTasks = Array(5000)
+    const dummyTasks = Array(200)
       .fill(0)
       .map((n) => {
         const file = sample(files);
@@ -136,7 +138,6 @@ export const APITest = () => {
               cover: { downloadURL: URL, storagePath: path },
             } as Task;
             await createTask(
-              data.id,
               data.title,
               data.status,
               data.dueDate,
@@ -161,18 +162,18 @@ export const APITest = () => {
 
   const genComment = async ()=>{
     await deleteAllComment()
-    const collaborators = await queryAllCollaborators("")
+    const collaborators = await queryTaskCollaboratorsByKeyword("")
     await Promise.all(collaborators.map(async (c)=>{
       console.log(c)
       const cm = {id:uid(20),createdAt:new Date(),createdBy:c.userId,content:faker.lorem.sentence(),taskId:c.taskId} as Comment
-      addComment(cm.id,cm.taskId,cm.createdBy,cm.content)
+      addComment(cm.taskId,cm.createdBy,cm.content)
     }))
     console.log("operation complete")
   }
 
   const genAttachments = async ()=>{
     await deleteAllAttachment()
-    const collaborators = await queryAllCollaborators("")
+    const collaborators = await queryTaskCollaboratorsByKeyword("")
     collaborators.map((c)=>{
       const rand = Math.random()
       if(rand >0.35){
@@ -199,11 +200,11 @@ export const APITest = () => {
         size={"hug"}
         label={"Invite"}
         onClick={() => {
-          if (user?.uid) {
-            requestConnection(user.uid, user.uid, new Date());
-          } else {
-            alert("user is null");
-          }
+          // if (user?.uid) {
+          //   requestConnection(user.uid, user.uid, new Date());
+          // } else {
+          //   alert("user is null");
+          // }
         }}
       />
       <div className="flex flex-row gap-2">
@@ -255,6 +256,7 @@ export const APITest = () => {
         label={"Delete All!!!"}
         onClick={() => {
           if (user?.uid) {
+            console.log("deleting all...")
             deleteAll();
           } else {
             alert("user is null");

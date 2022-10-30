@@ -2,7 +2,7 @@ import { getApp } from "firebase/app";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { Invitation } from "./type";
 
-export const getInvitation: (uid: string) => Promise<Invitation | null> = async (
+export const getInvitation: (id: string) => Promise<Invitation | null> = async (
     id: string
   ) => {
     const app = getApp();

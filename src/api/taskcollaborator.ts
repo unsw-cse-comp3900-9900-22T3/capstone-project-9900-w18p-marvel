@@ -44,11 +44,9 @@ export const queryActiveCollaboratorsInProject = async (projectId: string) => {
       data = data.concat(collaborators);
     })
   );
-  const result = [...new Set(data.map(d=>d.userId))]
+  const result = [...new Set(data.map((d) => d.userId))];
   return result;
 };
-
-
 
 export const queryCollaboratorsInTask: (
   taskId: string
@@ -68,7 +66,26 @@ export const queryCollaboratorsInTask: (
   return data;
 };
 
-export const queryAllCollaborators: (
+export const queryAllTaskCollaborators: () => Promise<
+  Array<TaskCollaborator>
+> = async () => {
+  const app = getApp();
+  const db = getFirestore(app);
+  const querySnapshot = await getDocs(collection(db, "taskcollaborators"));
+  const data: Array<TaskCollaborator> = [];
+  querySnapshot.forEach((doc) => {
+    if (doc.id !== "placeholder") {
+      data.push({
+        id: doc.id,
+        ...doc.data(),
+      } as TaskCollaborator);
+    }
+  });
+
+  return data;
+};
+
+export const queryTaskCollaboratorsByKeyword: (
   keyword: string
 ) => Promise<Array<TaskCollaborator>> = async (keyword: string) => {
   const app = getApp();
@@ -131,14 +148,12 @@ export const removeCollaborator: (
   });
 };
 
-export const removeAllCollaborator: () => void = async () => {
+export const removeAllTaskCollaborator: () => void = async () => {
   const app = getApp();
   const db = getFirestore(app);
-  const coll = await queryAllCollaborators("");
+  const coll = await queryAllTaskCollaborators();
 
   coll.forEach(async (c) => {
-    if (c.id !== "00000000") {
-      deleteDoc(doc(db, "taskcollaborators", c.id));
-    }
+    deleteDoc(doc(db, "taskcollaborators", c.id));
   });
 };

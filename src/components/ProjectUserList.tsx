@@ -6,7 +6,7 @@ import { delay } from "../utils/promise";
 import _ from "lodash";
 import {
   queryActiveCollaboratorsInProject,
-  queryAllCollaborators,
+  queryTaskCollaboratorsByKeyword,
 } from "../api/taskcollaborator";
 import { getUser, queryAllUsers } from "../api/user";
 

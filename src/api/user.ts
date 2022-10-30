@@ -18,6 +18,8 @@ import {
 } from "firebase/firestore";
 import Fuse from "fuse.js";
 import { uid } from "uid";
+import { getInvitation } from "./invitation";
+import { addProjectCollaborator } from "./projectCollaborator";
 import { deleteFile, uploadFile } from "./storage";
 import { Resource, User } from "./type";
 
@@ -143,7 +145,7 @@ export const requestConnection = async (
   inviteeId: string,
   createdBy: string,
   createdAt: Date,
-  projectId:string
+  projectId: string
 ) => {
   const app = getApp();
   const db = getFirestore(app);
@@ -151,7 +153,7 @@ export const requestConnection = async (
     createdBy: createdBy,
     createdAt: createdAt,
     inviteeId: inviteeId,
-    projectId
+    projectId,
   });
 };
 
@@ -165,10 +167,10 @@ export const answerConnection = async (
   const db = getFirestore(app);
 
   if (accept) {
-    addPro
-    } else {
+    const invitation = await getInvitation(invitationId);
+    if (invitation) {
+      addProjectCollaborator(createdBy, invitation.projectId, invitation.role);
     }
-  } else {
   }
 
   await deleteDoc(doc(db, "invitations", invitationId));

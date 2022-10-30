@@ -6,8 +6,8 @@ import { Navbar } from "../features/Navbar";
 import { Sidebar } from "../features/Sidebar";
 import { UserList } from "../components/UserList";
 import { ProjectUserList } from "../components/ProjectUserList";
-import { requestConnection } from "../api/user";
 import { Notification } from "../components/Notification";
+import { requestConnection } from "../api/connection";
 
 interface HomeProps {
   children: JSX.Element;
@@ -32,14 +32,14 @@ export const Home = ({ children }: HomeProps) => {
           }}
         ></Sidebar>
         <div className="flex flex-col w-full h-full shrink-1 grow-0 overflow-hidden">
-            <Navbar
-              onClickCreateProject={() => {
-                setProjectPopupOpen(true);
-              }}
-              onClickNotification={() => {
-                setNotificationPopupOpen(true);
-              }}
-            />
+          <Navbar
+            onClickCreateProject={() => {
+              setProjectPopupOpen(true);
+            }}
+            onClickNotification={() => {
+              setNotificationPopupOpen(true);
+            }}
+          />
           <div className=" h-full bg-white-5 rounded-l-2xl relative overflow-hidden shrink-1">
             {children}
           </div>
@@ -74,13 +74,6 @@ export const Home = ({ children }: HomeProps) => {
       >
         <ProjectUserList
           projectId={projectId}
-          onConfirm={(collaborators: Array<string>) => {
-            if (user?.uid) {
-              collaborators.map((c) => {
-                requestConnection(c, user.uid!, new Date(),projectId);
-              });
-            }
-          }}
         />
       </Popup>
     </>

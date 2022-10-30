@@ -9,41 +9,63 @@ import {
   queryTaskCollaboratorsByKeyword,
 } from "../api/taskcollaborator";
 import { getUser, queryAllUsers } from "../api/user";
+import {
+  queryAllProjectCollaborators,
+  queryProjectCollaboratorsByProjectId,
+} from "../api/projectCollaborator";
+import { ProjectCollaborator } from "../api/type";
 
 interface Props {
-  projectId: string;
-  onConfirm: (collaborators: Array<string>) => void;
+  projectId: string | null;
 }
 
-export const ProjectUserList = ({ projectId, onConfirm }: Props) => {
+export const ProjectUserList = ({ projectId }: Props) => {
   const [data, setData] = useState<any>([]);
   const [keyword, setKeyword] = useState<string>("");
   const [selected, setSelected] = useState<Array<string>>([]);
 
   const fetch = async (keyword: string) => {
-    const allUsers = await queryAllUsers(keyword);
-    const collaborators = allUsers.map((c) => c.uid);
-    const activeUserIds = await queryActiveCollaboratorsInProject(projectId);
-    const unselected = collaborators
-      .filter((x) => !activeUserIds.includes(x!))
-      .map((item) => ({ id: item, selected: false }));
-    const selected = collaborators
-      .filter((x) => activeUserIds.includes(x!))
-      .map((x) => ({ id: x, selected: true }));
-    const all = unselected.concat(selected);
-    let users: any = [];
-    await Promise.all(
-      all.map(async (c) => {
-        const info = await getUser(c.id!);
-        users.push({ ...info, selected: c.selected });
-      })
-    );
-    setData(users);
+    if (projectId) {
+      const allUsers = await queryAllUsers(keyword);
+      const collaborators = allUsers.map((c) => c.uid);
+      const projectCollabs = await queryProjectCollaboratorsByProjectId(
+        projectId
+      );
+      const activeUserIds = projectCollabs.map(
+        (c: ProjectCollaborator) => c.userId
+      );
+      const unselected = collaborators
+        .filter((x) => !activeUserIds.includes(x!))
+        .map((item) => ({ id: item, selected: false }));
+      const selected = collaborators
+        .filter((x) => activeUserIds.includes(x!))
+        .map((x) => ({ id: x, selected: true }));
+      const all = unselected.concat(selected);
+      let users: any = [];
+      await Promise.all(
+        all.map(async (c) => {
+          const info = await getUser(c.id!);
+          users.push({ ...info, selected: c.selected });
+        })
+      );
+      setData(users);
+    }
   };
 
   useEffect(() => {
     fetch(keyword);
   }, [projectId]);
+
+  const onConfirm = async (selected: Array<string>, projectId: string) => {
+    if (projectId) {
+      const activeCollabs = await queryProjectCollaboratorsByProjectId(projectId);
+      const activeUserIds = activeCollabs.map((c) => c.userId);
+      const add = selected.filter((x) => !activeUserIds.includes(x!));
+      const sub = activeUserIds.filter((x) => !selected.includes(x!));
+      // add.forEach((id) => addCollaborator(id, taskId));
+      // sub.forEach((id) => removeCollaborator(id, taskId));
+    }
+  };
 
   return (
     <div className="flex flex-col gap-0 w-72 bg-white-100 rounded-3xl ">
@@ -88,7 +110,7 @@ export const ProjectUserList = ({ projectId, onConfirm }: Props) => {
           rounded="2xl"
           label={"Confirm"}
           onClick={async () => {
-            if (selected.length > 0) onConfirm(selected);
+            if (selected.length > 0) onConfirm(selected, projectId);
           }}
         ></Button>
       </div>

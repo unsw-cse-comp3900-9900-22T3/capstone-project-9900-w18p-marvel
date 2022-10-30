@@ -43,9 +43,9 @@ const uplodaicon = "https://cdn-icons-png.flaticon.com/128/1702/1702912.png"
 //export const TaskDetail = ({ }: TaskDetailProps) => {
 //const props = [{ id: "144d3881144d702d618d" }]
 export function TaskDetail({
-  id = "14eb2cdbde763a91d3fb"
+  id
 }: TaskDetailProps) {
-
+  console.log(id)
 
   const [isEditing, setIsEditing] = useState(true);
   const [inputcomment, setInputComment] = useState({});

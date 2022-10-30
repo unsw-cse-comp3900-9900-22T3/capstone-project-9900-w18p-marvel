@@ -28,7 +28,7 @@ export const CreateLaneButton = ({ onComplete }: Props) => {
   }, [wrapperRef]);
   return (
     <div
-      className="items-center flex justify-between cursor-pointer hover:scale-95 transition h-20 rounded-3xl bg-gray-50 px-6 w-[324px] text-gray-100"
+      className="items-center flex justify-between cursor-pointer hover:scale-95 transition h-20 rounded-2xl bg-gray-50 px-6 w-[324px] text-gray-100"
       onClick={() => {
         setEditing(true);
       }}

@@ -50,8 +50,8 @@ const move = (
   destClone.splice(droppableDestination.index, 0, removed);
 
   const result = {};
-  result[droppableSource.droppableId].items = sourceClone;
-  result[droppableDestination.droppableId].items = destClone;
+  result[droppableSource.droppableId] = sourceClone;
+  result[droppableDestination.droppableId] = destClone;
 
   return result;
 };
@@ -169,8 +169,8 @@ export function TaskDND({}: Props) {
         source,
         destination
       );
-      newState[sourceId] = sortByDueDate(result[sourceId]);
-      newState[destinationId] = sortByDueDate(result[destinationId]);
+      newState[sourceId].items = sortByDueDate(result[sourceId]);
+      newState[destinationId].items = sortByDueDate(result[destinationId]);
 
       setData(newState);
     }
@@ -183,12 +183,12 @@ export function TaskDND({}: Props) {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <div className="flex flex-row h-full w-full gap-4 pb-4 overflow-hidden">
+      <div className="flex flex-row h-full w-full gap-4 overflow-hidden">
         <DragDropContext onDragEnd={onDragEnd}>
           {Object.entries(data).map(([key, lane]) => (
             <Droppable key={key} droppableId={`${key}`}>
               {(provided: any, snapshot: any) => (
-                <div className="h-full py-[72px] w-[372px] px-6 rounded-3xl bg-gray-50 relative overflow-hidden">
+                <div className="h-full py-[72px] w-[372px] px-6 rounded-2xl bg-gray-50 relative overflow-hidden">
                   {lane?.loading && (
                     <div className="transition absolute inset-0 bg-white-100 opacity-95 z-50">
                       <div className="flex w-full h-full flex-col justify-center items-center gap-4">

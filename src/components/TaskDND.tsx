@@ -87,24 +87,42 @@ const sortByDueDate = (list: Array<Task>) => {
   return _list;
 };
 
-const addTask = (title: string,description:string,lanes:any,laneName:string,userId:string,projectId:string,dueDate:Date,status:Status) => {
-  const _lanes = _.cloneDeep(lanes)
-  const lane = _lanes[laneName]
-  if(lane){
-    const task = {id:uid(20),createdAt:new Date(),createdBy:userId,description,title,dueDate,status,projectId} as Task
-    lane.items.push(task)
+const addTask = (
+  title: string,
+  description: string,
+  lanes: any,
+  laneName: string,
+  userId: string,
+  projectId: string,
+  dueDate: Date,
+  status: Status
+) => {
+  const _lanes = _.cloneDeep(lanes);
+  const lane = _lanes[laneName];
+  if (lane) {
+    const task = {
+      id: uid(20),
+      createdAt: new Date(),
+      createdBy: userId,
+      description,
+      title,
+      dueDate,
+      status,
+      projectId,
+    } as Task;
+    lane.items.push(task);
   }
 };
 
 interface Props {}
 
 export function TaskDND({}: Props) {
-  let { id:projectId } = useParams();
+  let { id: projectId } = useParams();
   const [data, setData] = useState<{}>({});
   const [collaboratorLists, setCollaboratorLists] =
     useState<Map<string, Array<TaskCollaborator>>>();
   const { user } = useApp();
-  const [selectedTaskId,setSelectedTaskId] = useState<string|null>(null)
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
 
   const fetchData = async () => {
     if (projectId) {
@@ -239,9 +257,9 @@ export function TaskDND({}: Props) {
                                 collaboratorLists?.get(item.id) || []
                               }
                               image={item.cover?.downloadURL}
-                              onClick={()=>{
-                                setOpen(true)
-                                setSelectedTaskId(item.id)
+                              onClick={() => {
+                                setOpen(true);
+                                setSelectedTaskId(item.id);
                               }}
                             />
                           </div>
@@ -264,9 +282,11 @@ export function TaskDND({}: Props) {
           }}
         />
       </div>
-      <Popup open={open} onClose={() => setOpen(false)}>
-        <TaskDetail />
-      </Popup>
+      {selectedTaskId && (
+        <Popup open={open} onClose={() => setOpen(false)}>
+          <TaskDetail id={selectedTaskId} />
+        </Popup>
+      )}
     </>
   );
 }

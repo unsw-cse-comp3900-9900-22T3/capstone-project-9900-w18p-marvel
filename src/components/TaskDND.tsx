@@ -221,7 +221,25 @@ export function TaskDND({}: Props) {
                   </div>
                   <div
                     className="absolute left-6 right-6 bottom-6 flex justify-between cursor-pointer hover:scale-95 transition"
-                    onClick={() => {}}
+                    onClick={async () => {
+                      if (user?.uid && projectId) {
+                        setOpen(true);
+                        const id = uid(20);
+                        const newTask = await createTask(
+                          id,
+                          "",
+                          "start",
+                          faker.date.future(),
+                          "",
+                          user?.uid,
+                          new Date(),
+                          projectId,
+                          key,
+                          null
+                        );
+                        setSelectedTaskId(id);
+                      }
+                    }}
                   >
                     <div className="flex gap-3 items-center">
                       <PlusIcon className={"text-gray-100"} />

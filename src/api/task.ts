@@ -26,6 +26,7 @@ import { Status, Task } from "./type";
 import { uploadFile } from "./storage";
 
 export const createTask = async (
+  id:string,
   title: string,
   status: Status,
   dueData: Date,
@@ -38,7 +39,6 @@ export const createTask = async (
 ) => {
   const app = getApp();
   const db = getFirestore(app);
-  const id = uid(20)
   if (cover) {
     uploadFile(
       cover,

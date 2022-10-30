@@ -1,15 +1,18 @@
 import { getApp } from "firebase/app";
 import { getFirestore, setDoc, doc, deleteDoc } from "firebase/firestore";
 import { uid } from "uid";
-import { getInvitation } from "./invitation";
+import { deleteInvitation, getInvitation } from "./invitation";
 import { addProjectCollaborator } from "./projectCollaborator";
+import { Role } from "./type";
 
 export const requestConnection = async (
   inviteeId: string,
   createdBy: string,
   createdAt: Date,
-  projectId: string
+  projectId: string,
+  role:Role,
 ) => {
+  console.log("request connection:",projectId,inviteeId)
   const app = getApp();
   const db = getFirestore(app);
   await setDoc(doc(db, "invitations", uid(20)), {
@@ -17,6 +20,7 @@ export const requestConnection = async (
     createdAt: createdAt,
     inviteeId: inviteeId,
     projectId,
+    role
   });
 };
 
@@ -35,6 +39,6 @@ export const answerConnection = async (
       addProjectCollaborator(createdBy, invitation.projectId, invitation.role);
     }
   }
-
-  await deleteDoc(doc(db, "invitations", invitationId));
+  console.log("answer connection:",invitationId)
+  await deleteInvitation(invitationId)
 };

@@ -7,19 +7,25 @@ import _ from "lodash";
 import {
   queryActiveCollaboratorsInProject,
   queryTaskCollaboratorsByKeyword,
+  removeTaskCollaborator,
 } from "../api/taskcollaborator";
 import { getUser, queryAllUsers } from "../api/user";
 import {
   queryAllProjectCollaborators,
   queryProjectCollaboratorsByProjectId,
+  removeProjectCollaborator,
 } from "../api/projectCollaborator";
-import { ProjectCollaborator } from "../api/type";
+import { ProjectCollaborator, Task } from "../api/type";
+import { requestConnection } from "../api/connection";
+import { useApp } from "../App";
+import { queryAllTasksByProjectId } from "../api/task";
 
 interface Props {
   projectId: string | null;
 }
 
 export const ProjectUserList = ({ projectId }: Props) => {
+  const { user } = useApp();
   const [data, setData] = useState<any>([]);
   const [keyword, setKeyword] = useState<string>("");
   const [selected, setSelected] = useState<Array<string>>([]);
@@ -31,6 +37,7 @@ export const ProjectUserList = ({ projectId }: Props) => {
       const projectCollabs = await queryProjectCollaboratorsByProjectId(
         projectId
       );
+
       const activeUserIds = projectCollabs.map(
         (c: ProjectCollaborator) => c.userId
       );
@@ -56,16 +63,34 @@ export const ProjectUserList = ({ projectId }: Props) => {
     fetch(keyword);
   }, [projectId]);
 
-  const onConfirm = async (selected: Array<string>, projectId: string) => {
-    if (projectId) {
-      const activeCollabs = await queryProjectCollaboratorsByProjectId(
-        projectId
-      );
-      const activeUserIds = activeCollabs.map((c) => c.userId);
-      const add = selected.filter((x) => !activeUserIds.includes(x!));
-      const sub = activeUserIds.filter((x) => !selected.includes(x!));
-      // add.forEach((id) => addCollaborator(id, taskId));
-      // sub.forEach((id) => removeCollaborator(id, taskId));
+  const onConfirm = async (
+    selected: Array<string>,
+    projectId: string,
+    userId: string
+  ) => {
+    const activeCollabs = await queryProjectCollaboratorsByProjectId(projectId);
+    const owners = activeCollabs.filter(
+      (c: ProjectCollaborator) => c.role === "owner"
+    );
+    const ownerIds = owners.map((o) => o.userId);
+    const activeUserIds = activeCollabs.map((c) => c.id);
+    const add = selected.filter((x) => !activeUserIds.includes(x!));
+    const sub = activeUserIds.filter((x) => !selected.includes(x!));
+    console.log(add, sub);
+    add.forEach((id) => {
+      requestConnection(id, userId, new Date(), projectId, "owner");
+    });
+    const ownerRemain = ownerIds.filter((x) => !sub.includes(x));
+    if (ownerRemain.length > 0) {
+      sub.forEach(async (id) => {
+          removeProjectCollaborator(id, projectId);
+          const tasks = await queryAllTasksByProjectId(projectId);
+          tasks.forEach((t: Task) => {
+            removeTaskCollaborator(id, t.id);
+          });
+      });
+    }else{
+      alert("A project must has one or more owners!")
     }
   };
 
@@ -84,23 +109,23 @@ export const ProjectUserList = ({ projectId }: Props) => {
       <div className="w-full flex flex-col pt-6 pb-7 pl-7 pr-9 gap-6 max-h-80 overflow-scroll">
         {data.map((item: any) => (
           <UserListItem
+            key={item.uid}
             src={item.photo.downloadURL}
             name={item.displayName}
             description={item.email}
             onValueChange={(val: boolean) => {
+              const _copy = _.cloneDeep(selected);
               if (val) {
-                const _copy = _.cloneDeep(selected);
-                _copy.push(item.id);
+                _copy.push(item.uid);
                 setSelected(_copy);
               } else {
-                const index = selected.findIndex(item.id);
-                const _copy = _.cloneDeep(selected);
+                const index = _copy.findIndex((c) => c === item.uid);
                 _copy.splice(index, 1);
                 setSelected(_copy);
               }
             }}
             defaultSelected={item.selected}
-            checkboxDisabled={item.selected}
+            checkboxDisabled={false}
           ></UserListItem>
         ))}
       </div>
@@ -112,8 +137,8 @@ export const ProjectUserList = ({ projectId }: Props) => {
           rounded="2xl"
           label={"Confirm"}
           onClick={async () => {
-            if (selected.length > 0 && projectId) {
-              onConfirm(selected, projectId);
+            if (projectId && user?.uid) {
+              onConfirm(selected, projectId, user.uid);
             }
           }}
         ></Button>

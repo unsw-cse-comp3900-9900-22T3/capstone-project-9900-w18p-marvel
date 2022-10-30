@@ -32,6 +32,7 @@ import { useApp } from "../App";
 import { Button } from "../components/Button";
 import { sample, sampleMultiple } from "../utils/array";
 import { urlToFile } from "../utils/converter";
+import { addProjectCollaborator } from "../api/projectCollaborator";
 
 export const APITest = () => {
   const { user, setUser, invitations } = useApp();
@@ -69,10 +70,16 @@ export const APITest = () => {
       })
     );
     console.log("image gened:", files);
+    const dummyIds = Array(50)
+    .fill(0).map(n=>uid(20))
+    allUsers.forEach((u)=>{
+      dummyIds.forEach((id)=>{
+        addProjectCollaborator(u.uid!,id,sample(["owner","editor","viewer"]))
+      })
+    })
 
-    const dummyProjects = Array(50)
-      .fill(0)
-      .map((n) => {
+    const dummyProjects = dummyIds
+      .map((id) => {
         const file = sample(files);
         uploadFile(
           file,
@@ -81,13 +88,14 @@ export const APITest = () => {
           (err) => {},
           async (URL, path) => {
             const data = {
-              id: uid(20),
+              id: id,
               createdAt: faker.date.recent(),
               createdBy: sample(allUsers).uid,
               title: faker.name.jobTitle(),
               cover: { downloadURL: URL, storagePath: path },
             } as Project;
             await createProject(
+              data.id,
               data.title,
               data.cover,
               data.createdBy,

@@ -26,7 +26,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { User } from "./api/type";
+import { Invitation, User } from "./api/type";
 import { getUser } from "./api/user";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { TaskDND } from "./components/TaskDND";
@@ -130,7 +130,7 @@ export function App() {
       unsubscribeInvitation = onSnapshot(q, (querySnapshot) => {
         const data: any = [];
         querySnapshot.forEach((doc) => {
-          data.push(doc.data());
+          data.push({...doc.data(),id:doc.id} as Invitation);
         });
         setInvitations(data);
       });

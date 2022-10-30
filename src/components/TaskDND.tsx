@@ -207,7 +207,7 @@ export function TaskDND({}: Props) {
           {Object.entries(data).map(([key, lane]) => (
             <Droppable key={key} droppableId={`${key}`}>
               {(provided: any, snapshot: any) => (
-                <div className="h-full py-[72px] w-[372px] px-6 rounded-2xl bg-gray-50 relative overflow-hidden">
+                <div className="h-full py-[72px] w-[372px] shrink-0 px-6 rounded-2xl bg-gray-50 relative overflow-hidden">
                   {lane?.loading && (
                     <div className="transition absolute inset-0 bg-white-100 opacity-95 z-50">
                       <div className="flex w-full h-full flex-col justify-center items-center gap-4">
@@ -292,13 +292,15 @@ export function TaskDND({}: Props) {
             </Droppable>
           ))}
         </DragDropContext>
-        <CreateLaneButton
-          onComplete={(name: string) => {
-            const _data: any = _.cloneDeep(data);
-            _data[name] = { loading: false, items: [] };
-            setData(_data);
-          }}
-        />
+        {Object.keys(data).length > 0 && (
+          <CreateLaneButton
+            onComplete={(name: string) => {
+              const _data: any = _.cloneDeep(data);
+              _data[name] = { loading: false, items: [] };
+              setData(_data);
+            }}
+          />
+        )}
       </div>
       {selectedTaskId && (
         <Popup

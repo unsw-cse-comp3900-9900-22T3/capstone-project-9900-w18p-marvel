@@ -1,6 +1,8 @@
 import { CircularProgress } from "@mui/material"
 import { useState } from "react"
+import { uid } from "uid"
 import { createProject } from "../api/project"
+import { addProjectCollaborator } from "../api/projectCollaborator"
 import { deleteFile, uploadFile } from "../api/storage"
 import { useApp } from "../App"
 import { Button } from "./Button"
@@ -92,12 +94,15 @@ export const CreateProject = ({createdBy,onComplete}:Props)=>{
               label={"Create Project"}
               onClick={async () => {
                 if(user?.uid){
+                  const id = uid(20)
                     await createProject(
+                      id,
                       title,
                       { downloadURL, storagePath },
                       user?.uid,
                       new Date()
                     );
+                    await addProjectCollaborator(user.uid,id,"owner")
                     onComplete?.()
                 }
               }}

@@ -40,8 +40,8 @@ export const NewCommentBox = ({ TaskId, handleGetComment }: NewCommentBoxProps) 
     }
 
 
-    const handleadded = async (id, taskid, uid, comment) => {
-        await addComment(id, taskid, uid, comment);
+    const handleadded = async (taskid, uid, comment) => {
+        await addComment(taskid, uid, comment);
         await handleGetComment();
         setLoading(false);
     };
@@ -84,7 +84,6 @@ export const NewCommentBox = ({ TaskId, handleGetComment }: NewCommentBoxProps) 
                     <SendIcon onClick={() => {
                         setIsEditing(false);
                         handleadded(
-                            '000',
                             TaskId,
                             user?.uid,
                             inputcomment)

@@ -67,7 +67,7 @@ const TaskInfoBlock = ({ TaskName, TaskID, Assignee, DueDate, Description }: Tas
       </div>
 
       <Popup open={open} onClose={() => { setOpen(false) }}>
-        <UserList taskId={""} onConfirm={function (collaborators: string[]): void {
+        <UserList taskId={TaskID} onConfirm={function (collaborators: string[]): void {
           setOpen(false)
         }} />
       </Popup>

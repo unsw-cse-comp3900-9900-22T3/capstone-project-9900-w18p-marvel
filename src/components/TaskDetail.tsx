@@ -125,7 +125,7 @@ export function TaskDetail({
           <div className={`flex pt-20`}>
             {TaskDetail.map((item) => (
               <TaskInfoBlock
-                TaskID={item.TaskID}
+                TaskID={item.id}
                 TaskName={item.TaskName}
                 Assignee={item.Assignee}
                 DueDate={item.DueDate}

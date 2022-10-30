@@ -49,10 +49,10 @@ const TaskCard = ({
     status === "start"
       ? 0
       : status === "blocked"
-      ? 20
-      : status === "complete"
-      ? 100
-      : 0;
+        ? 20
+        : status === "complete"
+          ? 100
+          : 0;
 
   const [avatars, setAvatars] = useState<Array<string>>();
   const [attachmentCount, setAttachmentCount] = useState<number>(0);

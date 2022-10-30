@@ -1,10 +1,30 @@
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import { Avatar } from "./Avatar";
+import { getUser, updateUserProfile } from "../api/user";
+import React, { useEffect, useState } from "react";
+import { useApp } from "../App";
+import Box from '@mui/material/Box';
+
+import {
+    deleteComment
+} from "../api/comment";
+
+
+
+import {
+    queryComment
+} from "../api/comment";
+
+
 interface CommentboxProps {
-    CommentorID: number;
-    Name: string;
-    CommenterAvator: string;
-    Comments: string;
-    CommentDate: string;
-    ShowWaste: boolean;
+    TaskId?: string;
+    CommentId?: string;
+    CommentorID?: string;
+    Comments?: string;
+    CommentDate?: string;
+    OwnerId?: string;
+    handleGetComment: any;
+
 
 }
 
@@ -13,23 +33,63 @@ const img_address = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL9Lo
 
 const waste_icon = "https://freesvg.org/img/trash.png"
 
-const CommentBox = ({ Name, CommenterAvator, Comments, CommentDate, CommentorID }: CommentboxProps) => {
+const CommentBox = ({ TaskId, Comments, CommentDate, CommentorID, CommentId, OwnerId, handleGetComment }: CommentboxProps) => {
+    const [commnetuser, setcommnetuser] = useState({});
+    const { user, setUser } = useApp();
+    const [inputcomment, setInputComment] = useState({});
+
+    const fetchData = async () => {
+        const userinfo = await getUser(CommentorID);
+        console.log(userinfo)
+        setcommnetuser(userinfo)
+        console.log(TaskId)
+        console.log(user?.uid)
+
+
+
+    }
+
+
+    const handleDelete = async () => {
+        await deleteComment(CommentId);
+        await handleGetComment();
+    };
+
+
+
+
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     return (
         <div className={`flex flex-col w-176 h-auto mb-2`}>
 
 
-            <div className={`flex item-start flex-row w-176 h-32 pl-5 pt-5 bg-gray-50 rounded-2xl relative`}>
+            <div className={`flex item-start flex-row w-176 h-auto pl-5 py-5 bg-gray-50 rounded-2xl relative`}>
                 <div className={`flex w-20`}>
-                    <img src={CommenterAvator} className={`w-10 h-10 gap-5 rounded-full`} />
+                    <Avatar
+                        src={commnetuser?.photo?.downloadURL || ""}
+                        size="lg"
+                        rounded="full"
+                    />
+
                 </div>
-                <div className={`flex flex-col w-auto h-auto gap-3`}>
-                    <div className={`text-sm font-bold text-lg`}>{Name}</div>
-                    <div className={`text-xs text-gray-100`}>{Comments}</div>
-                    <div className={`text-xs text-gray-100 pt-1`}>Reply</div>
+                <div className={`flex flex-col w-176 h-auto gap-3`}>
+                    <div className={`text-sm font-bold text-lg`}>{commnetuser?.displayName ? commnetuser?.displayName : "Anonymous"}</div>
+                    <div className={`text-xs w-149 break-all pr-10 h-auto text-gray-100`}>{Comments}</div>
+
                 </div>
                 <div className={`flex flex-row absolute right-5 items-center`}>
                     <div className={`flex pr-2 text-xs text-gray-100`}>{CommentDate}</div>
-                    <img src={waste_icon} className={`flex w-5 h-5`} />
+
+                    <Box className={`hover:bg-slate-300 text-slate-500 rounded-[14px]`}>
+                        <DeleteForeverOutlinedIcon onClick={handleDelete} />
+                    </Box>
+
+
+
                 </div>
 
             </div>

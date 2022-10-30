@@ -10,17 +10,17 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
+import { uid } from "uid";
 import { Comment } from "./type";
 
 export const addComment = async (
-  id:string,
   taskId: string,
   userId: string,
   content: string
 ) => {
   const app = getApp();
   const db = getFirestore(app);
-  await setDoc(doc(db, "comments",id), {
+  await setDoc(doc(db, "comments",uid(20)), {
     createdAt: new Date(),
     createdBy: userId,
     content: content,

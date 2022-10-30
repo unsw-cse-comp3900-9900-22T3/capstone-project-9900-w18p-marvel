@@ -79,7 +79,7 @@ export const Home = ({ children }: HomeProps) => {
           onConfirm={(collaborators: Array<string>) => {
             if (user?.uid) {
               collaborators.map((c) => {
-                requestConnection(c, user.uid!, new Date());
+                requestConnection(c, user.uid!, new Date(),projectId);
               });
             }
           }}

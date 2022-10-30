@@ -7,7 +7,7 @@ import {
   queryCollaboratorsInTask,
   removeAllCollaborator,
   updateCollaborators,
-} from "../api/collaborator";
+} from "../api/taskcollaborator";
 import { addComment, deleteAllComment } from "../api/comment";
 import {
   createProject,

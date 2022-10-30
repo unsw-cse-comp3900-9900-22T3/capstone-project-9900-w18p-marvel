@@ -10,7 +10,7 @@ import {
   queryAllCollaborators,
   queryCollaboratorsInTask,
   removeCollaborator,
-} from "../api/collaborator";
+} from "../api/taskcollaborator";
 import { getUser, queryAllUsers } from "../api/user";
 
 interface Props {

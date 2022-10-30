@@ -25,14 +25,14 @@ export const addAttachment = async (
   const db = getFirestore(app);
 
   if (file) {
-    uploadFile(file, "attachment", onProgress, onError, async (url) => {
+    uploadFile(file, "attachment", onProgress, onError, async (downloadURL,storagePath) => {
       await addDoc(collection(db, "attachments"), {
         createdAt: new Date(),
         createdBy: userId,
-        resourceUrl: url,
+        resource: {downloadURL,storagePath},
         taskId: taskId,
-      });
-      onComplete?.(url);
+      } as Attachment);
+      onComplete?.(downloadURL);
     });
   }
 };

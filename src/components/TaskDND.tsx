@@ -23,7 +23,7 @@ import { TaskCard } from "./TaskCard";
 import {
   queryCollaboratorsInTask,
   updateCollaborators,
-} from "../api/collaborator";
+} from "../api/taskcollaborator";
 import { urlToFile } from "../utils/converter";
 import { Timestamp } from "firebase/firestore";
 import { CircularProgress } from "@mui/material";

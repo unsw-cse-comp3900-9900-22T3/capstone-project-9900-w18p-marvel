@@ -10,7 +10,7 @@ import {
   where,
 } from "firebase/firestore";
 import { uid } from "uid";
-import { queryAllCollaboratorsInProject } from "./collaborator";
+import { queryAllCollaboratorsInProject } from "./taskcollaborator";
 import { Project, ProjectCollaborator, Resource, Task } from "./type";
 
 export const createProject = async (

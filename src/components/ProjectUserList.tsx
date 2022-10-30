@@ -7,7 +7,7 @@ import _ from "lodash";
 import {
   queryActiveCollaboratorsInProject,
   queryAllCollaborators,
-} from "../api/collaborator";
+} from "../api/taskcollaborator";
 import { getUser, queryAllUsers } from "../api/user";
 
 interface Props {

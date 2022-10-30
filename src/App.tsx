@@ -30,6 +30,7 @@ import {
 import { User } from "./api/type";
 import { getUser } from "./api/user";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { TaskDND } from "./components/TaskDND";
 
 interface ContextProps {
   app: FirebaseApp | null;
@@ -182,7 +183,7 @@ export function App() {
                 element={
                   <Interceptor>
                     <Home>
-                      <TasksPage />
+                      <TaskDND />
                     </Home>
                   </Interceptor>
                 }

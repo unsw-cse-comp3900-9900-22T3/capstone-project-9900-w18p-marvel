@@ -142,7 +142,8 @@ export const queryAllUsers: (keyword: string) => Promise<Array<User>> = async (
 export const requestConnection = async (
   inviteeId: string,
   createdBy: string,
-  createdAt: Date
+  createdAt: Date,
+  projectId:string
 ) => {
   const app = getApp();
   const db = getFirestore(app);
@@ -150,6 +151,7 @@ export const requestConnection = async (
     createdBy: createdBy,
     createdAt: createdAt,
     inviteeId: inviteeId,
+    projectId
   });
 };
 
@@ -163,14 +165,7 @@ export const answerConnection = async (
   const db = getFirestore(app);
 
   if (accept) {
-    const docRef = doc(db, "connections", invitationId);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      await setDoc(doc(db, "connections", uid(20)), {
-        createdBy: docSnap.data().createdBy,
-        createdAt: createdAt,
-        approvedBy: createdBy,
-      });
+    addPro
     } else {
     }
   } else {

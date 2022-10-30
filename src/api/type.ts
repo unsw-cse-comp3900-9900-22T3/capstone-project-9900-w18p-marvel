@@ -41,6 +41,7 @@ export interface Invitation{
     createdAt:Date
     createdBy:string
     inviteeId:string
+    projectId:string
 }
 
 export interface Connection{

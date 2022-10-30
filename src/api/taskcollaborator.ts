@@ -48,23 +48,7 @@ export const queryActiveCollaboratorsInProject = async (projectId: string) => {
   return result;
 };
 
-export const queryAllCollaboratorsInProject: (
-  projectId: string
-) => Promise<Array<ProjectCollaborator>> = async (projectId: string) => {
-  const app = getApp();
-  const db = getFirestore(app);
-  const q = query(
-    collection(db, "projectcollaborators"),
-    where("projectId", "==", projectId)
-  );
 
-  const querySnapshot = await getDocs(q);
-  const data: Array<ProjectCollaborator> = [];
-  querySnapshot.forEach((doc) => {
-    data.push({ id: doc.id, ...doc.data } as ProjectCollaborator);
-  });
-  return data;
-};
 
 export const queryCollaboratorsInTask: (
   taskId: string

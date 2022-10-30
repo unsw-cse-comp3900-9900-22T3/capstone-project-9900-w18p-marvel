@@ -77,7 +77,7 @@ export const deleteAllComment = async () => {
   const db = getFirestore(app);
   const comments = await queryAllComments();
   comments.forEach(async (c) => {
-    console.log("deleting attachment:", c.id);
-    await deleteDoc(doc(db, "comments", c.id));
+    console.log("deleting comment:", c.id);
+    deleteDoc(doc(db, "comments", c.id));
   });
 };

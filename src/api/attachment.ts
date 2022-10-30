@@ -94,7 +94,7 @@ export const deleteAllAttachments = async () => {
   const projects = await queryAllAttachments();
   projects.forEach(async (p) => {
     console.log("deleting attachment:", p.id);
-    await deleteDoc(doc(db, "attachments", p.id));
+    deleteDoc(doc(db, "attachments", p.id));
   });
 };
 

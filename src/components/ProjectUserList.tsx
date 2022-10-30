@@ -58,7 +58,9 @@ export const ProjectUserList = ({ projectId }: Props) => {
 
   const onConfirm = async (selected: Array<string>, projectId: string) => {
     if (projectId) {
-      const activeCollabs = await queryProjectCollaboratorsByProjectId(projectId);
+      const activeCollabs = await queryProjectCollaboratorsByProjectId(
+        projectId
+      );
       const activeUserIds = activeCollabs.map((c) => c.userId);
       const add = selected.filter((x) => !activeUserIds.includes(x!));
       const sub = activeUserIds.filter((x) => !selected.includes(x!));
@@ -110,7 +112,9 @@ export const ProjectUserList = ({ projectId }: Props) => {
           rounded="2xl"
           label={"Confirm"}
           onClick={async () => {
-            if (selected.length > 0) onConfirm(selected, projectId);
+            if (selected.length > 0 && projectId) {
+              onConfirm(selected, projectId);
+            }
           }}
         ></Button>
       </div>

@@ -6,7 +6,6 @@ import { NewCommentBox } from "../components/NewCommentBox";
 import { Button } from "./Button";
 import { TotalCommentItem } from "./TotalCommentItem";
 import { Popup } from "./Popup";
-import { UserList } from "./UserList";
 import React, { useEffect, useState } from "react";
 import { TextInput } from "./TextInput";
 import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';

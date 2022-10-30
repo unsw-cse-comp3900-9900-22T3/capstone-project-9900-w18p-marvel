@@ -1,6 +1,6 @@
 import { useState } from "react";
+import { answerConnection } from "../api/connection";
 import { Invitation, User } from "../api/type";
-import { answerConnection } from "../api/user";
 import { Avatar } from "./Avatar";
 import { Button } from "./Button";
 

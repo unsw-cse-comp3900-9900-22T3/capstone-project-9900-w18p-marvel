@@ -2,9 +2,9 @@
 import Avatar from '@mui/material/Avatar';
 import AvatarGroup from '@mui/material/AvatarGroup';
 import { Popup } from "./Popup";
-import { UserList } from "./UserList";
 import { useState } from "react";
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import { TaskUserList } from './TaskUserList';
 interface TaskInfoBlockProps {
   TaskID: number;
   TaskName: string;
@@ -66,11 +66,11 @@ const TaskInfoBlock = ({ TaskName, TaskID, Assignee, DueDate, Description }: Tas
         {Description}
       </div>
 
-      <Popup open={open} onClose={() => { setOpen(false) }}>
-        <UserList taskId={TaskID} onConfirm={function (collaborators: string[]): void {
+      {/* <Popup open={open} onClose={() => { setOpen(false) }}>
+        <TaskUserList taskId={TaskID} onConfirm={function (collaborators: string[]): void {
           setOpen(false)
         }} />
-      </Popup>
+      </Popup> */}
 
     </div>
 

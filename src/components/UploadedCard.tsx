@@ -7,7 +7,7 @@ import { deleteAttachment } from '../api/attachment';
 import { delay } from "../utils/promise";
 
 interface UploadedCardProps {
-  FileID: number;
+  FileID: string;
   FilePic?: string; //Depending on the file format for different Pic
   FileName: string;
   FileAddedTime: string;
@@ -37,7 +37,7 @@ const UploadedCard = ({ FileID, FilePic, FileName, FileAddedTime, FileDownloadLi
 
 
 
-  const fetchAttach = async (url) => {
+  const fetchAttach = async (url: string | URL) => {
     const xhr = new XMLHttpRequest();
     xhr.responseType = 'blob';
     xhr.onload = (event) => {

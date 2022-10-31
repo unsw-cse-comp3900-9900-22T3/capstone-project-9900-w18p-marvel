@@ -51,9 +51,9 @@ export function TaskDetail({
   console.log(id)
 
   const [isEditing, setIsEditing] = useState(true);
-  const [inputcomment, setInputComment] = useState({});
-  const [inputattachments, setAttachment] = useState({});
-  const [taskdetails, setTaskdetails] = useState(true);
+  const [inputcomment, setInputComment] = useState<any>({});
+  const [inputattachments, setAttachment] = useState<any>({});
+  const [taskdetails, setTaskdetails] = useState<any>([]);
   const { user, setUser } = useApp(); //useApp
   const [loading, setLoading] = useState(false);
   console.log(user?.uid);
@@ -150,7 +150,7 @@ export function TaskDetail({
 
           <div className={`flex flex-col gap-4`}>
 
-            {inputattachments?.length > 0 && inputattachments.map((item) => (
+            {inputattachments?.length > 0 && inputattachments.map((item: { FilePic: string | undefined; title: string; createdAt: { toDateString: () => string; }; id: string; resource: { downloadURL: string; }; Createby: string; }) => (
 
               < UploadedCard
                 FilePic={item.FilePic}
@@ -176,7 +176,7 @@ export function TaskDetail({
 
           <div className={`flex w-176 h-auto flex-col gap-4`}>
 
-            {inputcomment?.length > 0 && inputcomment.map((item) => (
+            {inputcomment?.length > 0 && inputcomment.map((item: { taskId: string | undefined; id: string | undefined; createdBy: string | undefined; createdAt: { toDateString: () => string | undefined; }; content: string | undefined; }) => (
 
               < CommentBox
                 TaskId={item.taskId}
@@ -213,5 +213,5 @@ export function TaskDetail({
 
   );
 };
-<TaskDetail />
+
 //export { TaskDetail };

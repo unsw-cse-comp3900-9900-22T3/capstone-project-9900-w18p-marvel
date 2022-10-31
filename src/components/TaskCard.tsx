@@ -95,6 +95,9 @@ const TaskCard = ({ id, onClick }: TaskCardProps) => {
       fetchData(id);
     });
     fetchData(id);
+    return () => {
+      if (observer) observer();
+    };
   }, []);
 
   return (
@@ -136,7 +139,7 @@ const TaskCard = ({ id, onClick }: TaskCardProps) => {
           theme={timeTheme || "default"}
         />
       </div>
-      <LinearProgress variant="determinate" value={progress} />
+      <LinearProgress variant="determinate" value={progress || 0} />
       <div className="h-fit w-fit">
         {avatars?.length > 0 && (
           <AvatarGroup sx={{ height: 24 }} max={10}>

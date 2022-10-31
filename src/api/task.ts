@@ -34,7 +34,7 @@ export const createTask = async (
   createdBy: string,
   createdAt: Date,
   projectId: string,
-  laneName: string
+  laneId: string
 ) => {
   const app = getApp();
   const db = getFirestore(app);
@@ -42,7 +42,7 @@ export const createTask = async (
     title: title,
     status: status,
     projectId: projectId,
-    laneName: laneName,
+    laneId: laneId,
     dueData: dueData,
     description: description,
     createdBy: createdBy,

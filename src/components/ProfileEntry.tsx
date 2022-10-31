@@ -15,7 +15,7 @@ export const ProfileEntry = ({
   onClickProfile,
 }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
-  const wrapperRef = useRef(null);
+  const wrapperRef:any = useRef(null);
   useEffect(() => {
     /**
      * Alert if clicked on outside of element

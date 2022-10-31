@@ -119,22 +119,24 @@ export const deleteAllFile = (
         // All the prefixes under listRef.
         // You may call listAll() recursively on them.
       });
-      res.items.forEach((itemRef) => {
-        deleteObject(itemRef);
+      res.items.map(async (itemRef) => {
+        console.log("deleting image:",itemRef.fullPath)
+        await deleteObject(itemRef);
       });
     })
     .catch((error) => {
       // Uh-oh, an error occurred!
     });
-
-  listAll(fileRef)
+    
+    listAll(fileRef)
     .then((res) => {
       res.prefixes.forEach((folderRef) => {
         // All the prefixes under listRef.
         // You may call listAll() recursively on them.
       });
-      res.items.forEach((itemRef) => {
-        deleteObject(itemRef);
+      res.items.map(async (itemRef) => {
+        console.log("deleting image:",itemRef.fullPath)
+        await deleteObject(itemRef);
       });
     })
     .catch((error) => {

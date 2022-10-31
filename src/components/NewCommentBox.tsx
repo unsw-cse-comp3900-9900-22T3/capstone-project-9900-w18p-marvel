@@ -40,8 +40,8 @@ export const NewCommentBox = ({ TaskId, handleGetComment }: NewCommentBoxProps) 
     }
 
 
-    const handleadded = async (taskid, uid, comment) => {
-        await addComment(taskid, uid, comment);
+    const handleadded = async (TaskId, uid, comment) => {
+        await addComment(TaskId, uid, comment);
         await handleGetComment();
         setLoading(false);
     };

@@ -4,6 +4,7 @@ import { getUser, updateUserProfile } from "../api/user";
 import React, { useEffect, useState } from "react";
 import { useApp } from "../App";
 import Box from '@mui/material/Box';
+import { delay } from "../utils/promise";
 
 import {
     deleteComment
@@ -18,8 +19,8 @@ import {
 
 interface CommentboxProps {
     TaskId?: string;
-    CommentId?: string;
-    CommentorID?: string;
+    CommentId: string;
+    CommentorID: string;
     Comments?: string;
     CommentDate?: string;
     OwnerId?: string;
@@ -34,34 +35,42 @@ const img_address = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL9Lo
 const waste_icon = "https://freesvg.org/img/trash.png"
 
 const CommentBox = ({ TaskId, Comments, CommentDate, CommentorID, CommentId, OwnerId, handleGetComment }: CommentboxProps) => {
-    const [commnetuser, setcommnetuser] = useState({});
+    const [commnetuser, setcommnetuser] = useState<any>({});
     const { user, setUser } = useApp();
     const [inputcomment, setInputComment] = useState({});
 
     const fetchData = async () => {
         const userinfo = await getUser(CommentorID);
         console.log(userinfo)
+        await delay(1000);
         setcommnetuser(userinfo)
         console.log(TaskId)
         console.log(user?.uid)
+        console.log(Comments)
 
 
 
     }
 
 
+    useEffect(() => {
+        fetchData();
+    }, [handleGetComment]);
+
+
     const handleDelete = async () => {
+        console.log(CommentId)
         await deleteComment(CommentId);
+        await delay(1000);
         await handleGetComment();
+        fetchData();
     };
 
 
 
 
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+
 
     return (
         <div className={`flex flex-col w-176 h-auto mb-2`}>

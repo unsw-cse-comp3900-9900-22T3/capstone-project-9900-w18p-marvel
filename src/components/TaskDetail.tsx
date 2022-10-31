@@ -12,6 +12,7 @@ import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
 import Dropdownlist_mui from "./Dropdownlist_mui";
 import { getUser } from "../api/user";
 import { useApp } from "../App";
+import { delay } from "../utils/promise";
 
 import { User } from "../api/type";
 
@@ -24,32 +25,28 @@ import {
 import {
   queryAttachment
 } from "../api/attachment";
+import { getTask } from "../api/task";
 
 
 
 
 interface TaskDetailProps {
   id: string;
+
 }
-
-
-const img_address = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL9LonfTfSW8SOAc8E7Fe982afR_kqYbwSuQ&usqp=CAU"
-const CommenterAvator = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL9LonfTfSW8SOAc8E7Fe982afR_kqYbwSuQ&usqp=CAU"
-const desc = "This is the test!!!Currently, no matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in school, company, etc, people usually need to work as a team for the final assignment, product manufacturing, or software development. It will be very complicated if the group is very large, or the big project is divided into various small teams. Such as if the company wants to build new products, they need to have several teams, one for design, one for manufacture, one for testing, etc. If there is no well- structured system to manage the task, the products might be missing some critical parts, causing some severe issues and failing the project."
-const uploadedcardpic = "https://icons.veryicon.com/png/o/miscellaneous/real-cool/live-cool-background-picture-upload.png"
-const uplodaicon = "https://cdn-icons-png.flaticon.com/128/1702/1702912.png"
 
 
 //export const TaskDetail = ({ }: TaskDetailProps) => {
 //const props = [{ id: "144d3881144d702d618d" }]
 export function TaskDetail({
-  id = "14eb2cdbde763a91d3fb"
+  id
 }: TaskDetailProps) {
-
+  console.log(id)
 
   const [isEditing, setIsEditing] = useState(true);
-  const [inputcomment, setInputComment] = useState({});
-  const [inputattachments, setAttachment] = useState({});
+  const [inputcomment, setInputComment] = useState<any>({});
+  const [inputattachments, setAttachment] = useState<any>({});
+  const [taskdetails, setTaskdetails] = useState<any>([]);
   const { user, setUser } = useApp(); //useApp
   const [loading, setLoading] = useState(false);
   console.log(user?.uid);
@@ -63,6 +60,7 @@ export function TaskDetail({
   useEffect(() => {
     handleGetComment();
     handleGetattached();
+    handleGetTaskdetails();
   }, []);
 
 
@@ -73,7 +71,8 @@ export function TaskDetail({
     const allcomments = await queryComment(id);
     console.log(allcomments)
     setInputComment(allcomments)
-    setLoading(false);
+    await delay(2000)
+    setLoading(false)
 
 
   }
@@ -84,52 +83,47 @@ export function TaskDetail({
 
     const allattachments = await queryAttachment(id);
     setAttachment(allattachments)
+    setLoading(false)
     console.log(allattachments)
 
 
   }
 
 
-  const TaskDetail = [
-    { TaskID: 1234, TaskName: "Marvel Task Management", Assignee: [{ name: "Lisa", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }], DueDate: "22/02/2023", Description: "123kwnflkwfnlkwnfklwnflwln" }
-  ]
+
+  const handleGetTaskdetails = async () => {
+
+    const detailtask = await getTask(id);
+    setTaskdetails(detailtask)
+    setLoading(false)
+    console.log(detailtask)
 
 
-  const CommentorData = [
-    { CommentorID: '1', Name: 'Linda Hsu', CommenterAvator: img_address, content: '@11', CommentDate: '10/12/2023' },
-    { CommentorID: '2', Name: 'Teddy', CommenterAvator: img_address, content: '@113', CommentDate: '10/12/2023' },
-    { CommentorID: '3', Name: 'Anthony', CommenterAvator: img_address, content: '@1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojn1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojn1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelf1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnwelj1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojnnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojnnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojn fo12', CommentDate: '10/12/2023' },
-    { CommentorID: '4', Name: 'Lisa', CommenterAvator: img_address, content: '@11', CommentDate: '10/12/2023' },
-  ]
+  }
 
-  const UploadedCardDetails = [
-    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: "1", FileDownloadLink: "test" },
-    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: "2", FileDownloadLink: "test" },
-    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: "3", FileDownloadLink: "test" }
-
-  ]
 
 
 
 
   return (
     <>
-      <div className={`flex items-center w-200 rounded-[32px] h-4/5 bg-white-100`}>
-        <div className={`flex justify-items-start flex-col px-12 h-full py-5 overflow-auto relative`}>
-          <div className={`flex h-auto  absolute`}>
+
+      <div className={`flex items-center w-200 rounded-[32px] bg-white-100 `}>
+        <div className={`flex justify-items-start flex-col px-12 overflow-auto max-h-[70rem] relative `}>
+          <div className={`flex h-auto pt-5 absolute`}>
             <Dropdownlist_mui />
 
           </div>
 
           <div className={`flex pt-20`}>
-            {TaskDetail.map((item) => (
-              <TaskInfoBlock
-                TaskID={item.id}
-                TaskName={item.TaskName}
-                Assignee={item.Assignee}
-                DueDate={item.DueDate}
-                Description={item.Description} />
-            ))}
+
+            <TaskInfoBlock
+              TaskID={taskdetails.id}
+              TaskName={taskdetails.title}
+              //DueDate={taskdetails.dueDate.toDateString()}
+              Description={taskdetails.description} >
+            </TaskInfoBlock>
+
           </div>
 
 
@@ -142,15 +136,16 @@ export function TaskDetail({
 
           <div className={`flex flex-col gap-4`}>
 
-            {inputattachments?.length > 0 && inputattachments.map((item) => (
+            {inputattachments?.length > 0 && inputattachments.map((item: { FilePic: string | undefined; title: string; createdAt: { toDateString: () => string; }; id: string; resource: { downloadURL: string; }; Createby: string; }) => (
 
               < UploadedCard
                 FilePic={item.FilePic}
-                FileName={item.FileName}
+                FileName={item.title}
                 FileAddedTime={item.createdAt.toDateString()}
                 FileID={item.id}
-                FileDownloadLink={item.resourceUrl}
+                FileDownloadLink={item.resource.downloadURL}
                 UploadedBy={item.Createby}
+                handleGetattached={handleGetattached}
               >
               </UploadedCard>
 
@@ -167,14 +162,12 @@ export function TaskDetail({
 
           <div className={`flex w-176 h-auto flex-col gap-4`}>
 
-            {inputcomment?.length > 0 && inputcomment.map((item) => (
+            {inputcomment?.length > 0 && inputcomment.map((item: { taskId: string | undefined; id: string | undefined; createdBy: string | undefined; createdAt: { toDateString: () => string | undefined; }; content: string | undefined; }) => (
 
               < CommentBox
                 TaskId={item.taskId}
                 CommentId={item.id}
                 CommentorID={item.createdBy}
-                //CommentDate={new Date(item.createdAt?.map((test) => (test.seconds)))}
-                //CommentDate={new Date(item.createdAt.values[seconds])}
                 CommentDate={item.createdAt.toDateString()}
                 Comments={item.content}
                 OwnerID={user?.uid}
@@ -199,11 +192,12 @@ export function TaskDetail({
         </div>
 
       </div>
+
     </>
 
 
 
   );
 };
-<TaskDetail />
+
 //export { TaskDetail };

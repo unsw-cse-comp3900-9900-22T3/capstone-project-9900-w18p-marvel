@@ -55,6 +55,7 @@ import { addLane, queryLaneByProjectId, updateLane } from "../api/lane";
 import { TextInput } from "./TextInput";
 import { queryProjectCollaboratorsByProjectId } from "../api/projectCollaborator";
 import { getApp } from "firebase/app";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 /**
  * Moves an item from one list to another list.
@@ -165,11 +166,13 @@ export function TaskDND({}: Props) {
 
           const laneMap: any = {};
           lanes.forEach((l) => {
+            console.log(l.id)
             laneMap[l.id] = { name: l.name, loading: false, items: [] };
           });
-
+          
           const map = new Map<string, Array<TaskCollaborator>>();
           tasks.forEach((t) => {
+            console.log(t.laneId)
             laneMap[t.laneId].items.push(t);
           });
 
@@ -204,7 +207,10 @@ export function TaskDND({}: Props) {
       tasksObserver = onSnapshot(taskQ,(querySnapshot)=>{
         fetchData()
       })
-      
+      return ()=>{
+        if (projectCollabObserver) projectCollabObserver();
+        if(tasksObserver) tasksObserver()
+      }
     }
     fetchData();
   }, []);
@@ -273,7 +279,7 @@ export function TaskDND({}: Props) {
                       </div>
                     </div>
                   )}
-                  <div className="absolute left-6 top-6 font-bold text-base text-gray-100">
+                  <div className="absolute flex justify-between items-center inset-x-6 top-6 font-bold text-base text-gray-100">
                     <TextInput
                       defaultValue={lane?.name}
                       disabled={false}
@@ -281,6 +287,7 @@ export function TaskDND({}: Props) {
                         updateLane(key, val);
                       }}
                     />
+                    <DeleteOutlineIcon color="inherit"/>
                   </div>
                   <div
                     className="absolute left-6 right-6 bottom-6 flex justify-between cursor-pointer hover:scale-95 transition"

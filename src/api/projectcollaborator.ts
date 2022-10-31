@@ -24,7 +24,6 @@ export const queryProjectCollaboratorsByProjectId: (
   const querySnapshot = await getDocs(q);
   const data: Array<ProjectCollaborator> = [];
   querySnapshot.forEach((doc) => {
-    console.log("piush:",doc.data())
     data.push({ id: doc.id, ...doc.data() } as ProjectCollaborator);
   });
   return data;

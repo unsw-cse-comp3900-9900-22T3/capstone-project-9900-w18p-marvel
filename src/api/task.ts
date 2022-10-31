@@ -94,11 +94,34 @@ export const queryAllTasks: () => Promise<Array<Task>> = async () => {
   return data;
 };
 
-export const updateLane = async (taskId: string, laneName: string) => {
+export const getTask: (id: string) => Promise<Task | null> = async (
+  id: string
+) => {
+  const app = getApp();
+  const db = getFirestore(app);
+  const docRef = doc(db, "tasks", id);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return { ...docSnap.data(), id: id } as Task;
+  } else {
+    return null;
+  }
+};
+
+export const updateLane = async (taskId: string, title: string,
+  status: Status,
+  dueData: Date,
+  description: string,
+  laneName: string) => {
   const app = getApp();
   const db = getFirestore(app);
   await updateDoc(doc(db, "tasks", taskId), {
-    laneName: laneName,
+    laneName,
+    title,
+    status,
+    dueData,
+    description,
   });
 };
 

@@ -41,6 +41,7 @@ import {
 } from "../api/projectCollaborator";
 import { addLane, deleteAllLanes } from "../api/lane";
 import Dropdownlist_mui from "../components/Dropdownlist_mui";
+import Select from "../components/Select";
 
 export const APITest = () => {
   const { user, setUser, invitations } = useApp();
@@ -383,7 +384,7 @@ export const APITest = () => {
           }
         }}
       />
-      <Dropdownlist_mui/>
+      <Select/>
     </div>
   );
 };

@@ -25,6 +25,7 @@ import {
 import {
   queryAttachment
 } from "../api/attachment";
+import { getTask } from "../api/task";
 
 
 
@@ -52,6 +53,7 @@ export function TaskDetail({
   const [isEditing, setIsEditing] = useState(true);
   const [inputcomment, setInputComment] = useState({});
   const [inputattachments, setAttachment] = useState({});
+  const [taskdetails, setTaskdetails] = useState({});
   const { user, setUser } = useApp(); //useApp
   const [loading, setLoading] = useState(false);
   console.log(user?.uid);
@@ -65,6 +67,7 @@ export function TaskDetail({
   useEffect(() => {
     handleGetComment();
     handleGetattached();
+    handleGetTaskdetails();
   }, []);
 
 
@@ -94,6 +97,18 @@ export function TaskDetail({
   }
 
 
+
+  const handleGetTaskdetails = async () => {
+
+    const detailtask = await getTask(id);
+    setTaskdetails(detailtask)
+    setLoading(false)
+    console.log(detailtask)
+
+
+  }
+
+
   const TaskDetail = [
     { TaskID: 1234, TaskName: "Marvel Task Management", Assignee: [{ name: "Lisa", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }], DueDate: "22/02/2023", Description: "123kwnflkwfnlkwnfklwnflwln" }
   ]
@@ -115,14 +130,14 @@ export function TaskDetail({
           </div>
 
           <div className={`flex pt-20`}>
-            {TaskDetail.map((item) => (
-              <TaskInfoBlock
-                TaskID={item.id}
-                TaskName={item.TaskName}
-                Assignee={item.Assignee}
-                DueDate={item.DueDate}
-                Description={item.Description} />
-            ))}
+
+            <TaskInfoBlock
+              TaskID={taskdetails.id}
+              TaskName={taskdetails.title}
+              DueDate={taskdetails.dueDate}
+              Description={taskdetails.description} >
+            </TaskInfoBlock>
+
           </div>
 
 

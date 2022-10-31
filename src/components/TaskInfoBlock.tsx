@@ -32,11 +32,8 @@ const TaskInfoBlock = ({ TaskName, TaskID, Assignee, DueDate, Description }: Tas
           <div className={`flex items-start text-gray-400 text-xs`}>ASSIGNED TO</div>
           {<div className={`flex items-start text-sm text-gray-400 rounded-2xl pt-5`} onClick={() => {
             setOpen(true)
-          }}><AvatarGroup total={Assignee.length}>
-              {Assignee.map((item) => (
-                <Avatar alt={item.name} src={item.AssigneePic} />
+          }}><AvatarGroup total={5}>
 
-              ))}
               <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
               <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
               <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />

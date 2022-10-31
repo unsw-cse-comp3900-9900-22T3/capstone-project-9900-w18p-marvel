@@ -19,8 +19,8 @@ import {
 
 interface CommentboxProps {
     TaskId?: string;
-    CommentId?: string;
-    CommentorID?: string;
+    CommentId: string;
+    CommentorID: string;
     Comments?: string;
     CommentDate?: string;
     OwnerId?: string;
@@ -35,7 +35,7 @@ const img_address = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL9Lo
 const waste_icon = "https://freesvg.org/img/trash.png"
 
 const CommentBox = ({ TaskId, Comments, CommentDate, CommentorID, CommentId, OwnerId, handleGetComment }: CommentboxProps) => {
-    const [commnetuser, setcommnetuser] = useState({});
+    const [commnetuser, setcommnetuser] = useState<any>({});
     const { user, setUser } = useApp();
     const [inputcomment, setInputComment] = useState({});
 

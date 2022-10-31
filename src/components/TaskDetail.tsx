@@ -36,13 +36,6 @@ interface TaskDetailProps {
 }
 
 
-const img_address = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL9LonfTfSW8SOAc8E7Fe982afR_kqYbwSuQ&usqp=CAU"
-const CommenterAvator = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL9LonfTfSW8SOAc8E7Fe982afR_kqYbwSuQ&usqp=CAU"
-const desc = "This is the test!!!Currently, no matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in schoolno matter whether in school, company, etc, people usually need to work as a team for the final assignment, product manufacturing, or software development. It will be very complicated if the group is very large, or the big project is divided into various small teams. Such as if the company wants to build new products, they need to have several teams, one for design, one for manufacture, one for testing, etc. If there is no well- structured system to manage the task, the products might be missing some critical parts, causing some severe issues and failing the project."
-const uploadedcardpic = "https://icons.veryicon.com/png/o/miscellaneous/real-cool/live-cool-background-picture-upload.png"
-const uplodaicon = "https://cdn-icons-png.flaticon.com/128/1702/1702912.png"
-
-
 //export const TaskDetail = ({ }: TaskDetailProps) => {
 //const props = [{ id: "144d3881144d702d618d" }]
 export function TaskDetail({
@@ -107,13 +100,6 @@ export function TaskDetail({
 
 
   }
-
-
-  const TaskDetail = [
-    { TaskID: 1234, TaskName: "Marvel Task Management", Assignee: [{ name: "Lisa", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }, { name: "Lisa2", AssigneePic: img_address }], DueDate: "22/02/2023", Description: "123kwnflkwfnlkwnfklwnflwln" }
-  ]
-
-
 
 
 

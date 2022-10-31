@@ -55,7 +55,7 @@ const CommentBox = ({ TaskId, Comments, CommentDate, CommentorID, CommentId, Own
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [handleGetComment]);
 
 
     const handleDelete = async () => {

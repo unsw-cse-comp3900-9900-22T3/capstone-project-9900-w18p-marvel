@@ -53,7 +53,7 @@ export function TaskDetail({
   const [isEditing, setIsEditing] = useState(true);
   const [inputcomment, setInputComment] = useState({});
   const [inputattachments, setAttachment] = useState({});
-  const [taskdetails, setTaskdetails] = useState({});
+  const [taskdetails, setTaskdetails] = useState(true);
   const { user, setUser } = useApp(); //useApp
   const [loading, setLoading] = useState(false);
   console.log(user?.uid);

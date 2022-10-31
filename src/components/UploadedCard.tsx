@@ -23,6 +23,8 @@ const waste_icon = "https://freesvg.org/img/trash.png"
 
 const UploadedCard = ({ FileID, FilePic, FileName, FileAddedTime, FileDownloadLink, UploadedBy, handleGetattached }: UploadedCardProps) => {
 
+  console.log(FileID)
+
   const [uploaduser, setUploaduser] = useState({});
   const [loading, setLoading] = useState(false);
   const fetchData = async () => {

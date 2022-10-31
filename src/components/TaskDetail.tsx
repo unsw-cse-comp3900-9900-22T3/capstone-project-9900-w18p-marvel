@@ -12,6 +12,7 @@ import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
 import Dropdownlist_mui from "./Dropdownlist_mui";
 import { getUser } from "../api/user";
 import { useApp } from "../App";
+import { delay } from "../utils/promise";
 
 import { User } from "../api/type";
 
@@ -30,6 +31,7 @@ import {
 
 interface TaskDetailProps {
   id: string;
+
 }
 
 
@@ -73,7 +75,8 @@ export function TaskDetail({
     const allcomments = await queryComment(id);
     console.log(allcomments)
     setInputComment(allcomments)
-    setLoading(false);
+    await delay(2000)
+    setLoading(false)
 
 
   }
@@ -84,6 +87,7 @@ export function TaskDetail({
 
     const allattachments = await queryAttachment(id);
     setAttachment(allattachments)
+    setLoading(false)
     console.log(allattachments)
 
 
@@ -95,28 +99,17 @@ export function TaskDetail({
   ]
 
 
-  const CommentorData = [
-    { CommentorID: '1', Name: 'Linda Hsu', CommenterAvator: img_address, content: '@11', CommentDate: '10/12/2023' },
-    { CommentorID: '2', Name: 'Teddy', CommenterAvator: img_address, content: '@113', CommentDate: '10/12/2023' },
-    { CommentorID: '3', Name: 'Anthony', CommenterAvator: img_address, content: '@1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojn1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojn1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelf1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnwelj1enfcwjenfjwenfjwenfjknwejfnwlejnfljwenfjlnweljfnwlenfljewnfljwenlfnwelfnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojnnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojnnweljnfjwenfjwnejlfnweljnfljwenfljnweljfnlwejnflwjnflwjenflwjfnlwejnfjlwenfljwenfjo2unfou2nfou2nojfn2ojn fo12', CommentDate: '10/12/2023' },
-    { CommentorID: '4', Name: 'Lisa', CommenterAvator: img_address, content: '@11', CommentDate: '10/12/2023' },
-  ]
 
-  const UploadedCardDetails = [
-    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: "1", FileDownloadLink: "test" },
-    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: "2", FileDownloadLink: "test" },
-    { FilePic: uploadedcardpic, FileName: "Marvel Porject", FileAddedTime: "10/10/2022", FileID: "3", FileDownloadLink: "test" }
-
-  ]
 
 
 
 
   return (
     <>
-      <div className={`flex items-center w-200 rounded-[32px] h-4/5 bg-white-100`}>
-        <div className={`flex justify-items-start flex-col px-12 h-full py-5 overflow-auto relative`}>
-          <div className={`flex h-auto  absolute`}>
+
+      <div className={`flex items-center w-200 rounded-[32px] bg-white-100 `}>
+        <div className={`flex justify-items-start flex-col px-12 overflow-auto max-h-[70rem] relative `}>
+          <div className={`flex h-auto pt-5 absolute`}>
             <Dropdownlist_mui />
 
           </div>
@@ -146,11 +139,12 @@ export function TaskDetail({
 
               < UploadedCard
                 FilePic={item.FilePic}
-                FileName={item.FileName}
+                FileName={item.title}
                 FileAddedTime={item.createdAt.toDateString()}
                 FileID={item.id}
-                FileDownloadLink={item.resourceUrl}
+                FileDownloadLink={item.resource.downloadURL}
                 UploadedBy={item.Createby}
+                handleGetattached={handleGetattached}
               >
               </UploadedCard>
 
@@ -173,8 +167,6 @@ export function TaskDetail({
                 TaskId={item.taskId}
                 CommentId={item.id}
                 CommentorID={item.createdBy}
-                //CommentDate={new Date(item.createdAt?.map((test) => (test.seconds)))}
-                //CommentDate={new Date(item.createdAt.values[seconds])}
                 CommentDate={item.createdAt.toDateString()}
                 Comments={item.content}
                 OwnerID={user?.uid}
@@ -199,6 +191,7 @@ export function TaskDetail({
         </div>
 
       </div>
+
     </>
 
 

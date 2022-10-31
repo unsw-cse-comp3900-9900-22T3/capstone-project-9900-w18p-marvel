@@ -4,6 +4,7 @@ import { getUser, updateUserProfile } from "../api/user";
 import React, { useEffect, useState } from "react";
 import { useApp } from "../App";
 import Box from '@mui/material/Box';
+import { delay } from "../utils/promise";
 
 import {
     deleteComment
@@ -41,27 +42,35 @@ const CommentBox = ({ TaskId, Comments, CommentDate, CommentorID, CommentId, Own
     const fetchData = async () => {
         const userinfo = await getUser(CommentorID);
         console.log(userinfo)
+        await delay(1000);
         setcommnetuser(userinfo)
         console.log(TaskId)
         console.log(user?.uid)
+        console.log(Comments)
 
 
 
     }
 
 
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+
     const handleDelete = async () => {
+        console.log(CommentId)
         await deleteComment(CommentId);
+        await delay(1000);
         await handleGetComment();
+        fetchData();
     };
 
 
 
 
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+
 
     return (
         <div className={`flex flex-col w-176 h-auto mb-2`}>

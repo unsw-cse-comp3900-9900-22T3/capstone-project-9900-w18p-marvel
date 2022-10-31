@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Box from '@mui/material/Box';
 import { useApp } from "../App";
 import { deleteAttachment } from '../api/attachment';
+import { delay } from "../utils/promise";
 
 interface UploadedCardProps {
   FileID: number;
@@ -12,6 +13,7 @@ interface UploadedCardProps {
   FileAddedTime: string;
   FileDownloadLink: string;
   UploadedBy: string;
+  handleGetattached: any;
 
 }
 
@@ -19,12 +21,12 @@ interface UploadedCardProps {
 const temp_img_address = "https://cdn.pixabay.com/photo/2017/02/07/02/16/cloud-2044823_960_720.png"
 const waste_icon = "https://freesvg.org/img/trash.png"
 
-const UploadedCard = ({ FileID, FilePic, FileName, FileAddedTime, FileDownloadLink, UploadedBy }: UploadedCardProps) => {
+const UploadedCard = ({ FileID, FilePic, FileName, FileAddedTime, FileDownloadLink, UploadedBy, handleGetattached }: UploadedCardProps) => {
 
   const [uploaduser, setUploaduser] = useState({});
+  const [loading, setLoading] = useState(false);
   const fetchData = async () => {
     const userinfo = await getUser(UploadedBy);
-
 
     console.log(userinfo)
     setUploaduser(userinfo)
@@ -40,16 +42,20 @@ const UploadedCard = ({ FileID, FilePic, FileName, FileAddedTime, FileDownloadLi
       const blob = xhr.response;
     };
     xhr.open('GET', url);
-    xhr.send();
 
-  }
+
+  };
+
   const handleDelete = async () => {
-    await deleteAttachment(FileID);
-    await handleGetAttachment();
+    await deleteAttachment(FileID, null, null);
+    console.log('checl')
+    await delay(2000);
+    await handleGetattached();
   };
 
   useEffect(() => {
     fetchData();
+
   }, []);
 
   return (
@@ -61,14 +67,14 @@ const UploadedCard = ({ FileID, FilePic, FileName, FileAddedTime, FileDownloadLi
           <img src={temp_img_address} className={`h-20 w-20`} />
         </div>
         <div className={`flex flex-row w-full pr-5 h-auto justify-between`}>
-          <div className={`flex flex-col ml-5 w-auto h-auto gap-3`} onClick={fetchAttach(FileDownloadLink)}>
+          <div className={`flex flex-col ml-5 w-auto h-auto gap-3`} >
             <div className={`text-xl font-bold`}>{FileName}</div>
             <div className={`text-xs text-gray-100`}>Added at {FileAddedTime}, Created by {uploaduser?.displayName ? commnetuser?.displayName : "Anonymous"}</div>
           </div>
 
-          <div className={`hover:bg-slate-300 text-slate-500 rounded-[14px]`}>
+          <Box className={`hover:bg-slate-300 text-slate-500 rounded-[14px] h-6`}>
             <DeleteForeverOutlinedIcon onClick={handleDelete} />
-          </div>
+          </Box>
 
         </div>
 

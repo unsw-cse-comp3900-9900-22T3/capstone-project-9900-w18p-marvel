@@ -16,7 +16,7 @@ import {
   createTask,
   deleteAllTask,
   queryAllTasksByProjectId,
-  updateLane,
+  updateTask,
 } from "../api/task";
 import _ from "lodash";
 import { TaskCard } from "./TaskCard";
@@ -181,7 +181,7 @@ export function TaskDND({}: Props) {
       newState[sourceId].items = items;
       setData(newState);
     } else {
-      updateLane(data[sourceId].items[source.index].id, destinationId);
+      updateTask(data[sourceId].items[source.index].id,null,null,null,null, destinationId);
       const result = move(
         data[sourceId],
         data[destinationId],

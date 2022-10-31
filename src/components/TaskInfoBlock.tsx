@@ -37,7 +37,7 @@ const TaskInfoBlock = ({ TaskName, TaskID, DueDate, Description }: TaskInfoBlock
 
 
   const fetchData = async () => {
-    const activeCollabs = await queryCollaboratorsInTask(TaskID);
+    const activeCollabs = await queryCollaboratorsInTask(TaskID ? TaskID : null);
     const activeUserIds = activeCollabs.map((c) => c.userId);
     console.log(activeUserIds)
 

@@ -26,7 +26,7 @@ export const TextInput = ({
     <form
       className={`transition-all w-full h-10 rounded-2xl
       ${focus && !disabled ? "bg-white-5 px-6 break-all" : "px-2"} py-3  ${!disabled ? "hover:bg-white-5" : ""
-        } flex flex-row gap-4 items-center`}
+        } flex flex-row gap-4 items-center font-inherit text-inherit`}
       onFocus={() => {
         if (!disabled) setFocus(true);
       }} //focus 鼠标移上去点击事件
@@ -41,7 +41,7 @@ export const TextInput = ({
           setValue(e.target.value);
           onChange?.(e.target.value);
         }}
-        className={`grow text-sm font-medium ${value.length > 0 ? "text-black" : "text-gray-100"
+        className={`grow text-sm font-bold ${value.length > 0 ? "text-inherit" : "text-gray-100"
           }`}
         value={value}
         placeholder={placeholder}

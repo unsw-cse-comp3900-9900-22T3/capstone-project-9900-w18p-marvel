@@ -22,10 +22,9 @@ export interface Task {
     description:string
     dueDate:Date
     projectId:string
-    laneName:string
+    laneId:string
     status:Status
     title:string
-    cover?:Resource
 }
 
 export interface Project {
@@ -80,4 +79,10 @@ export interface ProjectCollaborator{
     projectId:string
     userId:string
     role:Role
+}
+
+export interface Lane{
+    id:string
+    name:string
+    projectId:string
 }

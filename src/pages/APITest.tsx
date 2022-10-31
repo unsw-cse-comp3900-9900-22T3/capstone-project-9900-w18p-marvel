@@ -1,7 +1,10 @@
 import { faker } from "@faker-js/faker";
 import { useEffect, useState } from "react";
 import { uid } from "uid";
-import { addAttachment, deleteAllAttachment as deleteAllAttachment,  } from "../api/attachment";
+import {
+  addAttachment,
+  deleteAllAttachment as deleteAllAttachment,
+} from "../api/attachment";
 import {
   queryTaskCollaboratorsByKeyword,
   queryCollaboratorsInTask,
@@ -21,7 +24,7 @@ import {
   queryAllTasks,
   queryAllTasksByProjectId,
 } from "../api/task";
-import { Comment, Project, Task } from "../api/type";
+import { Comment, Project, Role, Task } from "../api/type";
 import {
   getUser,
   queryAllUsers,
@@ -30,9 +33,17 @@ import {
 } from "../api/user";
 import { useApp } from "../App";
 import { Button } from "../components/Button";
-import { sample, sampleMultiple } from "../utils/array";
+import { randInt, sample, sampleMultiple } from "../utils/array";
 import { urlToFile } from "../utils/converter";
-import { addProjectCollaborator } from "../api/projectCollaborator";
+import {
+  addProjectCollaborator,
+  removeAllProjectCollaborator,
+} from "../api/projectCollaborator";
+import { addLane, deleteAllLanes } from "../api/lane";
+import Dropdownlist_mui from "../components/Dropdownlist_mui";
+import Select from "../components/Select";
+import { TaskFilter } from "../components/TaskFilter";
+import { Popup } from "../components/Popup";
 
 export const APITest = () => {
   const { user, setUser, invitations } = useApp();
@@ -46,43 +57,41 @@ export const APITest = () => {
   }, [user]);
   const [files, setFiles] = useState<Array<File>>([]);
 
-  const deleteAll = ()=>{
+  const deleteAll = () => {
     deleteAllProject();
     removeAllTaskCollaborator();
     deleteAllTask();
     deleteAllFile();
     deleteAllAttachment();
     deleteAllComment();
-  }
+    deleteAllLanes();
+  };
 
-  const genProjects = async () => {
+  const genProjectsAndTasks = async () => {
     await deleteAllProject();
     const allUsers = await queryAllUsers("");
     console.log("alluser:", allUsers);
     const dummyImageURL = Array(100)
       .fill(0)
       .map((n) => faker.image.image(256, 256, true));
-    let files: Array<File> = [];
+    let imgs: Array<File> = [];
     await Promise.all(
       dummyImageURL.map(async (url) => {
         const file = await urlToFile(url);
-        files.push(file);
+        imgs.push(file);
       })
     );
-    console.log("image gened:", files);
-    const dummyIds = Array(50)
-    .fill(0).map(n=>uid(20))
-    allUsers.forEach((u)=>{
-      dummyIds.forEach((id)=>{
-        addProjectCollaborator(u.uid!,id,sample(["owner","editor","viewer"]))
-      })
-    })
+    console.log("image gened:", imgs);
 
-    const dummyProjects = dummyIds
-      .map((id) => {
-        const file = sample(files);
+    allUsers.forEach((u) => {
+      const dummyProjectIds = Array(randInt(1, 8))
+        .fill(0)
+        .map((n) => uid(20));
+      dummyProjectIds.forEach((id) => {
+        //create project
+        const img = sample(imgs);
         uploadFile(
-          file,
+          img,
           "image",
           (p) => {},
           (err) => {},
@@ -90,7 +99,7 @@ export const APITest = () => {
             const data = {
               id: id,
               createdAt: faker.date.recent(),
-              createdBy: sample(allUsers).uid,
+              createdBy: u.uid,
               title: faker.name.jobTitle(),
               cover: { downloadURL: URL, storagePath: path },
             } as Project;
@@ -103,98 +112,121 @@ export const APITest = () => {
             );
           }
         );
+
+        //select random users and creator
+        const rand = Math.floor(Math.random() * 8) + 1;
+        const projectCollabs = [{ id: u.uid, role: "owner" }].concat(
+          sampleMultiple(allUsers, randInt(0, allUsers.length - 1))
+            .map((c) => ({
+              id: c.uid,
+              role: sample(["owner", "editor", "viewer"]),
+            }))
+            .filter((c) => c.id !== u.uid)
+        );
+        projectCollabs.forEach((c) => {
+          addProjectCollaborator(c.id!, id, c.role as Role);
+        });
+
+        sampleMultiple(
+          [
+            "Todo",
+            "Ongoing",
+            "Stopped",
+            "Invalid",
+            "Brainstorming",
+            "QA",
+            "Done",
+          ],
+          3
+        ).forEach((n) => {
+          const laneId = uid(20);
+          addLane(laneId, id, n);
+          const rand = Math.floor(Math.random() * 5);
+          const dummyTasks = Array(rand)
+            .fill(0)
+            .map(async (n) => {
+              const data = {
+                id: uid(20),
+                createdAt: faker.date.recent(),
+                createdBy: sample(allUsers).uid,
+                description: faker.lorem.sentence(),
+                dueDate: faker.date.future(),
+                projectId: id,
+                laneId: laneId,
+                status: "start",
+                title: faker.name.jobTitle(),
+              } as Task;
+              await createTask(
+                data.id,
+                data.title,
+                data.status,
+                data.dueDate,
+                data.description,
+                data.createdBy,
+                data.createdAt,
+                data.projectId,
+                data.laneId
+              );
+
+              await updateCollaborators(
+                sampleMultiple(
+                  projectCollabs.map((u) => u.id),
+                  Math.floor(Math.random() * 5)
+                ),
+                data.id
+              );
+            });
+        });
       });
+    });
   };
 
-  const genTasks = async () => {
-    await removeAllTaskCollaborator();
-    await deleteAllTask();
-    const allUsers = await queryAllUsers("");
-    console.log("alluser:", allUsers);
-    const projects = await queryAllProjects();
-    const dummyImageURL = Array(100)
-      .fill(0)
-      .map((n) => faker.image.image(500, 500, true));
-    let files: Array<File> = [];
+  const genComment = async () => {
+    await deleteAllComment();
+    const collaborators = await queryTaskCollaboratorsByKeyword("");
     await Promise.all(
-      dummyImageURL.map(async (url) => {
-        const file = await urlToFile(url);
-        files.push(file);
+      collaborators.map(async (c) => {
+        console.log(c);
+        const cm = {
+          id: uid(20),
+          createdAt: new Date(),
+          createdBy: c.userId,
+          content: faker.lorem.sentence(),
+          taskId: c.taskId,
+        } as Comment;
+        addComment(cm.taskId, cm.createdBy, cm.content);
       })
     );
-    console.log("image gened:", files);
-    const dummyTasks = Array(200)
-      .fill(0)
-      .map((n) => {
-        const file = sample(files);
-        uploadFile(
-          file,
-          "image",
-          (p) => {},
-          (err) => {},
-          async (URL, path) => {
-            const data = {
-              id: uid(20),
-              createdAt: faker.date.recent(),
-              createdBy: sample(allUsers).uid,
-              description: faker.lorem.sentence(),
-              dueDate: faker.date.future(),
-              projectId: sample(projects).id,
-              laneName: sample(["Todo", "Ongoing", "QA", "Done"]),
-              status: "start",
-              title: faker.name.jobTitle(),
-              cover: { downloadURL: URL, storagePath: path },
-            } as Task;
-            await createTask(
-              data.id,
-              data.title,
-              data.status,
-              data.dueDate,
-              data.description,
-              data.createdBy,
-              data.createdAt,
-              data.projectId,
-              data.laneName,
-              file
-            );
-            await updateCollaborators(
-              sampleMultiple(
-                allUsers!.map((u) => u.uid),
-                Math.floor(Math.random() * 9) + 1
-              ),
-              data.id
-            );
-          }
-        );
-      });
+    console.log("operation complete");
   };
 
-
-
-  const genComment = async ()=>{
-    await deleteAllComment()
-    const collaborators = await queryTaskCollaboratorsByKeyword("")
-    await Promise.all(collaborators.map(async (c)=>{
-      console.log(c)
-      const cm = {id:uid(20),createdAt:new Date(),createdBy:c.userId,content:faker.lorem.sentence(),taskId:c.taskId} as Comment
-      addComment(cm.taskId,cm.createdBy,cm.content)
-    }))
-    console.log("operation complete")
-  }
-
-  const genAttachments = async ()=>{
-    await deleteAllAttachment()
-    const collaborators = await queryTaskCollaboratorsByKeyword("")
-    collaborators.map((c)=>{
-      const rand = Math.random()
-      if(rand >0.35){
-        addAttachment(c.taskId,c.userId,sample(files),()=>{},()=>{},()=>{})
-        if(rand < 0.7){
-          addAttachment(c.taskId,c.userId,sample(files),()=>{},()=>{},()=>{})
+  const genAttachments = async () => {
+    await deleteAllAttachment();
+    const collaborators = await queryTaskCollaboratorsByKeyword("");
+    collaborators.map((c) => {
+      const rand = Math.random();
+      if (rand > 0.35) {
+        addAttachment(
+          c.taskId,
+          c.userId,
+          sample(files),
+          () => {},
+          () => {},
+          () => {}
+        );
+        if (rand < 0.7) {
+          addAttachment(
+            c.taskId,
+            c.userId,
+            sample(files),
+            () => {},
+            () => {},
+            () => {}
+          );
         }
       }
-    })
-  }
+    });
+  };
 
   return (
     <div className="flex flex-col gap-2 p-4">
@@ -232,49 +264,24 @@ export const APITest = () => {
           theme={"blue"}
           size={"hug"}
           label={"Gen Attachments"}
-          onClick={()=>{
-            genAttachments()
+          onClick={() => {
+            genAttachments();
           }}
         />
       </div>
       <Button
         theme={"blue"}
         size={"hug"}
-        label={"Gen Fake Projects"}
+        label={"Gen Fake Projects And Tasks"}
         onClick={() => {
           if (user?.uid) {
-            genProjects();
+            genProjectsAndTasks();
           } else {
             alert("user is null");
           }
         }}
       />
       <Button
-        theme={"blue"}
-        size={"hug"}
-        label={"Gen Fake Tasks"}
-        onClick={() => {
-          if (user?.uid) {
-            genTasks();
-          } else {
-            alert("user is null");
-          }
-        }}
-      />
-      <Button
-        theme={"blue"}
-        size={"hug"}
-        label={"Delete All!!!"}
-        onClick={() => {
-          if (user?.uid) {
-            console.log("deleting all...")
-            deleteAll();
-          } else {
-            alert("user is null");
-          }
-        }}
-      />
-        <Button
         theme={"blue"}
         size={"hug"}
         label={"Gen Comments"}
@@ -286,7 +293,7 @@ export const APITest = () => {
           }
         }}
       />
-       <Button
+      <Button
         theme={"blue"}
         size={"hug"}
         label={"Del Comments"}
@@ -298,7 +305,7 @@ export const APITest = () => {
           }
         }}
       />
-       <Button
+      <Button
         theme={"blue"}
         size={"hug"}
         label={"Del Attach"}
@@ -322,7 +329,19 @@ export const APITest = () => {
           }
         }}
       />
-       <Button
+      <Button
+        theme={"blue"}
+        size={"hug"}
+        label={"Del ProjCollabs"}
+        onClick={() => {
+          if (user?.uid) {
+            removeAllProjectCollaborator();
+          } else {
+            alert("user is null");
+          }
+        }}
+      />
+      <Button
         theme={"blue"}
         size={"hug"}
         label={"Del Tasks"}
@@ -334,6 +353,45 @@ export const APITest = () => {
           }
         }}
       />
+      <Button
+        theme={"blue"}
+        size={"hug"}
+        label={"Del Lanes"}
+        onClick={() => {
+          if (user?.uid) {
+            deleteAllLanes();
+          } else {
+            alert("user is null");
+          }
+        }}
+      />
+      <Button
+        theme={"blue"}
+        size={"hug"}
+        label={"Del Proj"}
+        onClick={() => {
+          if (user?.uid) {
+            deleteAllProject();
+          } else {
+            alert("user is null");
+          }
+        }}
+      />
+      <Button
+        theme={"blue"}
+        size={"hug"}
+        label={"Del Files"}
+        onClick={() => {
+          if (user?.uid) {
+            deleteAllFile();
+          } else {
+            alert("user is null");
+          }
+        }}
+      />
+      <Popup open={true}>
+        <TaskFilter />
+      </Popup>
     </div>
   );
 };

@@ -7,16 +7,6 @@ body > #root {
   width: 100vw;
 }
 
-input {
-  border: none; 
-  outline: none;
-  background-color: transparent;
-}
-
-input:focus {
-  outline: none;
-  background-color: transparent;
-}
 
 @font-face {
   font-family: "DM Sans";

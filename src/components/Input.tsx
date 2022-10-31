@@ -5,6 +5,7 @@ import { EyeIcon } from "../icons/EyeIcon"
 type InputType =
 |'text'
 |'password'
+|'search'
 
 interface Props{
     type:InputType

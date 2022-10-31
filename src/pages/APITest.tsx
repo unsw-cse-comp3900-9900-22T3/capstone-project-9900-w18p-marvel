@@ -42,6 +42,8 @@ import {
 import { addLane, deleteAllLanes } from "../api/lane";
 import Dropdownlist_mui from "../components/Dropdownlist_mui";
 import Select from "../components/Select";
+import { TaskFilter } from "../components/TaskFilter";
+import { Popup } from "../components/Popup";
 
 export const APITest = () => {
   const { user, setUser, invitations } = useApp();
@@ -114,9 +116,12 @@ export const APITest = () => {
         //select random users and creator
         const rand = Math.floor(Math.random() * 8) + 1;
         const projectCollabs = [{ id: u.uid, role: "owner" }].concat(
-          sampleMultiple(allUsers, randInt(0, allUsers.length - 1)).map(
-            (c) => ({ id: c.uid, role: sample(["owner", "editor", "viewer"]) })
-          ).filter(c=>c.id !== u.uid)
+          sampleMultiple(allUsers, randInt(0, allUsers.length - 1))
+            .map((c) => ({
+              id: c.uid,
+              role: sample(["owner", "editor", "viewer"]),
+            }))
+            .filter((c) => c.id !== u.uid)
         );
         projectCollabs.forEach((c) => {
           addProjectCollaborator(c.id!, id, c.role as Role);
@@ -372,7 +377,7 @@ export const APITest = () => {
           }
         }}
       />
-       <Button
+      <Button
         theme={"blue"}
         size={"hug"}
         label={"Del Files"}
@@ -384,7 +389,9 @@ export const APITest = () => {
           }
         }}
       />
-      <Select/>
+      <Popup open={true}>
+        <TaskFilter />
+      </Popup>
     </div>
   );
 };

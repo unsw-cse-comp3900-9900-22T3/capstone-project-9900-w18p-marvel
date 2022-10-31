@@ -389,7 +389,7 @@ export const APITest = () => {
           }
         }}
       />
-      <Popup open={true}>
+      <Popup open={false}>
         <TaskFilter />
       </Popup>
     </div>

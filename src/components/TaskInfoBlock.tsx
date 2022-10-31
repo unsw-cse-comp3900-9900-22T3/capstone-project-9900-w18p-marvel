@@ -32,12 +32,12 @@ const TaskInfoBlock = ({ TaskName, TaskID, DueDate, Description }: TaskInfoBlock
   const [data, setData] = useState<any>([]);
 
   console.log(TaskID);
-  const allcollaborators1 = queryCollaboratorsInTask(TaskID);
+  const allcollaborators1 = queryCollaboratorsInTask(TaskID ? TaskID : '');
   console.log(allcollaborators1)
 
 
   const fetchData = async () => {
-    const activeCollabs = await queryCollaboratorsInTask(TaskID ? TaskID : null);
+    const activeCollabs = await queryCollaboratorsInTask(TaskID ? TaskID : '');
     const activeUserIds = activeCollabs.map((c) => c.userId);
     console.log(activeUserIds)
 

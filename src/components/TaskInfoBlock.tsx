@@ -38,15 +38,16 @@ const TaskInfoBlock = ({ TaskName, TaskID, DueDate, Description }: TaskInfoBlock
 
   const fetchData = async () => {
     const activeCollabs = await queryCollaboratorsInTask(TaskID ? TaskID : '');
-    const activeUserIds = activeCollabs.map((c) => c.userId);
-    console.log(activeUserIds)
+    //const activeUserIds = activeCollabs.map((c) => c.userId);
 
+
+    //@console.log(activeUserIds)
 
 
     let users: any = [];
     await Promise.all(
-      activeUserIds.map(async (c) => {
-        const info = await getUser(c);
+      activeCollabs.map(async (c) => {
+        const info = await getUser(c.userId!);
         users.push({ ...info });
       }))
     console.log('helpooooooo')
@@ -54,6 +55,7 @@ const TaskInfoBlock = ({ TaskName, TaskID, DueDate, Description }: TaskInfoBlock
     setData(users)
 
   };
+
 
   useEffect(() => {
     fetchData();

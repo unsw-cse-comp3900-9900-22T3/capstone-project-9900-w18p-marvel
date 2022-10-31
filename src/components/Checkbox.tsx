@@ -28,7 +28,7 @@ export const Checkbox = ({
       onClick={() => {
         if (disabled) return;
         setValue(!value);
-        onValueChange?.(value);
+        onValueChange?.(!value);
       }}
     >
       {value && <img src={check} />}

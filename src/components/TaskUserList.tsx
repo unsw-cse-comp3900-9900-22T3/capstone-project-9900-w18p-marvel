@@ -9,7 +9,7 @@ import {
   queryActiveCollaboratorsInProject,
   queryTaskCollaboratorsByKeyword,
   queryCollaboratorsInTask,
-  removeCollaborator,
+  removeTaskCollaborator,
 } from "../api/taskcollaborator";
 import { getUser, queryAllUsers } from "../api/user";
 
@@ -50,7 +50,7 @@ export const TaskUserList = ({ taskId }: Props) => {
     const add = selected.filter((x) => !activeUserIds.includes(x!));
     const sub = activeUserIds.filter((x) => !selected.includes(x!));
     add.forEach((id) => addCollaborator(id, taskId));
-    sub.forEach((id) => removeCollaborator(id, taskId));
+    sub.forEach((id) => removeTaskCollaborator(id, taskId));
   };
 
   useEffect(() => {

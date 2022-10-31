@@ -28,7 +28,7 @@ export const updateCollaborators = async (
   const db = getFirestore(app);
   const collaborators = await queryCollaboratorsInTask(taskId);
   collaborators.map(async (c: TaskCollaborator) => {
-    await removeCollaborator(c.userId, taskId);
+    await removeTaskCollaborator(c.userId, taskId);
   });
   uids.map(async (id: string) => {
     await addCollaborator(id, taskId);
@@ -129,7 +129,7 @@ export const addCollaborator: (userId: string, taskId: string) => void = async (
   } as TaskCollaborator);
 };
 
-export const removeCollaborator: (
+export const removeTaskCollaborator: (
   userId: string,
   taskId: string
 ) => void = async (userId: string, taskId: string) => {

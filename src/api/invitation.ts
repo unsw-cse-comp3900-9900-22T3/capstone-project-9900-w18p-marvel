@@ -1,5 +1,5 @@
 import { getApp } from "firebase/app";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, getFirestore } from "firebase/firestore";
 import { Invitation } from "./type";
 
 export const getInvitation: (id: string) => Promise<Invitation | null> = async (
@@ -15,4 +15,10 @@ export const getInvitation: (id: string) => Promise<Invitation | null> = async (
     } else {
       return null;
     }
+  };
+
+  export const deleteInvitation = async (id: string) => {
+    const app = getApp();
+    const db = getFirestore(app);
+    await deleteDoc(doc(db, "invitations", id));
   };

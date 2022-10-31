@@ -88,7 +88,7 @@ export const queryAllAttachments: () => Promise<
   return items;
 };
 
-export const deleteAllAttachments = async () => {
+export const deleteAllAttachment = async () => {
   const app = getApp();
   const db = getFirestore(app);
   const projects = await queryAllAttachments();

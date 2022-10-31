@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { useEffect, useState } from "react";
 import { uid } from "uid";
-import { addAttachment, deleteAllAttachments as deleteAllAttachment,  } from "../api/attachment";
+import { addAttachment, deleteAllAttachment as deleteAllAttachment,  } from "../api/attachment";
 import {
   queryTaskCollaboratorsByKeyword,
   queryCollaboratorsInTask,
@@ -32,6 +32,7 @@ import { useApp } from "../App";
 import { Button } from "../components/Button";
 import { sample, sampleMultiple } from "../utils/array";
 import { urlToFile } from "../utils/converter";
+import { addProjectCollaborator } from "../api/projectCollaborator";
 
 export const APITest = () => {
   const { user, setUser, invitations } = useApp();
@@ -69,10 +70,16 @@ export const APITest = () => {
       })
     );
     console.log("image gened:", files);
+    const dummyIds = Array(50)
+    .fill(0).map(n=>uid(20))
+    allUsers.forEach((u)=>{
+      dummyIds.forEach((id)=>{
+        addProjectCollaborator(u.uid!,id,sample(["owner","editor","viewer"]))
+      })
+    })
 
-    const dummyProjects = Array(50)
-      .fill(0)
-      .map((n) => {
+    const dummyProjects = dummyIds
+      .map((id) => {
         const file = sample(files);
         uploadFile(
           file,
@@ -81,13 +88,14 @@ export const APITest = () => {
           (err) => {},
           async (URL, path) => {
             const data = {
-              id: uid(20),
+              id: id,
               createdAt: faker.date.recent(),
               createdBy: sample(allUsers).uid,
               title: faker.name.jobTitle(),
               cover: { downloadURL: URL, storagePath: path },
             } as Project;
             await createProject(
+              data.id,
               data.title,
               data.cover,
               data.createdBy,
@@ -138,6 +146,7 @@ export const APITest = () => {
               cover: { downloadURL: URL, storagePath: path },
             } as Task;
             await createTask(
+              data.id,
               data.title,
               data.status,
               data.dueDate,
@@ -159,6 +168,8 @@ export const APITest = () => {
         );
       });
   };
+
+
 
   const genComment = async ()=>{
     await deleteAllComment()
@@ -270,6 +281,54 @@ export const APITest = () => {
         onClick={() => {
           if (user?.uid) {
             genComment();
+          } else {
+            alert("user is null");
+          }
+        }}
+      />
+       <Button
+        theme={"blue"}
+        size={"hug"}
+        label={"Del Comments"}
+        onClick={() => {
+          if (user?.uid) {
+            deleteAllComment();
+          } else {
+            alert("user is null");
+          }
+        }}
+      />
+       <Button
+        theme={"blue"}
+        size={"hug"}
+        label={"Del Attach"}
+        onClick={() => {
+          if (user?.uid) {
+            deleteAllAttachment();
+          } else {
+            alert("user is null");
+          }
+        }}
+      />
+      <Button
+        theme={"blue"}
+        size={"hug"}
+        label={"Del TaskCollabs"}
+        onClick={() => {
+          if (user?.uid) {
+            removeAllTaskCollaborator();
+          } else {
+            alert("user is null");
+          }
+        }}
+      />
+       <Button
+        theme={"blue"}
+        size={"hug"}
+        label={"Del Tasks"}
+        onClick={() => {
+          if (user?.uid) {
+            deleteAllTask();
           } else {
             alert("user is null");
           }

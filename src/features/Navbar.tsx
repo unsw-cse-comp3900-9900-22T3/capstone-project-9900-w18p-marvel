@@ -29,7 +29,7 @@ export const Navbar = ({ onClickCreateProject,onClickNotification }: Props) => {
         onClick={onClickCreateProject}
       ></Button>
       {invitations?.length > 0 && (
-        <div className="w-24 h-24 relative hover:animate-shake" onClick={onClickNotification}>
+        <div className="transition-all w-fit h-fit relative animate-bounce hover:animate-none cursor-pointer" onClick={onClickNotification}>
           <Badge badgeContent={invitations?.length} color="primary">
             <NotificationsIcon color="action" />
           </Badge>

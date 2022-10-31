@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   getFirestore,
   query,
@@ -14,6 +15,7 @@ import { queryProjectCollaboratorsByProjectId } from "./projectCollaborator";
 import { Project, ProjectCollaborator, Resource, Task } from "./type";
 
 export const createProject = async (
+  id:string,
   title: string,
   photoURL: Resource,
   createdBy: string,
@@ -21,12 +23,27 @@ export const createProject = async (
 ) => {
   const app = getApp();
   const db = getFirestore(app);
-  await setDoc(doc(db, "projects", uid(20)), {
+  await setDoc(doc(db, "projects", id), {
     title: title,
     photoURL: photoURL,
     createdBy: createdBy,
     createdAt: createdAt,
   });
+};
+
+export const getProject: (id: string) => Promise<Project | null> = async (
+  id: string
+) => {
+  const app = getApp();
+  const db = getFirestore(app);
+  const docRef = doc(db, "projects", id);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return { ...docSnap.data(), id: id } as Project;
+  } else {
+    return null;
+  }
 };
 
 export const queryAllProjects: () => Promise<Array<Project>> = async () => {

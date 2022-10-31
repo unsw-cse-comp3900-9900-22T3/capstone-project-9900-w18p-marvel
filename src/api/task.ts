@@ -29,7 +29,7 @@ export const createTask = async (
   id: string,
   title: string,
   status: Status,
-  dueData: Date,
+  dueDate: Date,
   description: string,
   createdBy: string,
   createdAt: Date,
@@ -43,7 +43,7 @@ export const createTask = async (
     status: status,
     projectId: projectId,
     laneName: laneName,
-    dueData: dueData,
+    dueDate: dueDate,
     description: description,
     createdBy: createdBy,
     createdAt: createdAt,
@@ -62,7 +62,7 @@ export const queryAllTasks: () => Promise<Array<Task>> = async () => {
       data.push({
         id: doc.id,
         ...doc.data(),
-        dueDate: doc.data().dueData.toDate(),
+        dueDate: doc.data().dueDate.toDate(),
         createdAt: doc.data().createdAt.toDate(),
       } as Task);
     }
@@ -83,7 +83,7 @@ export const getTask: (id: string) => Promise<Task | null> = async (
     return {
       ...docSnap.data(),
       id: id,
-      dueDate: docSnap.data().dueData.toDate(),
+      dueDate: docSnap.data().dueDate.toDate(),
       createdAt: docSnap.data().createdAt.toDate(),
     } as Task;
   } else {
@@ -95,7 +95,7 @@ export const updateTask = async (
   taskId: string,
   title: string | null,
   status: Status | null,
-  dueData: Date | null,
+  dueDate: Date | null,
   description: string | null,
   laneId: string | null
 ) => {
@@ -108,8 +108,8 @@ export const updateTask = async (
   if (status) {
     upsert.status = status;
   }
-  if (dueData) {
-    upsert.dueData = dueData;
+  if (dueDate) {
+    upsert.dueDate = dueDate;
   }
   if (description) {
     upsert.description = description;
@@ -133,7 +133,7 @@ export const queryAllTasksByProjectId: (
     data.push({
       id: doc.id,
       ...doc.data(),
-      dueDate: doc.data().dueData.toDate(),
+      dueDate: doc.data().dueDate.toDate(),
       createdAt: doc.data().createdAt.toDate(),
     } as Task);
   });
@@ -163,7 +163,7 @@ export const deleteLane: (laneName: string, projectId: string) => void = async (
     data.push({
       id: doc.id,
       ...doc.data(),
-      dueDate: doc.data().dueData.toDate(),
+      dueDate: doc.data().dueDate.toDate(),
       createdAt: doc.data().createdAt.toDate(),
     } as Task);
   });

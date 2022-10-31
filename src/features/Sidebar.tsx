@@ -86,7 +86,6 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
             prefix={<ProjectIcon className={""} />}
             label={"projects"}
             onClick={() => {
-              setProjectId?.(null);
               navigate("/projects");
             }}
           ></MenuItem>

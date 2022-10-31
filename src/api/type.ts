@@ -3,6 +3,7 @@ import { Timestamp } from "firebase/firestore";
 
 export type Status = "start" | "blocked" | "complete";
 export type Role = "owner" | "editor" | "viewer"
+export type FileType = "image|text|application"
 
 export interface User {
     uid?:string
@@ -72,6 +73,7 @@ export interface Attachment{
     createdBy:string
     resource:Resource
     taskId:string
+    fileType:string
 }
 
 export interface ProjectCollaborator{

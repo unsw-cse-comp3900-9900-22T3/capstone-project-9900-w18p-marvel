@@ -21,6 +21,7 @@ import {
 import { getApp } from "firebase/app";
 import { queryCollaboratorsInTask } from "../api/taskcollaborator";
 import { getTask } from "../api/task";
+import { downloadFile } from "../api/storage";
 
 interface TaskCardProps {
   id: string;
@@ -28,7 +29,7 @@ interface TaskCardProps {
 }
 const TaskCard = ({ id, onClick }: TaskCardProps) => {
   const [task, setTask] = useState<Task>();
-  const [cover, setCover] = useState<string>();
+  const [cover, setCover] = useState<string | null>(null);
   const [progress, setProgress] = useState<number>();
   const [timeLeft, setTimeLeft] = useState<string>();
   const [timeTheme, setTimeTheme] = useState<Theme>();
@@ -37,26 +38,26 @@ const TaskCard = ({ id, onClick }: TaskCardProps) => {
   let observer: any = null;
 
   const fetchData = async (id: string) => {
-    const collaborators = await queryCollaboratorsInTask(id);
-    const uids = collaborators.map((c) => c.userId);
-    const list: Array<string> = [];
-    await Promise.all(
-      uids.map(async (a) => {
-        const userInfo = await getUser(a);
-        if (userInfo) {
-          list.push(userInfo.photo?.downloadURL!);
-        } else {
-          list.push("");
-        }
-      })
-    );
-    setAvatars(list);
-    const attachments = await queryAttachment(id);
-    if (attachments) {
-      setAttachmentCount(attachments.length);
-    }
     const tsk = await getTask(id);
     if (tsk) {
+      const collaborators = await queryCollaboratorsInTask(id);
+      const uids = collaborators.map((c) => c.userId);
+      const list: Array<string> = [];
+      await Promise.all(
+        uids.map(async (a) => {
+          const userInfo = await getUser(a);
+          if (userInfo) {
+            list.push(userInfo.photo?.downloadURL!);
+          } else {
+            list.push("");
+          }
+        })
+      );
+      setAvatars(list);
+      const attachments = await queryAttachment(tsk.id);
+      if (attachments) {
+        setAttachmentCount(attachments.length);
+      }
       setTask(tsk);
       let _timeLeft = "";
       let _timeTheme: Theme = "default";
@@ -83,6 +84,14 @@ const TaskCard = ({ id, onClick }: TaskCardProps) => {
           ? 100
           : 0;
       setProgress(_progress);
+      const imgs = attachments.filter(
+        (a) =>
+          a.fileType.includes("image/png") || a.fileType.includes("image/jpeg")
+      );
+      if (imgs.length > 0) {
+        const url = imgs[0].resource.downloadURL;
+        setCover(url);
+      }
     }
   };
 
@@ -95,6 +104,9 @@ const TaskCard = ({ id, onClick }: TaskCardProps) => {
       fetchData(id);
     });
     fetchData(id);
+    return () => {
+      if (observer) observer();
+    };
   }, []);
 
   return (
@@ -104,7 +116,7 @@ const TaskCard = ({ id, onClick }: TaskCardProps) => {
         onClick?.(id);
       }}
     >
-      {cover !== "" && (
+      {cover && cover !== "" && (
         <div className="h-20 w-50 rounded-2xl overflow-hidden flex justify-center items-center">
           <img src={cover} className="" />
         </div>

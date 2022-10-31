@@ -25,6 +25,7 @@ export const addAttachment = async (
   const db = getFirestore(app);
 
   if (file) {
+    const type = file.type || 'unknown'
     uploadFile(
       file,
       "file",
@@ -37,6 +38,7 @@ export const addAttachment = async (
           resource: { downloadURL, storagePath },
           taskId: taskId,
           title: file.name,
+          fileType:type.toLowerCase().toString()
         } as Attachment);
         onComplete?.(downloadURL);
       }

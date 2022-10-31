@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Project, Status, Task, TaskCollaborator, User } from "../api/type";
+import {
+  Lane,
+  Project,
+  ProjectCollaborator,
+  Status,
+  Task,
+  TaskCollaborator,
+  User,
+} from "../api/type";
 import { uid } from "uid";
 import { faker } from "@faker-js/faker";
 import { queryAllUsers } from "../api/user";
@@ -25,14 +33,28 @@ import {
   updateCollaborators,
 } from "../api/taskcollaborator";
 import { urlToFile } from "../utils/converter";
-import { Timestamp } from "firebase/firestore";
+import {
+  collection,
+  CollectionReference,
+  DocumentData,
+  getFirestore,
+  onSnapshot,
+  query,
+  QuerySnapshot,
+  Timestamp,
+  where,
+} from "firebase/firestore";
 import { CircularProgress } from "@mui/material";
 import { delay } from "../utils/promise";
 import { PlusIcon } from "../icons/PlusIcon";
 import { CreateLaneButton } from "./CreateLaneButton";
 import { Popup } from "./Popup";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { TaskDetail } from "./TaskDetail";
+import { addLane, queryLaneByProjectId, updateLane } from "../api/lane";
+import { TextInput } from "./TextInput";
+import { queryProjectCollaboratorsByProjectId } from "../api/projectCollaborator";
+import { getApp } from "firebase/app";
 
 /**
  * Moves an item from one list to another list.
@@ -49,7 +71,7 @@ const move = (
 
   destClone.splice(droppableDestination.index, 0, removed);
 
-  const result = {};
+  const result: any = {};
   result[droppableSource.droppableId] = sourceClone;
   result[droppableDestination.droppableId] = destClone;
 
@@ -57,7 +79,7 @@ const move = (
 };
 const grid = 8;
 
-const getItemStyle = (isDragging, draggableStyle) => ({
+const getItemStyle = (isDragging: any, draggableStyle: any) => ({
   // some basic styles to make the items look a bit nicer
   userSelect: "none",
   padding: grid * 2,
@@ -69,7 +91,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   // styles we need to apply on draggables
   ...draggableStyle,
 });
-const getListStyle = (isDraggingOver) => ({
+const getListStyle = (isDraggingOver: any) => ({
   background: isDraggingOver ? "lightblue" : "lightgrey",
   padding: grid,
   width: 250,
@@ -79,7 +101,7 @@ const sortByDueDate = (list: Array<Task>) => {
   const _list = _.cloneDeep(list);
   console.log(
     list.map((l) => {
-      const timestamp = l.dueDate as Timestamp;
+      const timestamp = l.dueDate;
       return timestamp;
     })
   );
@@ -118,49 +140,77 @@ interface Props {}
 
 export function TaskDND({}: Props) {
   let { id: projectId } = useParams();
-  const [data, setData] = useState<{}>({});
+  const [data, setData] = useState<any>({});
   const [collaboratorLists, setCollaboratorLists] =
     useState<Map<string, Array<TaskCollaborator>>>();
   const { user } = useApp();
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const [tasks,setTasks] = useState<Array<string>>()
+
+  let projectCollabObserver: any = null;
+  let tasksObserver: any = null;
 
   const fetchData = async () => {
     if (projectId) {
-      const tasks = await queryAllTasksByProjectId(projectId);
-      const lanes: any = {};
-      const map = new Map<string, Array<TaskCollaborator>>();
-      tasks.map((t) => {
-        if (!(t.laneName in lanes)) {
-          lanes[t.laneName] = { loading: true, items: [] };
-        }
-        lanes[t.laneName].items.push(t);
-      });
-      await Promise.all(
-        tasks.map(async (t) => {
-          const collaborators = await queryCollaboratorsInTask(t.id);
-          collaborators.map((c) => {
-            map.set(t.id, collaborators);
-          });
-        })
-      );
+      if (user?.uid) {
+        const projCollbs = await queryProjectCollaboratorsByProjectId(
+          projectId
+        );
+        const collabIds = projCollbs.map((p: ProjectCollaborator) => p.userId);
+        if (collabIds.includes(user.uid)) {
+          const tasks = await queryAllTasksByProjectId(projectId);
+          setTasks(tasks.map(t=>t.id))
+          const lanes = await queryLaneByProjectId(projectId);
 
-      setCollaboratorLists(map);
-      // setData(lanes);
-      await delay(2000);
-      for (const [key, value] of Object.entries(lanes)) {
-        lanes[key].loading = false;
+          const laneMap: any = {};
+          lanes.forEach((l) => {
+            laneMap[l.id] = { name: l.name, loading: false, items: [] };
+          });
+
+          const map = new Map<string, Array<TaskCollaborator>>();
+          tasks.forEach((t) => {
+            laneMap[t.laneId].items.push(t);
+          });
+
+          for (const [key, value] of Object.entries(laneMap)) {
+            laneMap[key].loading = false;
+          }
+          setData(laneMap);
+        } else {
+          alert(
+            "Sorry, you don't have permission to view this project, either you entered the wrong project id or you have been removed from the member system of this project."
+          );
+          navigate("/projects");
+        }
       }
-      setData(lanes);
     }
   };
 
   useEffect(() => {
+    if (user?.uid) {
+      const app = getApp();
+      const db = getFirestore(app);
+      if (projectCollabObserver) projectCollabObserver();
+      const projectCollabQ = query(
+        collection(db, "projectcollaborators"),
+        where("userId", "==", user.uid)
+      );
+      projectCollabObserver = onSnapshot(projectCollabQ, (querySnapshot) => {
+        fetchData();
+      });
+      if(tasksObserver) tasksObserver()
+      const taskQ = query(collection(db,"tasks"),where("projectId","==",projectId))
+      tasksObserver = onSnapshot(taskQ,(querySnapshot)=>{
+        fetchData()
+      })
+      
+    }
     fetchData();
   }, []);
 
-  async function onDragEnd(result) {
+  async function onDragEnd(result: any) {
     const { source, destination } = result;
-
     // dropped outside the list
     if (!destination) {
       return;
@@ -172,7 +222,7 @@ export function TaskDND({}: Props) {
     newState[sourceId].loading = true;
     newState[destinationId].loading = true;
     if (sourceId === destinationId) {
-      let items = reorder(
+      let items: any = reorder(
         data[sourceId].items,
         source.index,
         destination.index
@@ -181,15 +231,22 @@ export function TaskDND({}: Props) {
       newState[sourceId].items = items;
       setData(newState);
     } else {
-      updateTask(data[sourceId].items[source.index].id,null,null,null,null, destinationId);
+      updateTask(
+        data[sourceId].items[source.index].id,
+        null,
+        null,
+        null,
+        null,
+        destinationId
+      );
       const result = move(
         data[sourceId],
         data[destinationId],
         source,
         destination
       );
-      newState[sourceId].items = sortByDueDate(result[sourceId]);
-      newState[destinationId].items = sortByDueDate(result[destinationId]);
+      newState[sourceId].items = sortByDueDate(data[sourceId]);
+      newState[destinationId].items = sortByDueDate(data[destinationId]);
 
       setData(newState);
     }
@@ -204,7 +261,7 @@ export function TaskDND({}: Props) {
     <>
       <div className="flex flex-row h-full w-full gap-4 overflow-hidden">
         <DragDropContext onDragEnd={onDragEnd}>
-          {Object.entries(data).map(([key, lane]) => (
+          {Object.entries(data).map(([key, lane]: any) => (
             <Droppable key={key} droppableId={`${key}`}>
               {(provided: any, snapshot: any) => (
                 <div className="h-full py-[72px] w-[372px] shrink-0 px-6 rounded-2xl bg-gray-50 relative overflow-hidden">
@@ -217,7 +274,13 @@ export function TaskDND({}: Props) {
                     </div>
                   )}
                   <div className="absolute left-6 top-6 font-bold text-base text-gray-100">
-                    {key}
+                    <TextInput
+                      defaultValue={lane?.name}
+                      disabled={false}
+                      onComplete={(val: string) => {
+                        updateLane(key, val);
+                      }}
+                    />
                   </div>
                   <div
                     className="absolute left-6 right-6 bottom-6 flex justify-between cursor-pointer hover:scale-95 transition"
@@ -235,7 +298,6 @@ export function TaskDND({}: Props) {
                           new Date(),
                           projectId,
                           key,
-                          null
                         );
                         setSelectedTaskId(id);
                       }
@@ -268,13 +330,6 @@ export function TaskDND({}: Props) {
                           >
                             <TaskCard
                               id={item.id}
-                              title={item.title}
-                              description={item.description}
-                              dueDate={item.dueDate}
-                              collaborators={
-                                collaboratorLists?.get(item.id) || []
-                              }
-                              image={item.cover?.downloadURL}
                               onClick={() => {
                                 setOpen(true);
                                 setSelectedTaskId(item.id);
@@ -295,9 +350,13 @@ export function TaskDND({}: Props) {
         {Object.keys(data).length > 0 && (
           <CreateLaneButton
             onComplete={(name: string) => {
-              const _data: any = _.cloneDeep(data);
-              _data[name] = { loading: false, items: [] };
-              setData(_data);
+              if (projectId) {
+                const laneId = uid(20);
+                addLane(laneId, projectId, name);
+                const _data: any = _.cloneDeep(data);
+                _data[laneId] = { loading: false, items: [] };
+                setData(_data);
+              }
             }}
           />
         )}

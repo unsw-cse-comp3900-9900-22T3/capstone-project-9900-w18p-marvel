@@ -34,44 +34,21 @@ export const createTask = async (
   createdBy: string,
   createdAt: Date,
   projectId: string,
-  laneName: string,
-  cover: File | null
+  laneName: string
 ) => {
   const app = getApp();
   const db = getFirestore(app);
-  if (cover) {
-    uploadFile(
-      cover,
-      "image",
-      (prog) => {},
-      (err) => {},
-      async (downloadURL, storagePath) => {
-        await setDoc(doc(db, "tasks", id), {
-          title: title,
-          status: status,
-          projectId: projectId,
-          laneName: laneName,
-          dueData: dueData,
-          description: description,
-          createdBy: createdBy,
-          createdAt: createdAt,
-          cover: { downloadURL, storagePath },
-        });
-      }
-    );
-  } else {
-    await setDoc(doc(db, "tasks", id), {
-      title: title,
-      status: status,
-      projectId: projectId,
-      laneName: laneName,
-      dueData: dueData,
-      description: description,
-      createdBy: createdBy,
-      createdAt: createdAt,
-      cover: { downloadURL: "", storagePath: "" },
-    });
-  }
+  await setDoc(doc(db, "tasks", id), {
+    title: title,
+    status: status,
+    projectId: projectId,
+    laneName: laneName,
+    dueData: dueData,
+    description: description,
+    createdBy: createdBy,
+    createdAt: createdAt,
+    cover: { downloadURL: "", storagePath: "" },
+  });
   console.log("creating task:", id);
 };
 
@@ -120,7 +97,7 @@ export const updateTask = async (
   status: Status | null,
   dueData: Date | null,
   description: string | null,
-  laneName: string | null
+  laneId: string | null
 ) => {
   const app = getApp();
   const db = getFirestore(app);
@@ -137,8 +114,8 @@ export const updateTask = async (
   if (description) {
     upsert.description = description;
   }
-  if (laneName) {
-    upsert.laneName = laneName;
+  if (laneId) {
+    upsert.laneId = laneId;
   }
   await updateDoc(doc(db, "tasks", taskId), upsert);
 };

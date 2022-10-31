@@ -20,3 +20,4 @@ export const sampleMultiple = (arr: Array<any>, count: number) => {
 export const accumulate = (list: Array<number>, index: number) => {
   return list.reduce((prevSum, x, i) => prevSum + (i <= index ? x : 0), 0);
 };
+

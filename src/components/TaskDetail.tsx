@@ -120,7 +120,7 @@ export function TaskDetail({
             <TaskInfoBlock
               TaskID={taskdetails.id}
               TaskName={taskdetails.title}
-              DueDate={taskdetails.dueDate}
+              //DueDate={taskdetails.dueDate.toDateString()}
               Description={taskdetails.description} >
             </TaskInfoBlock>
 

@@ -32,8 +32,10 @@ const TaskInfoBlock = ({ TaskName, TaskID, DueDate, Description }: TaskInfoBlock
   const [data, setData] = useState<any>([]);
 
   console.log(TaskID);
+
   const allcollaborators1 = queryCollaboratorsInTask(TaskID ? TaskID : '');
   console.log(allcollaborators1)
+
 
 
   const fetchData = async () => {
@@ -57,7 +59,32 @@ const TaskInfoBlock = ({ TaskName, TaskID, DueDate, Description }: TaskInfoBlock
   };
 
 
+  /*
+  
+    const fetchData = async (id: string) => {
+      const collaborators = await queryCollaboratorsInTask(id);
+      const uids = collaborators.map((c) => c.userId);
+      let list: any = [];
+      //const list: Array<string> = [];
+      await Promise.all(
+        uids.map(async (a) => {
+          const userInfo = await getUser(a);
+          if (userInfo) {
+            list.push(...userInfo);
+          } else {
+            list.push("");
+          }
+        })
+      );
+      setData(list);
+  
+  
+    };
+  
+  
+  */
   useEffect(() => {
+
     fetchData();
 
   }, [TaskID]);

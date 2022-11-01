@@ -7,6 +7,7 @@ interface Props {
   onComplete?: (val: string) => void;
   defaultValue?: string;
   defaultFocus?: boolean;
+  fontWeight?:string
 }
 // placeholder='',
 export const TextInput = ({
@@ -15,7 +16,8 @@ export const TextInput = ({
   onComplete,
   defaultValue,
   defaultFocus,
-  placeholder
+  placeholder,
+  fontWeight = "font-medium"
 }: Props) => {
   const [focus, setFocus] = useState<boolean>(defaultFocus || false);
   const [value, setValue] = useState<string>(defaultValue || "");
@@ -41,7 +43,7 @@ export const TextInput = ({
           setValue(e.target.value);
           onChange?.(e.target.value);
         }}
-        className={`grow text-sm font-bold ${value.length > 0 ? "text-inherit" : "text-gray-100"
+        className={`grow text-sm ${fontWeight} ${value.length > 0 ? "text-inherit" : "text-gray-100"
           }`}
         value={value}
         placeholder={placeholder}

@@ -146,32 +146,6 @@ export const deleteTask = async (taskId: string) => {
   await deleteDoc(doc(db, "tasks", taskId));
 };
 
-export const deleteLane: (laneName: string, projectId: string) => void = async (
-  laneName: string,
-  projectId: string
-) => {
-  const app = getApp();
-  const db = getFirestore(app);
-  const q = query(
-    collection(db, "tasks"),
-    where("laneName", "==", laneName),
-    where("projectId", "==", projectId)
-  );
-  const querySnapshot = await getDocs(q);
-  const data: Array<Task> = [];
-  querySnapshot.forEach((doc) => {
-    data.push({
-      id: doc.id,
-      ...doc.data(),
-      dueDate: doc.data().dueDate.toDate(),
-      createdAt: doc.data().createdAt.toDate(),
-    } as Task);
-  });
-  data.forEach(async (item) => {
-    await deleteDoc(doc(db, "tasks", item.id));
-  });
-};
-
 export const deleteAllTask = async () => {
   const app = getApp();
   const db = getFirestore(app);

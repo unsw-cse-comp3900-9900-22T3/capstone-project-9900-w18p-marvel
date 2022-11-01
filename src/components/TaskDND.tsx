@@ -23,6 +23,7 @@ import { useApp } from "../App";
 import {
   createTask,
   deleteAllTask,
+  deleteTask,
   queryAllTasksByProjectId,
   updateTask,
 } from "../api/task";
@@ -51,11 +52,16 @@ import { CreateLaneButton } from "./CreateLaneButton";
 import { Popup } from "./Popup";
 import { useNavigate, useParams } from "react-router-dom";
 import { TaskDetail } from "./TaskDetail";
-import { addLane, queryLaneByProjectId, updateLane } from "../api/lane";
+import {
+  addLane,
+  deleteLane,
+  queryLaneByProjectId,
+  updateLane,
+} from "../api/lane";
 import { TextInput } from "./TextInput";
 import { queryProjectCollaboratorsByProjectId } from "../api/projectCollaborator";
 import { getApp } from "firebase/app";
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 /**
  * Moves an item from one list to another list.
@@ -146,8 +152,9 @@ export function TaskDND({}: Props) {
     useState<Map<string, Array<TaskCollaborator>>>();
   const { user } = useApp();
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+  const [tasks, setTasks] = useState<Array<string>>();
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const [tasks,setTasks] = useState<Array<string>>()
 
   let projectCollabObserver: any = null;
   let tasksObserver: any = null;
@@ -161,18 +168,18 @@ export function TaskDND({}: Props) {
         const collabIds = projCollbs.map((p: ProjectCollaborator) => p.userId);
         if (collabIds.includes(user.uid)) {
           const tasks = await queryAllTasksByProjectId(projectId);
-          setTasks(tasks.map(t=>t.id))
+          setTasks(tasks.map((t) => t.id));
           const lanes = await queryLaneByProjectId(projectId);
 
           const laneMap: any = {};
           lanes.forEach((l) => {
-            console.log(l.id)
+            console.log(l.id);
             laneMap[l.id] = { name: l.name, loading: false, items: [] };
           });
-          
+
           const map = new Map<string, Array<TaskCollaborator>>();
           tasks.forEach((t) => {
-            console.log(t.laneId)
+            console.log(t.laneId);
             laneMap[t.laneId].items.push(t);
           });
 
@@ -202,15 +209,18 @@ export function TaskDND({}: Props) {
       projectCollabObserver = onSnapshot(projectCollabQ, (querySnapshot) => {
         fetchData();
       });
-      if(tasksObserver) tasksObserver()
-      const taskQ = query(collection(db,"tasks"),where("projectId","==",projectId))
-      tasksObserver = onSnapshot(taskQ,(querySnapshot)=>{
-        fetchData()
-      })
-      return ()=>{
+      if (tasksObserver) tasksObserver();
+      const taskQ = query(
+        collection(db, "tasks"),
+        where("projectId", "==", projectId)
+      );
+      tasksObserver = onSnapshot(taskQ, (querySnapshot) => {
+        fetchData();
+      });
+      return () => {
         if (projectCollabObserver) projectCollabObserver();
-        if(tasksObserver) tasksObserver()
-      }
+        if (tasksObserver) tasksObserver();
+      };
     }
     fetchData();
   }, []);
@@ -262,7 +272,17 @@ export function TaskDND({}: Props) {
     await delay(1000);
     setData(newState);
   }
-  const [open, setOpen] = useState(false);
+
+  const deleteLaneAndTasks = (laneId: string, data: any) => {
+    const laneMap = _.cloneDeep(data)
+    if (laneMap[laneId]) {
+      laneMap[laneId].items.forEach((item: Task) => deleteTask(item.id));
+      deleteLane(laneId);
+      delete laneMap.laneId
+      setData(laneMap)
+    }
+  };
+
   return (
     <>
       <div className="flex flex-row h-full w-full gap-4 overflow-hidden">
@@ -286,8 +306,16 @@ export function TaskDND({}: Props) {
                       onComplete={(val: string) => {
                         updateLane(key, val);
                       }}
+                      fontWeight="font-bold"
                     />
-                    <DeleteOutlineIcon color="inherit"/>
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => {
+                        deleteLaneAndTasks(key, data);
+                      }}
+                    >
+                      <DeleteOutlineIcon color="inherit" />
+                    </div>
                   </div>
                   <div
                     className="absolute left-6 right-6 bottom-6 flex justify-between cursor-pointer hover:scale-95 transition"
@@ -304,7 +332,7 @@ export function TaskDND({}: Props) {
                           user?.uid,
                           new Date(),
                           projectId,
-                          key,
+                          key
                         );
                         setSelectedTaskId(id);
                       }

@@ -35,19 +35,6 @@ export const updateCollaborators = async (
   });
 };
 
-export const queryActiveCollaboratorsInProject = async (projectId: string) => {
-  const tasks = await queryAllTasksByProjectId(projectId);
-  let data: Array<TaskCollaborator> = [];
-  await Promise.all(
-    tasks.map(async (t: Task) => {
-      const collaborators = await queryCollaboratorsInTask(t.id);
-      data = data.concat(collaborators);
-    })
-  );
-  const result = [...new Set(data.map((d) => d.userId))];
-  return result;
-};
-
 export const queryCollaboratorsInTask: (
   taskId: string
 ) => Promise<Array<TaskCollaborator>> = async (taskId: string) => {

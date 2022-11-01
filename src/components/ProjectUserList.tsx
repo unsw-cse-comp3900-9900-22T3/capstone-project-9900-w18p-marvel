@@ -63,10 +63,10 @@ export const ProjectUserList = ({ projectId }: Props) => {
   }, [projectId]);
 
   const onConfirm = async (
-    selected: Array<string>,
+    selected: Array<{id:string,role:Role}>,
     projectId: string,
     userId: string,
-    role:Role
+
   ) => {
     const activeCollabs = await queryProjectCollaboratorsByProjectId(projectId);
     const owners = activeCollabs.filter(
@@ -74,11 +74,12 @@ export const ProjectUserList = ({ projectId }: Props) => {
     );
     const ownerIds = owners.map((o) => o.userId);
     const activeUserIds = activeCollabs.map((c) => c.id);
-    const add = selected.filter((x) => !activeUserIds.includes(x!));
-    const sub = activeUserIds.filter((x) => !selected.includes(x!));
+    const selectedIds = selected.map(s=>s.id)
+    const add = selectedIds.filter((x) => !activeUserIds.includes(x));
+    const sub = activeUserIds.filter((x) => !selectedIds.includes(x));
     console.log(add, sub);
     add.forEach((id) => {
-      requestConnection(id, userId, new Date(), projectId, "owner");
+      requestConnection(id, userId, new Date(), projectId, selected.find(s=>s.id===id)!.role);
     });
     const ownerRemain = ownerIds.filter((x) => !sub.includes(x));
     if (ownerRemain.length > 0) {

@@ -8,6 +8,7 @@ import {
   addDoc,
   deleteDoc,
   doc,
+  getDoc,
 } from "firebase/firestore";
 import { ProjectCollaborator, Role } from "./type";
 
@@ -27,6 +28,25 @@ export const queryProjectCollaboratorsByProjectId: (
     data.push({ id: doc.id, ...doc.data() } as ProjectCollaborator);
   });
   return data;
+};
+
+export const getProjectCollaboratorByUserId: (projectId:string,userId:string) => Promise<ProjectCollaborator | null> = async (
+  projectId:string,userId:string
+) => {
+  const app = getApp();
+  const db = getFirestore(app);
+  const q = query(
+    collection(db, "projectcollaborators"),
+    where("projectId", "==", projectId),
+    where("userId","==",userId)
+  );
+  const querySnapshot = await getDocs(q);
+  const data: Array<ProjectCollaborator> = [];
+  querySnapshot.forEach((doc) => {
+    data.push({ id: doc.id, ...doc.data() } as ProjectCollaborator);
+  });
+  if(data.length > 0) return data[0]
+  else return null
 };
 
 export const queryAllProjectCollaborators: () => Promise<Array<ProjectCollaborator>> = async () => {

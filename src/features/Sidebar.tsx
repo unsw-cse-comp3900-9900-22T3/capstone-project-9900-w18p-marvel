@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useApp } from "../App";
 import { Button } from "../components/Button";
@@ -58,7 +58,10 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
   const [collapse, setCollpase] = useState<boolean>(false);
   const menuItems = [];
   const navigate = useNavigate();
-  const { projectId, setProjectId } = useApp();
+  const { projectId, setProjectId, role, setRole } = useApp();
+
+  useEffect(() => {}, []);
+
   return (
     <div
       className={`relative transition-all overflow-hidden shrink-0 grow-0 ${
@@ -111,7 +114,7 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
             }}
           ></MenuItem>
         </div>
-        {projectId && (
+        {projectId && role !== "viewer" && (
           <div className="px-4 w-full">
             <Button
               theme={"gray"}

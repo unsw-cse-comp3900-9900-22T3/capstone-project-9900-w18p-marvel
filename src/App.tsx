@@ -26,7 +26,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { Invitation, User } from "./api/type";
+import { Invitation, Role, User } from "./api/type";
 import { getUser } from "./api/user";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { TaskDND } from "./components/TaskDND";
@@ -40,6 +40,8 @@ interface ContextProps {
   invitations: Array<any>;
   projectId: string|null;
   setProjectId: Function | null;
+  role:Role;
+  setRole:Function
 }
 
 const AppContext = React.createContext<ContextProps>({
@@ -51,6 +53,8 @@ const AppContext = React.createContext<ContextProps>({
   invitations: [],
   projectId: "",
   setProjectId: null,
+  role:"viewer",
+  setRole:()=>{}
 });
 
 export function useApp() {
@@ -63,6 +67,7 @@ export function App() {
   const [invitations, setInvitations] = useState<Array<any>>([]);
   const [inited, setInited] = useState<boolean>(false);
   const [projectId, setProjectId] = useState<string|null>(null);
+  const [role, setRole] = useState<Role>("viewer");
   const firebaseConfig = {
     apiKey: "AIzaSyB71hVo6nDG7esBu5XAmwmwBGj0WC3eXys",
     authDomain: "theverypulseofthemachine.firebaseapp.com",
@@ -147,8 +152,10 @@ export function App() {
       invitations,
       projectId,
       setProjectId,
+      role,
+      setRole,
     };
-  }, [authorized, user, invitations, projectId]);
+  }, [authorized, user, invitations, projectId,role]);
 
   return (
     <AppContext.Provider value={providerValues}>

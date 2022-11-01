@@ -36,7 +36,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
   const [inputcomment, setInputComment] = useState<any>({});
   const [inputattachments, setAttachment] = useState<any>({});
   const [taskdetails, setTaskdetails] = useState<any>([]);
-  const { user, setUser } = useApp(); //useApp
+  const { user, setUser,role,setRole } = useApp(); //useApp
   const [loading, setLoading] = useState(false);
   const [invalid, setInvalid] = useState<boolean>(false);
   console.log(user?.uid);

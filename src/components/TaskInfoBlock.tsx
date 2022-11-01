@@ -11,8 +11,11 @@ import { getUser, queryAllUsers } from "../api/user";
 import { useApp } from "../App";
 import { TextInput } from "./TextInput";
 import { TextInput_forDes } from "./TextInput_forDes";
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { updateTask } from "../api/task";
+import dayjs, { Dayjs } from 'dayjs';
 import TextField from '@mui/material/TextField';
+import CalenderPicker from "./CalenderPicker";
 interface TaskInfoBlockProps {
   TaskID: string;
   TaskName: string;
@@ -65,6 +68,9 @@ const TaskInfoBlock = ({
     setData(users);
   };
 
+
+
+
   /*
   
     const fetchData = async (id: string) => {
@@ -94,6 +100,7 @@ const TaskInfoBlock = ({
   }, [TaskID]);
 
   const [open, setOpen] = useState(false);
+  const [CalOpen, setCalopen] = useState(false);
 
   return (
     <>
@@ -153,6 +160,10 @@ const TaskInfoBlock = ({
             <div className={`flex text-gray-400 text-xs`}>DUE DATE</div>
             <div
               className={`flex text-sm text-gray-400 bg-gray-50 rounded-2xl mt-8`}
+              onClick={() => {
+                setCalopen(true);
+              }}
+
             >
               {DueDate}
             </div>
@@ -201,6 +212,22 @@ const TaskInfoBlock = ({
           >
             <TaskUserList taskId={TaskID} projectId={projectId} />
           </Popup>
+
+
+        }
+
+
+        {
+          <Popup
+            open={CalOpen}
+            onClose={() => {
+              setCalopen(false);
+            }}
+          >
+
+          </Popup>
+
+
         }
       </div>
     </>
@@ -208,3 +235,4 @@ const TaskInfoBlock = ({
 };
 
 export { TaskInfoBlock };
+

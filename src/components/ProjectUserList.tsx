@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { delay } from "../utils/promise";
 import _ from "lodash";
 import {
-  queryActiveCollaboratorsInProject,
   queryTaskCollaboratorsByKeyword,
   removeTaskCollaborator,
 } from "../api/taskcollaborator";
@@ -15,7 +14,7 @@ import {
   queryProjectCollaboratorsByProjectId,
   removeProjectCollaborator,
 } from "../api/projectCollaborator";
-import { ProjectCollaborator, Task } from "../api/type";
+import { ProjectCollaborator, Role, Task } from "../api/type";
 import { requestConnection } from "../api/connection";
 import { useApp } from "../App";
 import { queryAllTasksByProjectId } from "../api/task";
@@ -28,7 +27,7 @@ export const ProjectUserList = ({ projectId }: Props) => {
   const { user } = useApp();
   const [data, setData] = useState<any>([]);
   const [keyword, setKeyword] = useState<string>("");
-  const [selected, setSelected] = useState<Array<string>>([]);
+  const [selected, setSelected] = useState<Array<{id:string,role:Role}>>([]);
 
   const fetch = async (keyword: string) => {
     if (projectId) {
@@ -43,10 +42,10 @@ export const ProjectUserList = ({ projectId }: Props) => {
       );
       const unselected = collaborators
         .filter((x) => !activeUserIds.includes(x!))
-        .map((item) => ({ id: item, selected: false }));
+        .map((item) => ({ id: item, selected: false,role:projectCollabs.find(c=>c.userId === item)?.role || "viewer" }));
       const selected = collaborators
         .filter((x) => activeUserIds.includes(x!))
-        .map((x) => ({ id: x, selected: true }));
+        .map((item) => ({ id: item, selected: true,role:projectCollabs.find(c=>c.userId === item)?.role || "viewer"  }));
       const all = unselected.concat(selected);
       let users: any = [];
       await Promise.all(
@@ -66,7 +65,8 @@ export const ProjectUserList = ({ projectId }: Props) => {
   const onConfirm = async (
     selected: Array<string>,
     projectId: string,
-    userId: string
+    userId: string,
+    role:Role
   ) => {
     const activeCollabs = await queryProjectCollaboratorsByProjectId(projectId);
     const owners = activeCollabs.filter(
@@ -116,10 +116,10 @@ export const ProjectUserList = ({ projectId }: Props) => {
             onValueChange={(val: boolean) => {
               const _copy = _.cloneDeep(selected);
               if (val) {
-                _copy.push(item.uid);
+                _copy.push({id:item.uid,role:item.role});
                 setSelected(_copy);
               } else {
-                const index = _copy.findIndex((c) => c === item.uid);
+                const index = _copy.findIndex((c) => c.id === item.uid);
                 _copy.splice(index, 1);
                 setSelected(_copy);
               }

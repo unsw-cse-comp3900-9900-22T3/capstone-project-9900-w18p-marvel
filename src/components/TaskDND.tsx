@@ -112,7 +112,7 @@ const sortByDueDate = (list: Array<Task>) => {
       return timestamp;
     })
   );
-  // _list.sort((a: Task, b: Task) => a.dueDate.getTime() - b.dueDate.getTime());
+  _list.sort((a: Task, b: Task) => a.dueDate.getTime() - b.dueDate.getTime());
   return _list;
 };
 
@@ -185,6 +185,7 @@ export function TaskDND({}: Props) {
 
           for (const [key, value] of Object.entries(laneMap)) {
             laneMap[key].loading = false;
+            laneMap[key].items = sortByDueDate(laneMap[key].items) 
           }
           setData(laneMap);
         } else {

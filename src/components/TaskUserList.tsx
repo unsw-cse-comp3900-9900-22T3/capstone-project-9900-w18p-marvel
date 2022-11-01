@@ -15,7 +15,7 @@ import { queryProjectCollaboratorsByProjectId } from "../api/projectCollaborator
 
 interface Props {
   taskId: string;
-  projectId: string;
+  projectId: string|null;
 }
 
 export const TaskUserList = ({ taskId, projectId }: Props) => {

@@ -3,7 +3,7 @@ import { Button } from "./Button";
 import TDataRangePicker from "./DataRangePicker";
 import { Input } from "./Input";
 import { SearchBox } from "./SearchBox";
-import Select from "./Select";
+import TSelect from "./TSelect";
 
 interface Props {}
 

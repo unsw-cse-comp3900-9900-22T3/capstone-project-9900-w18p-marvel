@@ -40,7 +40,7 @@ import {
 } from "../api/projectCollaborator";
 import { addLane, deleteAllLanes } from "../api/lane";
 import Dropdownlist_mui from "../components/Dropdownlist_mui";
-import Select from "../components/Select";
+import TSelect from "../components/TSelect";
 import { TaskFilter } from "../components/TaskFilter";
 import { Popup } from "../components/Popup";
 

@@ -1,13 +1,12 @@
-import { Select as JoySelect } from "@mui/joy";
 import * as React from "react";
-import Option from "@mui/joy/Option";
-
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { MenuItem } from "@mui/material";
 interface Props{
   defaultValue:string
   onChange?:(val:string)=>void
 }
 
-export default function Select({defaultValue,onChange}:Props) {
+export default function TSelect({defaultValue,onChange}:Props) {
   const [status, setStatus] = React.useState("");
 
   const handleChange = (event: any) => {
@@ -16,15 +15,15 @@ export default function Select({defaultValue,onChange}:Props) {
   };
 
   return (
-    <JoySelect
+    <Select
       color="primary"
       placeholder="Choose one…"
       defaultValue={defaultValue}
-      variant="plain"
+      variant="filled"
       onChange={handleChange}
     >
-      <Option value="ongoing">In Progress</Option>
-      <Option value="done">Complete</Option>
-    </JoySelect>
+      <MenuItem  value="ongoing">In Progress</MenuItem >
+      <MenuItem  value="done">Complete</MenuItem >
+    </Select>
   );
 }

@@ -290,8 +290,8 @@ export function TaskDND({}: Props) {
   };
 
   return (
-    <>
-      <div className="flex flex-row h-full w-full gap-4 overflow-hidden">
+    data && <>
+      <div className="flex flex-row h-full w-full gap-4 overflow-x-scroll">
         <DragDropContext onDragEnd={onDragEnd}>
           {Object.entries(data).map(([key, lane]: any) => (
             <Droppable key={key} droppableId={`${key}`}>

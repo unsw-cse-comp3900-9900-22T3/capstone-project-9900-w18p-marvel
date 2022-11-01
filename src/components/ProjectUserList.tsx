@@ -27,7 +27,9 @@ export const ProjectUserList = ({ projectId }: Props) => {
   const { user } = useApp();
   const [data, setData] = useState<any>([]);
   const [keyword, setKeyword] = useState<string>("");
-  const [selected, setSelected] = useState<Array<{id:string,role:Role}>>([]);
+  const [selected, setSelected] = useState<Array<{ id: string; role: Role }>>(
+    []
+  );
 
   const fetch = async (keyword: string) => {
     if (projectId) {
@@ -42,16 +44,24 @@ export const ProjectUserList = ({ projectId }: Props) => {
       );
       const unselected = collaborators
         .filter((x) => !activeUserIds.includes(x!))
-        .map((item) => ({ id: item, selected: false,role:projectCollabs.find(c=>c.userId === item)?.role || "viewer" }));
+        .map((item) => ({
+          id: item,
+          selected: false,
+          role: projectCollabs.find((c) => c.userId === item)?.role || "viewer",
+        }));
       const selected = collaborators
         .filter((x) => activeUserIds.includes(x!))
-        .map((item) => ({ id: item, selected: true,role:projectCollabs.find(c=>c.userId === item)?.role || "viewer"  }));
+        .map((item) => ({
+          id: item,
+          selected: true,
+          role: projectCollabs.find((c) => c.userId === item)?.role || "viewer",
+        }));
       const all = unselected.concat(selected);
       let users: any = [];
       await Promise.all(
         all.map(async (c) => {
           const info = await getUser(c.id!);
-          users.push({ ...info, selected: c.selected });
+          users.push({ ...info, selected: c.selected,role:c.role });
         })
       );
       setData(users);
@@ -63,10 +73,9 @@ export const ProjectUserList = ({ projectId }: Props) => {
   }, [projectId]);
 
   const onConfirm = async (
-    selected: Array<{id:string,role:Role}>,
+    selected: Array<{ id: string; role: Role }>,
     projectId: string,
-    userId: string,
-
+    userId: string
   ) => {
     const activeCollabs = await queryProjectCollaboratorsByProjectId(projectId);
     const owners = activeCollabs.filter(
@@ -74,29 +83,35 @@ export const ProjectUserList = ({ projectId }: Props) => {
     );
     const ownerIds = owners.map((o) => o.userId);
     const activeUserIds = activeCollabs.map((c) => c.id);
-    const selectedIds = selected.map(s=>s.id)
+    const selectedIds = selected.map((s) => s.id);
     const add = selectedIds.filter((x) => !activeUserIds.includes(x));
     const sub = activeUserIds.filter((x) => !selectedIds.includes(x));
     console.log(add, sub);
     add.forEach((id) => {
-      requestConnection(id, userId, new Date(), projectId, selected.find(s=>s.id===id)!.role);
+      requestConnection(
+        id,
+        userId,
+        new Date(),
+        projectId,
+        selected.find((s) => s.id === id)!.role
+      );
     });
     const ownerRemain = ownerIds.filter((x) => !sub.includes(x));
     if (ownerRemain.length > 0) {
       sub.forEach(async (id) => {
-          removeProjectCollaborator(id, projectId);
-          const tasks = await queryAllTasksByProjectId(projectId);
-          tasks.forEach((t: Task) => {
-            removeTaskCollaborator(id, t.id);
-          });
+        removeProjectCollaborator(id, projectId);
+        const tasks = await queryAllTasksByProjectId(projectId);
+        tasks.forEach((t: Task) => {
+          removeTaskCollaborator(id, t.id);
+        });
       });
-    }else{
-      alert("A project must has one or more owners!")
+    } else {
+      alert("A project must has one or more owners!");
     }
   };
 
   return (
-    <div className="flex flex-col gap-0 w-72 bg-white-100 rounded-3xl ">
+    <div className="flex flex-col gap-0 w-fit bg-white-100 rounded-3xl ">
       <div className="h-20 w-full py-3 px-3">
         <Input
           type={"text"}
@@ -107,7 +122,7 @@ export const ProjectUserList = ({ projectId }: Props) => {
         />
       </div>
       <div className="h-0 w-full border-t border-gray-100"></div>
-      <div className="w-full flex flex-col pt-6 pb-7 pl-7 pr-9 gap-6 max-h-80 overflow-scroll">
+      <div className="w-fit flex flex-col pt-6 pb-7 pl-7 pr-9 gap-6 max-h-80 overflow-scroll">
         {data.map((item: any) => (
           <UserListItem
             key={item.uid}
@@ -117,7 +132,7 @@ export const ProjectUserList = ({ projectId }: Props) => {
             onValueChange={(val: boolean) => {
               const _copy = _.cloneDeep(selected);
               if (val) {
-                _copy.push({id:item.uid,role:item.role});
+                _copy.push({ id: item.uid, role: item.role });
                 setSelected(_copy);
               } else {
                 const index = _copy.findIndex((c) => c.id === item.uid);
@@ -127,6 +142,8 @@ export const ProjectUserList = ({ projectId }: Props) => {
             }}
             defaultSelected={item.selected}
             checkboxDisabled={false}
+            showRole={true}
+            role={item.role}
           ></UserListItem>
         ))}
       </div>

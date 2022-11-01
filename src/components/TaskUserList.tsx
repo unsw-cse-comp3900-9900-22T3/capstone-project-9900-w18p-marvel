@@ -10,12 +10,13 @@ import {
   queryCollaboratorsInTask,
   removeTaskCollaborator,
 } from "../api/taskcollaborator";
-import { getUser, queryAllUsers } from "../api/user";
+import { getUser, queryAllUsers, queryProjectCollaboratorByKeyword } from "../api/user";
 import { queryProjectCollaboratorsByProjectId } from "../api/projectCollaborator";
+import Fuse from "fuse.js";
 
 interface Props {
   taskId: string;
-  projectId: string|null;
+  projectId: string | null;
 }
 
 export const TaskUserList = ({ taskId, projectId }: Props) => {
@@ -25,8 +26,9 @@ export const TaskUserList = ({ taskId, projectId }: Props) => {
 
   const fetch = async (keyword: string) => {
     if (taskId && projectId) {
-      const allUsers = await queryProjectCollaboratorsByProjectId(projectId);
-      const collaborators = allUsers.map((c) => c.userId);
+      const allUsers = await queryProjectCollaboratorByKeyword(projectId,keyword);
+      
+      const collaborators = allUsers.map((c) => c.uid);
       const activeCollabs = await queryCollaboratorsInTask(taskId);
       const activeUserIds = activeCollabs.map((c) => c.userId);
       const unselected = collaborators
@@ -92,6 +94,8 @@ export const TaskUserList = ({ taskId, projectId }: Props) => {
             }}
             defaultSelected={item.selected}
             checkboxDisabled={false}
+            showRole={false}
+            role={"viewer"}
           ></UserListItem>
         ))}
       </div>

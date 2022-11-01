@@ -10,6 +10,7 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
+import Fuse from "fuse.js";
 import { ProjectCollaborator, Role } from "./type";
 
 export const queryProjectCollaboratorsByProjectId: (
@@ -27,8 +28,10 @@ export const queryProjectCollaboratorsByProjectId: (
   querySnapshot.forEach((doc) => {
     data.push({ id: doc.id, ...doc.data() } as ProjectCollaborator);
   });
-  return data;
+  return data
 };
+
+
 
 export const getProjectCollaboratorByUserId: (projectId:string,userId:string) => Promise<ProjectCollaborator | null> = async (
   projectId:string,userId:string

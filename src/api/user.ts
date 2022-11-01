@@ -19,7 +19,7 @@ import {
 import Fuse from "fuse.js";
 import { uid } from "uid";
 import { getInvitation } from "./invitation";
-import { addProjectCollaborator } from "./projectCollaborator";
+import { addProjectCollaborator, queryProjectCollaboratorsByProjectId } from "./projectCollaborator";
 import { deleteFile, uploadFile } from "./storage";
 import { Resource, User } from "./type";
 
@@ -140,3 +140,19 @@ export const queryAllUsers: (keyword: string) => Promise<Array<User>> = async (
     return result.map((item) => item.item as User);
   }
 };
+
+export const queryProjectCollaboratorByKeyword = async (projectId:string,keyword:string)=>{
+  const collabs = await queryProjectCollaboratorsByProjectId(projectId)
+  const users:Array<User> = []
+  await Promise.all(collabs.map(async c=>{
+    const user = await getUser(c.userId)
+    if(user) users.push(user)
+  }))
+  if(keyword===""){
+    return users
+  }else{
+    const fuse = new Fuse(users, { keys: ["email"] });
+    const result = fuse.search(keyword);
+    return result.map((item) => item.item as User);
+  }
+}

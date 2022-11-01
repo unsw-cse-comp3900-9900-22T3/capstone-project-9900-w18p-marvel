@@ -9,11 +9,16 @@ import { queryCollaboratorsInTask } from "../api/taskcollaborator";
 import { delay } from "../utils/promise";
 import { getUser, queryAllUsers } from "../api/user";
 import { useApp } from "../App";
+import { TextInput } from "./TextInput";
+import { TextInput_forDes } from "./TextInput_forDes";
+import { updateTask } from "../api/task";
+import TextField from '@mui/material/TextField';
 interface TaskInfoBlockProps {
   TaskID: string;
   TaskName: string;
   DueDate: string;
   Description: string;
+  UserRole?: string;
 }
 
 const img_address =
@@ -24,9 +29,18 @@ const TaskInfoBlock = ({
   TaskID,
   DueDate,
   Description,
+  UserRole
 }: TaskInfoBlockProps) => {
   const { projectId } = useApp();
   const [data, setData] = useState<any>([]);
+  const [isDesEditing, setDesIsEditing] = useState(false);
+  const [TNameIsEditing, setTNameIsEditing] = useState(false);
+  const [inputTaskName, setinputTaskName] = useState("");
+  const [inputTaskDesc, setinputTaskDesc] = useState("");
+  const [inputDue, setinputDue] = useState("");
+  const [InputTaskStatus, setInputTaskStatus] = useState("");
+
+
 
   console.log(TaskID);
 
@@ -85,13 +99,33 @@ const TaskInfoBlock = ({
     <>
       <div className={`flex flex-col w-176 h-auto pt-5 pl-1`}>
         <div className={`flex flex-col w-176 h-auto`}>
-          <div className={`flex items-center text-2xl`}>{TaskName}</div>
-          <div className={`flex items-center text-gray-400 text-sm pt-2`}>
+          <div onClick={() => {
+            setTNameIsEditing(true);
+          }} className={`flex items-center text-2xl`}><TextInput
+              disabled={TNameIsEditing ? false : true}
+              MaxCharacter='300'
+              boxheight='300px'
+              fontSize='text-2xl'
+              onChange={(val) => {
+                setinputTaskName(val);
+                updateTask(
+                  TaskID,
+                  val,
+                  null,
+                  null,
+                  null,
+                  null
+                )
+              }}
+
+              defaultValue={TaskName}
+            /></div>
+          <div className={`flex items-center text-gray-400 text-sm pt-2 px-2`}>
             TaskID: {TaskID}
           </div>
         </div>
 
-        <div className={`flex flex-row w-176 h-auto pt-10 justify-between`}>
+        <div className={`flex flex-row w-176 h-auto pt-10 justify-between px-2`}>
           <div className={`flex flex-col w-auto h-auto pb-10 pr-auto`}>
             <div className={`flex items-start text-gray-400 text-xs`}>
               ASSIGNED TO
@@ -118,25 +152,44 @@ const TaskInfoBlock = ({
           <div className={`flex flex-col w-auto h-auto pb-10`}>
             <div className={`flex text-gray-400 text-xs`}>DUE DATE</div>
             <div
-              className={`flex text-sm text-gray-400 bg-gray-50 rounded-2xl pt-5`}
+              className={`flex text-sm text-gray-400 bg-gray-50 rounded-2xl mt-8`}
             >
               {DueDate}
             </div>
           </div>
         </div>
         <div className={`flex flex-col w-176 h-auto pt-5`}>
-          <div
-            className={`flex font-bold text-lg text-zinc-600 items-center gap-4`}
-          >
-            <DescriptionOutlinedIcon fontSize="large" />
+          <div className={`flex font-bold text-lg text-zinc-600 items-center gap-4`}>
+            <DescriptionOutlinedIcon
+              fontSize="large" />
             Description
           </div>
         </div>
 
-        <div
-          className={`flex item-start w-166 h-auto text-justify text-gray-500 rounded-2xl pt-3 pl-5`}
+        <div onClick={() => {
+          setDesIsEditing(true);
+        }}
+          className={`flex item-start w-175 h-auto text-justify text-gray-500 rounded-2xl pt-3 pl-5`}
         >
-          {Description}
+
+          <TextInput_forDes
+            disabled={isDesEditing ? false : true}
+            MaxCharacter='300'
+            boxheight='300px'
+            onChange={(val) => {
+              setinputTaskDesc(val);
+              updateTask(
+                TaskID,
+                null,
+                null,
+                null,
+                val,
+                null
+              )
+            }}
+
+            defaultValue={Description}
+          />
         </div>
 
         {

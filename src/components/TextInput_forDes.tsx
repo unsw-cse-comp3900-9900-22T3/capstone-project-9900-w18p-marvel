@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+
+
 interface Props {
   disabled: boolean;
   placeholder?: string
@@ -7,18 +9,20 @@ interface Props {
   onComplete?: (val: string) => void;
   defaultValue?: string;
   defaultFocus?: boolean;
-  fontSize?: string;
-  fontWeight?: string
+  fontWeight?: string;
+  MaxCharacter?: number;
+  boxheight?: number;
 }
 // placeholder='',
-export const TextInput = ({
+export const TextInput_forDes = ({
   disabled,
   onChange,
   onComplete,
   defaultValue,
   defaultFocus,
   placeholder,
-  fontSize = "text-sm",
+  MaxCharacter,
+  boxheight,
   fontWeight = "font-medium"
 }: Props) => {
   const [focus, setFocus] = useState<boolean>(defaultFocus || false);
@@ -28,7 +32,7 @@ export const TextInput = ({
   }, [defaultValue]);
   return (
     <form
-      className={`transition-all w-full h-10 rounded-2xl
+      className={`transition-all w-full h-68 rounded-2xl
       ${focus && !disabled ? "bg-white-5 px-6 break-all" : "px-2"} py-3  ${!disabled ? "hover:bg-white-5" : ""
         } flex flex-row gap-4 items-center font-inherit text-inherit`}
       onFocus={() => {
@@ -38,15 +42,18 @@ export const TextInput = ({
         if (!disabled) setFocus(false);
       }}
     >
-      <input
+      <textarea
         disabled={disabled} //{}代表变量
         style={{ border: "" }}
+        height={boxheight}
+
         onChange={(e) => {
           setValue(e.target.value);
           onChange?.(e.target.value);
         }}
-        className={`grow ${fontSize} ${fontWeight} ${value.length > 0 ? "text-inherit" : "text-gray-100"
-          }`}
+        className={`grow text-sm word-wrap  ${fontWeight} ${value.length > 0 ? "text-inherit" : "text-gray-100"
+          }`
+        }
         value={value}
         placeholder={placeholder}
       />

@@ -121,8 +121,8 @@ export const ProjectUserList = ({ projectId }: Props) => {
           }}
         />
       </div>
-      <div className="h-0 w-full border-t border-gray-100"></div>
-      <div className="w-fit flex flex-col pt-6 pb-7 pl-7 pr-9 gap-6 max-h-80 overflow-scroll">
+      <div className="h-0 w-full border-t border-gray-200"></div>
+      <div className="w-fit flex flex-col pt-6 pb-7 pl-7 pr-9 gap-6 max-h-80 overflow-y-scroll scrollbar-auto">
         {data.map((item: any) => (
           <UserListItem
             key={item.uid}
@@ -147,7 +147,7 @@ export const ProjectUserList = ({ projectId }: Props) => {
           ></UserListItem>
         ))}
       </div>
-      <div className="h-0 w-full border-t border-gray-100"></div>
+      <div className="h-0 w-full border-t border-gray-200"></div>
       <div className="h-20 w-full pt-4 pb-5 pl-7 pr-8">
         <Button
           theme="blue"

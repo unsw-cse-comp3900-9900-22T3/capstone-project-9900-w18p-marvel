@@ -74,7 +74,7 @@ export const TaskUserList = ({ taskId, projectId }: Props) => {
         />
       </div>
       <div className="h-0 w-full border-t border-gray-100"></div>
-      <div className="w-full flex flex-col pt-6 pb-7 pl-7 pr-9 gap-6 max-h-80 overflow-scroll">
+      <div className="w-full flex flex-col pt-6 pb-7 pl-7 pr-9 gap-6 max-h-80 overflow-x-scroll scrollbar-auto">
         {data.map((item: any) => (
           <UserListItem
             src={item.photo.downloadURL}

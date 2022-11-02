@@ -4,19 +4,19 @@ import { NewUploadedCard } from "../components/NewUploadedCard";
 import { CommentBox } from "../components/CommentBox";
 import { NewCommentBox } from "../components/NewCommentBox";
 import { Button } from "./Button";
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
 import { TotalCommentItem } from "./TotalCommentItem";
 import { Popup } from "./Popup";
 import React, { useEffect, useState } from "react";
 import { TextInput } from "./TextInput";
 
 import Dropdownlist_mui from "./Dropdownlist_mui";
-import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import { getUser } from "../api/user";
 import { useApp } from "../App";
 import { delay } from "../utils/promise";
 
-import { User } from "../api/type";
+import { Status, User } from "../api/type";
 
 import { queryComment } from "../api/comment";
 
@@ -59,7 +59,9 @@ export function TaskDetail({ id }: TaskDetailProps) {
       handleGetTaskdetails();
     } else {
       setInvalid(true);
-      alert("This task you are current viewing might be deleted for some reason just now, redirecting to task board...")
+      alert(
+        "This task you are current viewing might be deleted for some reason just now, redirecting to task board..."
+      );
     }
   };
 
@@ -109,26 +111,25 @@ export function TaskDetail({ id }: TaskDetailProps) {
           >
             <div className={`flex flex-row justify-between`}>
               <div className={`flex pt-5`}>
-                <TSelect defaultValue={taskdetails?.status}
+                <TSelect
+                  defaultValue={taskdetails?.status || "started" as Status}
                   onChange={(val) => {
-                    updateTask(
-                      id,
-                      null,
-                      val,
-                      null,
-                      null,
-                      null
-                    )
-                  }} />
+                    updateTask(id, null, val as Status, null, null, null);
+                  }}
+                  values={["started", "blocked", "complete"]}
+                />
               </div>
               <div className={`flex h-auto pt-5`}>
-                <Box className={`hover:bg-slate-300 text-slate-500 rounded-[14px] h-6`}>
-                  <DeleteForeverOutlinedIcon onClick={() => {
-                    deleteTask(id)
-                  }} />
+                <Box
+                  className={`hover:bg-slate-300 text-slate-500 rounded-[14px] h-6`}
+                >
+                  <DeleteForeverOutlinedIcon
+                    onClick={() => {
+                      deleteTask(id);
+                    }}
+                  />
                 </Box>
               </div>
-
             </div>
             <div className={`flex pt-10`}>
               <TaskInfoBlock
@@ -205,18 +206,29 @@ export function TaskDetail({ id }: TaskDetailProps) {
             <div className={`flex pt-3`}>
               <NewCommentBox TaskId={id} handleGetComment={handleGetComment} />
             </div>
-
-
+            <div className={`flex pb-5 w-auto items-end`}>
+              <Button
+                theme={"blue"}
+                label={"Create"}
+                onClick={() => {}}
+                size={"hug"}
+              ></Button>
+            </div>
           </div>
         </div>
-      )
-      }
+      )}
     </>
   );
 }
 
-
-function TaskID(TaskID: any, arg1: null, val: string, arg3: null, arg4: null, arg5: null) {
+function TaskID(
+  TaskID: any,
+  arg1: null,
+  val: string,
+  arg3: null,
+  arg4: null,
+  arg5: null
+) {
   throw new Error("Function not implemented.");
 }
 //export { TaskDetail };

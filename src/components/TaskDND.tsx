@@ -291,7 +291,7 @@ export function TaskDND({}: Props) {
 
   return (
     data && <>
-      <div className="flex flex-row h-full w-full gap-4 overflow-x-scroll">
+      <div className="flex flex-row h-full w-full gap-4 overflow-x-scroll scrollbar-auto">
         <DragDropContext onDragEnd={onDragEnd}>
           {Object.entries(data).map(([key, lane]: any) => (
             <Droppable key={key} droppableId={`${key}`}>
@@ -365,7 +365,7 @@ export function TaskDND({}: Props) {
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className="scroll flex flex-col h-full gap-4 overflow-scroll overflow-x-hidden "
+                    className="scroll flex flex-col h-full gap-4 overflow-scroll overflow-x-hidden scrollbar-auto"
                   >
                     {lane?.items?.map((item: Task, index: number) => (
                       <Draggable

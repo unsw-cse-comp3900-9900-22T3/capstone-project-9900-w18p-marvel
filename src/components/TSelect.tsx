@@ -28,8 +28,6 @@ export default function TSelect({ defaultValue, onChange, values=[] }: Props) {
         borderRadius: "16px",
         "&.MuiSelect-select": {
           borderRadius: "9999px",
-          paddingLeft: "32px",
-          padding: "0px",
         },
         "&.MuiSelect-filled": {
           backgroundColor: "transparent",
@@ -49,6 +47,9 @@ export default function TSelect({ defaultValue, onChange, values=[] }: Props) {
         "&.MuiFilledInput-root": {
           // backgroundColor:'transparent',
           // display:'none'
+          paddingTop:"6px",
+          paddingLeft:"4px",
+          fontWeight:700,
         },
         "&.MuiFilledInput-underline": {
           // backgroundColor:'transparent',

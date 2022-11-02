@@ -1,7 +1,7 @@
 import { User as FirebaseUser } from "firebase/auth";
 import { Timestamp } from "firebase/firestore";
 
-export type Status = "start" | "blocked" | "complete";
+export type Status = "started" | "blocked" | "complete";
 export type Role = "owner" | "editor" | "viewer"
 export type FileType = "image|text|application"
 

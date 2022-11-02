@@ -9,8 +9,6 @@ import { TotalCommentItem } from "./TotalCommentItem";
 import { Popup } from "./Popup";
 import React, { useEffect, useState } from "react";
 import { TextInput } from "./TextInput";
-
-import Dropdownlist_mui from "./Dropdownlist_mui";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import { getUser } from "../api/user";
 import { useApp } from "../App";
@@ -210,7 +208,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
               <Button
                 theme={"blue"}
                 label={"Create"}
-                onClick={() => {}}
+                onClick={() => { }}
                 size={"hug"}
               ></Button>
             </div>

@@ -342,7 +342,7 @@ export function TaskDND({}: Props) {
                           const newTask = await createTask(
                             id,
                             "",
-                            "start",
+                            "started",
                             faker.date.future(),
                             "",
                             user?.uid,

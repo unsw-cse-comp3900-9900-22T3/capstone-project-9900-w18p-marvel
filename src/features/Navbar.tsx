@@ -11,7 +11,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import { Badge, Chip } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getProject } from "../api/project";
-import NextWeekIcon from "@mui/icons-material/NextWeek";
+import { ProjectIcon } from "../icons/ProjectIcon";
 
 interface Props {
   onClickCreateProject: () => void;
@@ -43,9 +43,9 @@ export const Navbar = ({
     <div className="flex flex-row justify-between items-center gap-9 w-full h-24 p-6 shrink-0 grow-0">
       <div>
         {projectId && (
-          <div className="flex gap-4 items-center text-gray-400">
-            <NextWeekIcon color="inherit"/>
-            <p className="text-sm font-bold text-gray-400">{projectName}</p>
+          <div className="flex gap-4 items-center">
+            <ProjectIcon className={"text-gray-100"}/>
+            <p className="text-sm font-bold">{projectName}</p>
             <Chip
               color={
                 role === "viewer"
@@ -55,6 +55,7 @@ export const Navbar = ({
                   : "info"
               }
               label={role}
+              variant="outlined"
             />
           </div>
         )}

@@ -23,7 +23,16 @@ body > #root {
   src: url(./fonts/DMSans-Medium.ttf);
   font-weight: medium;
 }
+input {
+  border: none; 
+  outline: none;
+  background-color: transparent;
+}
 
+input:focus {
+  outline: none;
+  background-color: transparent;
+}
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

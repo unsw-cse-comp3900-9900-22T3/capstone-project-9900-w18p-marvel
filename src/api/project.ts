@@ -83,7 +83,7 @@ export const queryMyProjects: (
   });
 
   const myProjects: Array<Project> = [];
-  projects.forEach(async (p: Project) => {
+  await Promise.all(projects.map(async (p: Project) => {
     if (p.createdBy === userId) {
       myProjects.push(p);
     } else {
@@ -96,7 +96,7 @@ export const queryMyProjects: (
         myProjects.push(p);
       }
     }
-  });
+  }));
   return myProjects;
 };
 

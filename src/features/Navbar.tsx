@@ -44,17 +44,17 @@ export const Navbar = ({
       <div>
         {projectId && (
           <div className="flex gap-4 items-center">
-            <ProjectIcon className={"text-gray-100"}/>
+            <ProjectIcon className={"text-gray-100"} />
             <p className="text-sm font-bold">{projectName}</p>
             <Chip
               color={
                 role === "viewer"
                   ? "default"
                   : role === "editor"
-                  ? "success"
-                  : "info"
+                    ? "success"
+                    : role === "owner" ? "info" : "error"
               }
-              label={role}
+              label={role || "unknown"}
               variant="outlined"
             />
           </div>

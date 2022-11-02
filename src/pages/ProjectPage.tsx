@@ -7,7 +7,7 @@ import { Project } from "../api/type";
 import { useApp } from "../App";
 import { ProjectCard } from "../components/ProjectCard";
 
-interface ProjectProps {}
+interface ProjectProps { }
 
 const data = [
   {
@@ -47,7 +47,7 @@ const data = [
   },
 ];
 
-export const ProjectPage = ({}: ProjectProps) => {
+export const ProjectPage = ({ }: ProjectProps) => {
   const { user, projectId, setProjectId } = useApp();
 
   const [data, setData] = useState<Array<Project>>([]);
@@ -70,8 +70,8 @@ export const ProjectPage = ({}: ProjectProps) => {
       <div className="absolute left-12 top-12 text-sm text-gray-100 font-bold">
         MY PROJECT
       </div>
-      <div className="w-full h-full pt-24 px-10 pb-12">
-        <div className="grid grid-cols-4 gap-4">
+      <div className="w-full h-full pt-24 px-10 pb-12 overflow-scroll">
+        <div className="grid grid-cols-4 gap-4 overflow-scroll">
           {data.map((item: any) => (
             <ProjectCard
               key={uid(4)}
@@ -81,7 +81,7 @@ export const ProjectPage = ({}: ProjectProps) => {
               createdBy={item.createdBy}
               onClick={() => {
                 setProjectId?.(item.id);
-                navigate("/projects/"+item.id);
+                navigate("/projects/" + item.id);
               }}
             />
           ))}

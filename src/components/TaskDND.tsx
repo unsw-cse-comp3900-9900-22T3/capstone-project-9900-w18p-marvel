@@ -342,7 +342,7 @@ export function TaskDND({}: Props) {
                           const newTask = await createTask(
                             id,
                             "",
-                            "start",
+                            "started",
                             faker.date.future(),
                             "",
                             user?.uid,
@@ -406,7 +406,7 @@ export function TaskDND({}: Props) {
                 const laneId = uid(20);
                 addLane(laneId, projectId, name);
                 const _data: any = _.cloneDeep(data);
-                _data[laneId] = { loading: false, items: [] };
+                _data[laneId] = { loading: false, items: [],name:name };
                 setData(_data);
               }
             }}

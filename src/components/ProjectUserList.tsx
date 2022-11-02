@@ -84,6 +84,7 @@ export const ProjectUserList = ({ projectId }: Props) => {
     const ownerIds = owners.map((o) => o.userId);
     const activeUserIds = activeCollabs.map((c) => c.id);
     const selectedIds = selected.map((s) => s.id);
+    const unchanged = selectedIds.filter(x=>activeUserIds.includes(x))
     const add = selectedIds.filter((x) => !activeUserIds.includes(x));
     const sub = activeUserIds.filter((x) => !selectedIds.includes(x));
     console.log(add, sub);

@@ -4,12 +4,14 @@ import { NewUploadedCard } from "../components/NewUploadedCard";
 import { CommentBox } from "../components/CommentBox";
 import { NewCommentBox } from "../components/NewCommentBox";
 import { Button } from "./Button";
+import Box from '@mui/material/Box';
 import { TotalCommentItem } from "./TotalCommentItem";
 import { Popup } from "./Popup";
 import React, { useEffect, useState } from "react";
 import { TextInput } from "./TextInput";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import Dropdownlist_mui from "./Dropdownlist_mui";
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import { getUser } from "../api/user";
 import { useApp } from "../App";
 import { delay } from "../utils/promise";
@@ -19,9 +21,10 @@ import { User } from "../api/type";
 import { queryComment } from "../api/comment";
 
 import { queryAttachment } from "../api/attachment";
-import { getTask } from "../api/task";
+import { deleteTask, getTask, updateTask } from "../api/task";
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { getApp } from "firebase/app";
+import TSelect from "./TSelect";
 
 interface TaskDetailProps {
   id: string;
@@ -36,7 +39,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
   const [inputcomment, setInputComment] = useState<any>({});
   const [inputattachments, setAttachment] = useState<any>({});
   const [taskdetails, setTaskdetails] = useState<any>([]);
-  const { user, setUser,role,setRole } = useApp(); //useApp
+  const { user, setUser, role, setRole } = useApp(); //useApp
   const [loading, setLoading] = useState(false);
   const [invalid, setInvalid] = useState<boolean>(false);
   console.log(user?.uid);
@@ -103,16 +106,36 @@ export function TaskDetail({ id }: TaskDetailProps) {
           <div
             className={`flex justify-items-start flex-col px-12 overflow-auto max-h-[70rem] relative `}
           >
-            <div className={`flex h-auto pt-5 absolute`}>
-              <Dropdownlist_mui />
-            </div>
+            <div className={`flex flex-row justify-between`}>
+              <div className={`flex pt-5`}>
+                <TSelect defaultValue={taskdetails?.status}
+                  onChange={(val) => {
+                    updateTask(
+                      id,
+                      null,
+                      val,
+                      null,
+                      null,
+                      null
+                    )
+                  }} />
+              </div>
+              <div className={`flex h-auto pt-5`}>
+                <Box className={`hover:bg-slate-300 text-slate-500 rounded-[14px] h-6`}>
+                  <DeleteForeverOutlinedIcon onClick={() => {
+                    deleteTask(id)
+                  }} />
+                </Box>
+              </div>
 
-            <div className={`flex pt-20`}>
+            </div>
+            <div className={`flex pt-10`}>
               <TaskInfoBlock
                 TaskID={taskdetails.id}
                 TaskName={taskdetails.title}
-                //DueDate={taskdetails.dueDate.toDateString()}
+                DueDate={taskdetails?.dueDate?.toDateString()}
                 Description={taskdetails.description}
+                UserRole={role}
               ></TaskInfoBlock>
             </div>
 
@@ -188,15 +211,20 @@ export function TaskDetail({ id }: TaskDetailProps) {
               <Button
                 theme={"blue"}
                 label={"Create"}
-                onClick={() => {}}
+                onClick={() => { }}
                 size={"hug"}
               ></Button>
             </div>
           </div>
         </div>
-      )}
+      )
+      }
     </>
   );
 }
 
+
+function TaskID(TaskID: any, arg1: null, val: string, arg3: null, arg4: null, arg5: null) {
+  throw new Error("Function not implemented.");
+}
 //export { TaskDetail };

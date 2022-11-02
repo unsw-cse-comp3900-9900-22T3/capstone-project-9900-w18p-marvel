@@ -9,7 +9,7 @@ import {
   queryTaskCollaboratorsByKeyword,
   queryCollaboratorsInTask,
   removeAllTaskCollaborator,
-  updateCollaborators,
+  updateTaskCollaborators,
 } from "../api/taskcollaborator";
 import { addComment, deleteAllComment } from "../api/comment";
 import {
@@ -167,7 +167,7 @@ export const APITest = () => {
                 data.laneId
               );
 
-              await updateCollaborators(
+              await updateTaskCollaborators(
                 sampleMultiple(
                   projectCollabs.map((u) => u.id),
                   Math.floor(Math.random() * 5)

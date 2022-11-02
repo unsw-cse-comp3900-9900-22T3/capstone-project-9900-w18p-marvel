@@ -9,6 +9,7 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  updateDoc,
 } from "firebase/firestore";
 import Fuse from "fuse.js";
 import { ProjectCollaborator, Role } from "./type";
@@ -28,37 +29,63 @@ export const queryProjectCollaboratorsByProjectId: (
   querySnapshot.forEach((doc) => {
     data.push({ id: doc.id, ...doc.data() } as ProjectCollaborator);
   });
-  return data
+  return data;
 };
 
-
-
-export const getProjectCollaboratorByUserId: (projectId:string,userId:string) => Promise<ProjectCollaborator | null> = async (
-  projectId:string,userId:string
+export const updateProjectCollaborator = async (
+  projectId: string,
+  userId: string | null,
+  role: Role
 ) => {
   const app = getApp();
   const db = getFirestore(app);
   const q = query(
     collection(db, "projectcollaborators"),
     where("projectId", "==", projectId),
-    where("userId","==",userId)
+    where("userId", "==", userId)
   );
   const querySnapshot = await getDocs(q);
   const data: Array<ProjectCollaborator> = [];
   querySnapshot.forEach((doc) => {
     data.push({ id: doc.id, ...doc.data() } as ProjectCollaborator);
   });
-  if(data.length > 0) return data[0]
-  else return null
+  if (data.length > 0) {
+    await updateDoc(doc(db, "projectcollaborators", data[0].id), { role });
+  }
 };
 
-export const queryAllProjectCollaborators: () => Promise<Array<ProjectCollaborator>> = async () => {
+export const getProjectCollaboratorByUserId: (
+  projectId: string,
+  userId: string
+) => Promise<ProjectCollaborator | null> = async (
+  projectId: string,
+  userId: string
+) => {
+  const app = getApp();
+  const db = getFirestore(app);
+  const q = query(
+    collection(db, "projectcollaborators"),
+    where("projectId", "==", projectId),
+    where("userId", "==", userId)
+  );
+  const querySnapshot = await getDocs(q);
+  const data: Array<ProjectCollaborator> = [];
+  querySnapshot.forEach((doc) => {
+    data.push({ id: doc.id, ...doc.data() } as ProjectCollaborator);
+  });
+  if (data.length > 0) return data[0];
+  else return null;
+};
+
+export const queryAllProjectCollaborators: () => Promise<
+  Array<ProjectCollaborator>
+> = async () => {
   const app = getApp();
   const db = getFirestore(app);
   const querySnapshot = await getDocs(collection(db, "projectcollaborators"));
   const data: Array<ProjectCollaborator> = [];
   querySnapshot.forEach((doc) => {
-    if(doc.id !== "placeholder"){
+    if (doc.id !== "placeholder") {
       data.push({
         id: doc.id,
         ...doc.data(),

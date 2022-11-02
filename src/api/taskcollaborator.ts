@@ -20,7 +20,7 @@ import {
   ProjectCollaborator,
 } from "./type";
 
-export const updateCollaborators = async (
+export const updateTaskCollaborators = async (
   uids: Array<string>,
   taskId: string
 ) => {

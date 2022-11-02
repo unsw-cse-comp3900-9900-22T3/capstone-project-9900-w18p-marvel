@@ -13,8 +13,9 @@ import {
   queryAllProjectCollaborators,
   queryProjectCollaboratorsByProjectId,
   removeProjectCollaborator,
+  updateProjectCollaborator,
 } from "../api/projectCollaborator";
-import { ProjectCollaborator, Role, Task } from "../api/type";
+import { ProjectCollaborator, Role, Task, User } from "../api/type";
 import { requestConnection } from "../api/connection";
 import { useApp } from "../App";
 import { queryAllTasksByProjectId } from "../api/task";
@@ -64,6 +65,7 @@ export const ProjectUserList = ({ projectId }: Props) => {
           users.push({ ...info, selected: c.selected,role:c.role });
         })
       );
+      setSelected(selected.map((u:any)=>({id:u.id,role:u.role})))
       setData(users);
     }
   };
@@ -84,31 +86,36 @@ export const ProjectUserList = ({ projectId }: Props) => {
     const ownerIds = owners.map((o) => o.userId);
     const activeUserIds = activeCollabs.map((c) => c.id);
     const selectedIds = selected.map((s) => s.id);
-    const unchanged = selectedIds.filter(x=>activeUserIds.includes(x))
+    const intersect = selectedIds.filter(x=>activeUserIds.includes(x))
     const add = selectedIds.filter((x) => !activeUserIds.includes(x));
     const sub = activeUserIds.filter((x) => !selectedIds.includes(x));
+    console.log(activeUserIds, selectedIds);
     console.log(add, sub);
-    add.forEach((id) => {
-      requestConnection(
-        id,
-        userId,
-        new Date(),
-        projectId,
-        selected.find((s) => s.id === id)!.role
-      );
-    });
+    
     const ownerRemain = ownerIds.filter((x) => !sub.includes(x));
-    if (ownerRemain.length > 0) {
-      sub.forEach(async (id) => {
-        removeProjectCollaborator(id, projectId);
-        const tasks = await queryAllTasksByProjectId(projectId);
-        tasks.forEach((t: Task) => {
-          removeTaskCollaborator(id, t.id);
-        });
-      });
-    } else {
-      alert("A project must has one or more owners!");
-    }
+    // if (ownerRemain.length > 0) {
+    //   add.forEach((id) => {
+    //     requestConnection(
+    //       id,
+    //       userId,
+    //       new Date(),
+    //       projectId,
+    //       selected.find((s) => s.id === id)!.role
+    //     );
+    //   });
+    //   intersect.forEach(id=>{
+    //     updateProjectCollaborator(projectId,id,selected.find((s) => s.id === id)!.role)
+    //   })
+    //   sub.forEach(async (id) => {
+    //     removeProjectCollaborator(id, projectId);
+    //     const tasks = await queryAllTasksByProjectId(projectId);
+    //     tasks.forEach((t: Task) => {
+    //       removeTaskCollaborator(id, t.id);
+    //     });
+    //   });
+    // } else {
+    //   alert("A project must has one or more owners!");
+    // }
   };
 
   return (

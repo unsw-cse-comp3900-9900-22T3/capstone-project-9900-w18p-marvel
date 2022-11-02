@@ -32,7 +32,7 @@ import _ from "lodash";
 import { TaskCard } from "./TaskCard";
 import {
   queryCollaboratorsInTask,
-  updateCollaborators,
+  updateTaskCollaborators,
 } from "../api/taskcollaborator";
 import { urlToFile } from "../utils/converter";
 import {

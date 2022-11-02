@@ -9,7 +9,7 @@ import { TotalCommentItem } from "./TotalCommentItem";
 import { Popup } from "./Popup";
 import React, { useEffect, useState } from "react";
 import { TextInput } from "./TextInput";
-import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
+
 import Dropdownlist_mui from "./Dropdownlist_mui";
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import { getUser } from "../api/user";
@@ -25,6 +25,7 @@ import { deleteTask, getTask, updateTask } from "../api/task";
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { getApp } from "firebase/app";
 import TSelect from "./TSelect";
+import { TotalAttachedItem } from "./TotalAttachedItem";
 
 interface TaskDetailProps {
   id: string;
@@ -139,13 +140,10 @@ export function TaskDetail({ id }: TaskDetailProps) {
               ></TaskInfoBlock>
             </div>
 
-            <div className={`flex flex-row w-175 h-auto pl-1 pt-20 pb-5`}>
-              <div
-                className={`flex font-bold text-lg text-zinc-600 items-center gap-4`}
-              >
-                <AttachFileOutlinedIcon fontSize="large" />
-                Attachment
-              </div>
+            <div className={`justify-items-start pt-20 pb-5`}>
+              <TotalAttachedItem
+                TotalAttached={inputattachments.length}
+              ></TotalAttachedItem>
             </div>
 
             <div className={`flex flex-col gap-4`}>
@@ -207,14 +205,8 @@ export function TaskDetail({ id }: TaskDetailProps) {
             <div className={`flex pt-3`}>
               <NewCommentBox TaskId={id} handleGetComment={handleGetComment} />
             </div>
-            <div className={`flex pb-5 w-auto items-end`}>
-              <Button
-                theme={"blue"}
-                label={"Create"}
-                onClick={() => { }}
-                size={"hug"}
-              ></Button>
-            </div>
+
+
           </div>
         </div>
       )
@@ -228,3 +220,14 @@ function TaskID(TaskID: any, arg1: null, val: string, arg3: null, arg4: null, ar
   throw new Error("Function not implemented.");
 }
 //export { TaskDetail };
+
+/*
+<div className={`flex pb-5 w-auto items-end`}>
+<Button
+  theme={"blue"}
+  label={"Create"}
+  onClick={() => { }}
+  size={"hug"}
+></Button>
+</div>
+*/

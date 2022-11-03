@@ -59,7 +59,7 @@ export const Home = ({ children }: HomeProps) => {
         />
       </Popup>
       <Popup
-        open={notificationPopupOpen}
+        open={notificationPopupOpen && invitations.length > 0}
         onClose={() => {
           setNotificationPopupOpen(false);
         }}

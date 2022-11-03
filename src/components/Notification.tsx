@@ -66,7 +66,6 @@ const NotificationItem = ({
 };
 
 export const Notification = ({ invitaions, userId }: Props) => {
-  console.log(invitaions);
   return (
     <div className="bg-white-100 rounded-3xl divide-y divide-white-5">
       <div className="flex justify-between p-6">

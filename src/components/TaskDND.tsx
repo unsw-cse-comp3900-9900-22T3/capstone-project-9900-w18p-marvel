@@ -109,13 +109,8 @@ const getListStyle = (isDraggingOver: any) => ({
 });
 
 const sortByDueDate = (list: Array<Task>) => {
-  const _list = _.cloneDeep(list);
-  console.log(
-    list.map((l) => {
-      const timestamp = l.dueDate;
-      return timestamp;
-    })
-  );
+  console.log(list);
+  const _list: any = _.cloneDeep(list);
   _list.sort((a: Task, b: Task) => a.dueDate.getTime() - b.dueDate.getTime());
   return _list;
 };
@@ -154,7 +149,7 @@ export function TaskDND({}: Props) {
   const [data, setData] = useState<any>();
   const [collaboratorLists, setCollaboratorLists] =
     useState<Map<string, Array<TaskCollaborator>>>();
-  const { user,role,setRole } = useApp();
+  const { user, role, setRole } = useApp();
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [tasks, setTasks] = useState<Array<string>>();
   const [open, setOpen] = useState(false);
@@ -251,32 +246,32 @@ export function TaskDND({}: Props) {
       );
       items = sortByDueDate(items);
       newState[sourceId].items = items;
-      setData(newState);
+      // setData(newState);
     } else {
-      updateTask(
-        data[sourceId].items[source.index].id,
-        null,
-        null,
-        null,
-        null,
-        destinationId
-      );
       const result = move(
         data[sourceId],
         data[destinationId],
         source,
         destination
-      );
-      newState[sourceId].items = sortByDueDate(data[sourceId]);
-      newState[destinationId].items = sortByDueDate(data[destinationId]);
-
-      setData(newState);
+        );
+        newState[sourceId].items = sortByDueDate(data[sourceId].items);
+        newState[destinationId].items = sortByDueDate(data[destinationId].items);
+        
+        // setData(newState);
+        // updateTask(
+        //   data[sourceId].items[source.index].id,
+        //   null,
+        //   null,
+        //   null,
+        //   null,
+        //   destinationId
+        // );
     }
     for (const [key, value] of Object.entries(newState)) {
       newState[key].loading = false;
     }
-    await delay(1000);
-    setData(newState);
+    // setData(newState);
+    // await delay(1000);
   }
 
   const deleteLaneAndTasks = (laneId: string, data: any) => {
@@ -290,140 +285,142 @@ export function TaskDND({}: Props) {
   };
 
   return (
-    data && <>
-      <div className="flex flex-row h-full w-full gap-4 overflow-x-scroll scrollbar-auto">
-        <DragDropContext onDragEnd={onDragEnd}>
-          {Object.entries(data).map(([key, lane]: any) => (
-            <Droppable key={key} droppableId={`${key}`}>
-              {(provided: any, snapshot: any) => (
-                <div className="h-full py-[72px] w-[372px] shrink-0 px-6 rounded-2xl bg-gray-50 relative overflow-hidden">
-                  {lane?.loading && (
-                    <div className="transition absolute inset-0 bg-white-100 opacity-95 z-50">
-                      <div className="flex w-full h-full flex-col justify-center items-center gap-4">
-                        <span>Reordering By Due Date</span>
-                        <CircularProgress />
+    data && (
+      <>
+        <div className="flex flex-row h-full w-full gap-4 overflow-x-scroll scrollbar-auto">
+          <DragDropContext onDragEnd={onDragEnd}>
+            {Object.entries(data).map(([key, lane]: any) => (
+              <Droppable key={key} droppableId={`${key}`}>
+                {(provided: any, snapshot: any) => (
+                  <div className="h-full py-[72px] w-[372px] shrink-0 px-6 rounded-2xl bg-gray-50 relative overflow-hidden">
+                    {lane?.loading && (
+                      <div className="transition absolute inset-0 bg-white-100 opacity-95 z-50">
+                        <div className="flex w-full h-full flex-col justify-center items-center gap-4">
+                          <span>Reordering By Due Date</span>
+                          <CircularProgress />
+                        </div>
                       </div>
+                    )}
+                    <div className="absolute flex justify-between items-center inset-x-6 top-6 font-bold text-base text-gray-100">
+                      {role !== "viewer" && (
+                        <TextInput
+                          defaultValue={lane?.name}
+                          disabled={false}
+                          onComplete={(val: string) => {
+                            updateLane(key, val);
+                          }}
+                          fontWeight="font-bold"
+                        />
+                      )}
+                      {role === "viewer" && (
+                        <p className="font-bold text-gray-100 text-sm">
+                          {lane?.name}
+                        </p>
+                      )}
+                      {role !== "viewer" && (
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => {
+                            deleteLaneAndTasks(key, data);
+                          }}
+                        >
+                          <DeleteOutlineIcon color="inherit" />
+                        </div>
+                      )}
                     </div>
-                  )}
-                  <div className="absolute flex justify-between items-center inset-x-6 top-6 font-bold text-base text-gray-100">
-                    {role !== "viewer" && (
-                      <TextInput
-                        defaultValue={lane?.name}
-                        disabled={false}
-                        onComplete={(val: string) => {
-                          updateLane(key, val);
-                        }}
-                        fontWeight="font-bold"
-                      />
-                    )}
-                    {role === "viewer" && (
-                      <p className="font-bold text-gray-100 text-sm">
-                        {lane?.name}
-                      </p>
-                    )}
                     {role !== "viewer" && (
                       <div
-                        className="cursor-pointer"
-                        onClick={() => {
-                          deleteLaneAndTasks(key, data);
+                        className="absolute left-6 right-6 bottom-6 flex justify-between cursor-pointer hover:scale-95 transition"
+                        onClick={async () => {
+                          if (user?.uid && projectId) {
+                            setOpen(true);
+                            const id = uid(20);
+                            const newTask = await createTask(
+                              id,
+                              "",
+                              "started",
+                              faker.date.future(),
+                              "",
+                              user?.uid,
+                              new Date(),
+                              projectId,
+                              key
+                            );
+                            setSelectedTaskId(id);
+                          }
                         }}
                       >
-                        <DeleteOutlineIcon color="inherit" />
+                        <div className="flex gap-3 items-center">
+                          <PlusIcon className={"text-gray-100"} />
+                          <p className="text-sm font-bold text-gray-100">
+                            Add Another Task
+                          </p>
+                        </div>
                       </div>
                     )}
-                  </div>
-                  {role !== "viewer" && (
                     <div
-                      className="absolute left-6 right-6 bottom-6 flex justify-between cursor-pointer hover:scale-95 transition"
-                      onClick={async () => {
-                        if (user?.uid && projectId) {
-                          setOpen(true);
-                          const id = uid(20);
-                          const newTask = await createTask(
-                            id,
-                            "",
-                            "started",
-                            faker.date.future(),
-                            "",
-                            user?.uid,
-                            new Date(),
-                            projectId,
-                            key
-                          );
-                          setSelectedTaskId(id);
-                        }
-                      }}
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      className="flex flex-col h-full gap-4 overflow-scroll overflow-x-hidden scrollbar-auto"
                     >
-                      <div className="flex gap-3 items-center">
-                        <PlusIcon className={"text-gray-100"} />
-                        <p className="text-sm font-bold text-gray-100">
-                          Add Another Task
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    className="scroll flex flex-col h-full gap-4 overflow-scroll overflow-x-hidden scrollbar-auto"
-                  >
-                    {lane?.items?.map((item: Task, index: number) => (
-                      <Draggable
-                        key={item.id}
-                        draggableId={item.id}
-                        index={index}
-                      >
-                        {(provided: any, snapshot: any) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            className=""
-                          >
-                            <TaskCard
-                              id={item.id}
-                              onClick={() => {
-                                setOpen(true);
-                                setSelectedTaskId(item.id);
-                              }}
-                            />
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
+                      {lane?.items?.map((item: Task, index: number) => (
+                        <Draggable
+                          key={item.id}
+                          draggableId={item.id}
+                          index={index}
+                        >
+                          {(provided: any, snapshot: any) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              className=""
+                            >
+                              <TaskCard
+                                id={item.id}
+                                onClick={() => {
+                                  setOpen(true);
+                                  setSelectedTaskId(item.id);
+                                }}
+                              />
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
 
-                    {provided.placeholder}
+                      {provided.placeholder}
+                    </div>
                   </div>
-                </div>
-              )}
-            </Droppable>
-          ))}
-        </DragDropContext>
-        {data && role !== "viewer" && (
-          <CreateLaneButton
-            onComplete={(name: string) => {
-              if (projectId) {
-                const laneId = uid(20);
-                addLane(laneId, projectId, name);
-                const _data: any = _.cloneDeep(data);
-                _data[laneId] = { loading: false, items: [],name:name };
-                setData(_data);
-              }
+                )}
+              </Droppable>
+            ))}
+          </DragDropContext>
+          {data && role !== "viewer" && (
+            <CreateLaneButton
+              onComplete={(name: string) => {
+                if (projectId) {
+                  const laneId = uid(20);
+                  addLane(laneId, projectId, name);
+                  const _data: any = _.cloneDeep(data);
+                  _data[laneId] = { loading: false, items: [], name: name };
+                  setData(_data);
+                }
+              }}
+            />
+          )}
+        </div>
+        {selectedTaskId && (
+          <Popup
+            open={open}
+            onClose={() => {
+              setOpen(false);
+              fetchData();
             }}
-          />
+          >
+            <TaskDetail id={selectedTaskId} />
+          </Popup>
         )}
-      </div>
-      {selectedTaskId && (
-        <Popup
-          open={open}
-          onClose={() => {
-            setOpen(false);
-            fetchData();
-          }}
-        >
-          <TaskDetail id={selectedTaskId} />
-        </Popup>
-      )}
-    </>
+      </>
+    )
   );
 }

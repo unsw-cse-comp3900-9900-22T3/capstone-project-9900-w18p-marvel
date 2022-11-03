@@ -94,16 +94,22 @@ export const CreateProject = ({createdBy,onComplete}:Props)=>{
               label={"Create Project"}
               onClick={async () => {
                 if(user?.uid){
-                  const id = uid(20)
-                    await createProject(
-                      id,
-                      title,
-                      { downloadURL, storagePath },
-                      user?.uid,
-                      new Date()
-                    );
-                    await addProjectCollaborator(user.uid,id,"owner")
-                    onComplete?.()
+                  if(title?.length > 0){
+                    const id = uid(20)
+                      await createProject(
+                        id,
+                        title,
+                        { downloadURL, storagePath },
+                        user?.uid,
+                        new Date()
+                      );
+                      await addProjectCollaborator(user.uid,id,"owner")
+                      onComplete?.()
+                  }else{
+                    alert("title can not be empty!")
+                  }
+                }else{
+                  alert("user not login!")
                 }
               }}
             />

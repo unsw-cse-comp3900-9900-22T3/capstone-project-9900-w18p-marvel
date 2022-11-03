@@ -52,7 +52,7 @@ export const Home = ({ children }: HomeProps) => {
         }}
       >
         <CreateProject
-          createdBy={user?.displayName || "John Doe"}
+          createdBy={user?.displayName || "Unknown"}
           onComplete={() => {
             setProjectPopupOpen(false);
           }}

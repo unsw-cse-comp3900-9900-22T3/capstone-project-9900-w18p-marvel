@@ -12,6 +12,7 @@ interface Props {
   checkboxDisabled: boolean;
   showRole: boolean;
   role:Role
+  onRoleChange?:(role:Role)=>void
 }
 
 export const UserListItem = ({
@@ -23,6 +24,7 @@ export const UserListItem = ({
   checkboxDisabled,
     role = "viewer",
   showRole = false,
+  onRoleChange
 }: Props) => {
   return (
     <div className="flex flex-row items-center w-fit h-11 justify-between gap-10">
@@ -37,7 +39,7 @@ export const UserListItem = ({
         <TSelect
           defaultValue={role}
           values={["owner", "editor", "viewer"]}
-          onChange={(val: string) => {}}
+          onChange={(val: string) => {onRoleChange?.(val as Role)}}
         />
       )}
       <div className="flex">

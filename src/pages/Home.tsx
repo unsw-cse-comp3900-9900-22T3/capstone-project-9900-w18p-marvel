@@ -74,6 +74,7 @@ export const Home = ({ children }: HomeProps) => {
       >
         <ProjectUserList
           projectId={projectId}
+          onComplete={()=>{setMemberPopupOpen(false)}}
         />
       </Popup>
     </>

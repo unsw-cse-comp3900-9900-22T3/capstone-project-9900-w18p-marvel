@@ -49,16 +49,18 @@ export const ProjectPage = ({}: ProjectProps) => {
         if (observer) observer();
       };
     }
-    if(user?.uid) refetch(user?.uid);
+    if (user?.uid) refetch(user?.uid);
   }, [user]);
 
   return (
-    <div className="relative w-full h-full">
-      <div className="absolute left-12 top-12 text-sm text-gray-100 font-bold">
-        MY PROJECT
+    <div className="relative w-full h-full flex flex-col">
+      <div className="relative w-full h-32">
+        <div className="absolute left-12 top-12 text-sm text-gray-100 font-bold">
+          MY PROJECT
+        </div>
       </div>
-      <div className="w-full h-full pt-24 px-10 pb-12 overflow-scroll">
-        <div className="grid grid-cols-4 gap-4 overflow-scroll">
+      <div className="w-full h-full pt-0 px-10 pb-12 overflow-scroll">
+        <div className="grid grid-cols-4 gap-4">
           {data.map((item: any) => (
             <ProjectCard
               key={uid(4)}

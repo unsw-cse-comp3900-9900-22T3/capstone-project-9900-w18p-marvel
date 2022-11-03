@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { getProjectCollaboratorByUserId } from "../api/projectCollaborator";
 import { Role, User } from "../api/type";
 import { getUser } from "../api/user";
+import { useApp } from "../App";
 import { Button } from "./Button";
 
 interface Props {
@@ -18,6 +19,7 @@ interface Props {
 export const ProjectCard = ({ id, src, title, createdBy, onClick }: Props) => {
   const [owner, setOwner] = useState<User>();
   const [role, setRole] = useState<Role>("viewer");
+  const {user} = useApp()
 
   const getOwner = async (userId: string) => {
     const user = await getUser(userId);
@@ -36,8 +38,10 @@ export const ProjectCard = ({ id, src, title, createdBy, onClick }: Props) => {
   }, [createdBy]);
 
   useEffect(() => {
-    getRole(createdBy, id);
-  }, [id]);
+    if(user?.uid){
+      getRole(user.uid, id);
+    }
+  }, [id,user]);
 
   return (
     <div
@@ -46,28 +50,32 @@ export const ProjectCard = ({ id, src, title, createdBy, onClick }: Props) => {
       }}
       className="transition-all hover:scale-95 flex flex-col justify-start w-64 h-fit items-center gap-4 p-4 pb-6 bg-white-100 rounded-2xl"
     >
-      <Chip
-        color={
-          role === "viewer"
-            ? "default"
-            : role === "editor"
-            ? "success"
-            : role === "owner"
-            ? "info"
-            : "error"
-        }
-        label={role || "unknown"}
-        variant="outlined"
-        size="small"
-      />
       <div className="w-full h-40 overflow-hidden rounded-2xl">
         <img src={src === "" ? "/cover.png" : src} className="" />
       </div>
-      <div className="w-full pl-2 flex flex-col justify-start bg-white-100">
+      <div className="w-full pl-2 flex flex-col justify-start bg-white-100 gap-2">
         <div className="text-base font-bold">{title}</div>
-        <div className="w-full flex gap-1 text-gray-100 font-normal text-xs">
-          <span>Created By - </span>
-          <span className="text-black font-bold">{owner?.displayName}</span>
+        <div className="w-full flex gap-1 text-gray-100 font-normal text-xs items-end justify-between">
+          <div>
+            <span>Created By - </span>
+            <span className="text-black font-bold">{owner?.displayName}</span>
+          </div>
+          <span>
+            <Chip
+              color={
+                role === "viewer"
+                  ? "default"
+                  : role === "editor"
+                  ? "success"
+                  : role === "owner"
+                  ? "info"
+                  : "error"
+              }
+              label={role || "unknown"}
+              variant="outlined"
+              size="small"
+            />
+          </span>
         </div>
       </div>
     </div>

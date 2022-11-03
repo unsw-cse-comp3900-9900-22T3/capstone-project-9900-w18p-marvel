@@ -83,8 +83,8 @@ const move = (
   destClone.splice(droppableDestination.index, 0, removed);
 
   const result: any = {};
-  result[droppableSource.droppableId] = sourceClone;
-  result[droppableDestination.droppableId] = destClone;
+  result.source = sourceClone;
+  result.dest = destClone;
 
   return result;
 };
@@ -144,7 +144,7 @@ const addTask = (
 
 interface Props {}
 
-export function TaskDND({}: Props) {
+export function TaskPage({}: Props) {
   let { id: projectId } = useParams();
   const [data, setData] = useState<any>();
   const [collaboratorLists, setCollaboratorLists] =
@@ -254,24 +254,22 @@ export function TaskDND({}: Props) {
         source,
         destination
         );
-        newState[sourceId].items = sortByDueDate(data[sourceId].items);
-        newState[destinationId].items = sortByDueDate(data[destinationId].items);
+        newState[sourceId].items = sortByDueDate(result.source);
+        newState[destinationId].items = sortByDueDate(result.dest);
         
-        // setData(newState);
-        // updateTask(
-        //   data[sourceId].items[source.index].id,
-        //   null,
-        //   null,
-        //   null,
-        //   null,
-        //   destinationId
-        // );
+        setData(newState);
+        updateTask(
+          data[sourceId].items[source.index].id,
+          null,
+          null,
+          null,
+          null,
+          destinationId
+        );
     }
     for (const [key, value] of Object.entries(newState)) {
       newState[key].loading = false;
     }
-    // setData(newState);
-    // await delay(1000);
   }
 
   const deleteLaneAndTasks = (laneId: string, data: any) => {

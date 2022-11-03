@@ -17,6 +17,7 @@ import { queryAllUsers } from "../api/user";
 import { reorder, sample } from "../utils/array";
 import {
   deleteAllProject,
+  getProject,
   queryAllProjects,
   queryMyProjects,
 } from "../api/project";
@@ -46,7 +47,7 @@ import {
   Timestamp,
   where,
 } from "firebase/firestore";
-import { CircularProgress } from "@mui/material";
+import { Chip, CircularProgress } from "@mui/material";
 import { delay } from "../utils/promise";
 import { PlusIcon } from "../icons/PlusIcon";
 import { CreateLaneButton } from "./CreateLaneButton";
@@ -66,6 +67,9 @@ import {
 } from "../api/projectCollaborator";
 import { getApp } from "firebase/app";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { ProjectIcon } from "../icons/ProjectIcon";
+import SearchIcon from "@mui/icons-material/Search";
+import { TaskFilter } from "./TaskFilter";
 
 /**
  * Moves an item from one list to another list.
@@ -253,19 +257,19 @@ export function TaskPage({}: Props) {
         data[destinationId],
         source,
         destination
-        );
-        newState[sourceId].items = sortByDueDate(result.source);
-        newState[destinationId].items = sortByDueDate(result.dest);
-        
-        setData(newState);
-        updateTask(
-          data[sourceId].items[source.index].id,
-          null,
-          null,
-          null,
-          null,
-          destinationId
-        );
+      );
+      newState[sourceId].items = sortByDueDate(result.source);
+      newState[destinationId].items = sortByDueDate(result.dest);
+
+      setData(newState);
+      updateTask(
+        data[sourceId].items[source.index].id,
+        null,
+        null,
+        null,
+        null,
+        destinationId
+      );
     }
     for (const [key, value] of Object.entries(newState)) {
       newState[key].loading = false;
@@ -282,142 +286,199 @@ export function TaskPage({}: Props) {
     }
   };
 
+  const [projectName, setProjectName] = useState<string>();
+
+  const fetchProject = async (id: string) => {
+    const proj = await getProject(id);
+    setProjectName(proj?.title);
+  };
+
+  useEffect(() => {
+    if (projectId) {
+      fetchProject(projectId);
+    }
+  }, [projectId]);
+
+  const [filterOpen, setFilterOpen] = useState<boolean>(false);
+
   return (
     data && (
       <>
-        <div className="flex flex-row h-full w-full gap-4 overflow-x-scroll scrollbar-auto">
-          <DragDropContext onDragEnd={onDragEnd}>
-            {Object.entries(data).map(([key, lane]: any) => (
-              <Droppable key={key} droppableId={`${key}`}>
-                {(provided: any, snapshot: any) => (
-                  <div className="h-full py-[72px] w-[372px] shrink-0 px-6 rounded-2xl bg-gray-50 relative overflow-hidden">
-                    {lane?.loading && (
-                      <div className="transition absolute inset-0 bg-white-100 opacity-95 z-50">
-                        <div className="flex w-full h-full flex-col justify-center items-center gap-4">
-                          <span>Reordering By Due Date</span>
-                          <CircularProgress />
+        <div className="w-full h-full flex flex-col">
+          <div className="w-full h-20 justify-between items-center flex px-6 py-6">
+            <div className="w-fit h-fit">
+              {projectId && (
+                <div className="flex gap-4 items-center">
+                  <ProjectIcon className={"text-gray-100"} />
+                  <p className="text-sm font-bold">{projectName}</p>
+                  <Chip
+                    color={
+                      role === "viewer"
+                        ? "default"
+                        : role === "editor"
+                        ? "success"
+                        : role === "owner"
+                        ? "info"
+                        : "error"
+                    }
+                    label={role || "unknown"}
+                    variant="outlined"
+                    size="small"
+                  />
+                </div>
+              )}
+            </div>
+            <div
+              className="w-6 h-6 cursor-pointer"
+              onClick={() => {
+                setFilterOpen(true);
+              }}
+            >
+              <SearchIcon />
+            </div>
+          </div>
+          <div className="flex flex-row h-full w-full gap-4 overflow-x-scroll scrollbar-auto">
+            <DragDropContext onDragEnd={onDragEnd}>
+              {Object.entries(data).map(([key, lane]: any) => (
+                <Droppable key={key} droppableId={`${key}`}>
+                  {(provided: any, snapshot: any) => (
+                    <div className="h-full py-[72px] w-[372px] shrink-0 px-6 rounded-2xl bg-gray-50 relative overflow-hidden">
+                      {lane?.loading && (
+                        <div className="transition absolute inset-0 bg-white-100 opacity-95 z-50">
+                          <div className="flex w-full h-full flex-col justify-center items-center gap-4">
+                            <span>Reordering By Due Date</span>
+                            <CircularProgress />
+                          </div>
                         </div>
+                      )}
+                      <div className="absolute flex justify-between items-center inset-x-6 top-6 font-bold text-base text-gray-100">
+                        {role !== "viewer" && (
+                          <TextInput
+                            defaultValue={lane?.name}
+                            disabled={false}
+                            onComplete={(val: string) => {
+                              updateLane(key, val);
+                            }}
+                            fontWeight="font-bold"
+                          />
+                        )}
+                        {role === "viewer" && (
+                          <p className="font-bold text-gray-100 text-sm">
+                            {lane?.name}
+                          </p>
+                        )}
+                        {role !== "viewer" && (
+                          <div
+                            className="cursor-pointer"
+                            onClick={() => {
+                              deleteLaneAndTasks(key, data);
+                            }}
+                          >
+                            <DeleteOutlineIcon color="inherit" />
+                          </div>
+                        )}
                       </div>
-                    )}
-                    <div className="absolute flex justify-between items-center inset-x-6 top-6 font-bold text-base text-gray-100">
-                      {role !== "viewer" && (
-                        <TextInput
-                          defaultValue={lane?.name}
-                          disabled={false}
-                          onComplete={(val: string) => {
-                            updateLane(key, val);
-                          }}
-                          fontWeight="font-bold"
-                        />
-                      )}
-                      {role === "viewer" && (
-                        <p className="font-bold text-gray-100 text-sm">
-                          {lane?.name}
-                        </p>
-                      )}
                       {role !== "viewer" && (
                         <div
-                          className="cursor-pointer"
-                          onClick={() => {
-                            deleteLaneAndTasks(key, data);
+                          className="absolute left-6 right-6 bottom-6 flex justify-between cursor-pointer hover:scale-95 transition"
+                          onClick={async () => {
+                            if (user?.uid && projectId) {
+                              setOpen(true);
+                              const id = uid(20);
+                              const newTask = await createTask(
+                                id,
+                                "",
+                                "started",
+                                faker.date.future(),
+                                "",
+                                user?.uid,
+                                new Date(),
+                                projectId,
+                                key
+                              );
+                              setSelectedTaskId(id);
+                            }
                           }}
                         >
-                          <DeleteOutlineIcon color="inherit" />
+                          <div className="flex gap-3 items-center">
+                            <PlusIcon className={"text-gray-100"} />
+                            <p className="text-sm font-bold text-gray-100">
+                              Add Another Task
+                            </p>
+                          </div>
                         </div>
                       )}
-                    </div>
-                    {role !== "viewer" && (
                       <div
-                        className="absolute left-6 right-6 bottom-6 flex justify-between cursor-pointer hover:scale-95 transition"
-                        onClick={async () => {
-                          if (user?.uid && projectId) {
-                            setOpen(true);
-                            const id = uid(20);
-                            const newTask = await createTask(
-                              id,
-                              "",
-                              "started",
-                              faker.date.future(),
-                              "",
-                              user?.uid,
-                              new Date(),
-                              projectId,
-                              key
-                            );
-                            setSelectedTaskId(id);
-                          }
-                        }}
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        className="flex flex-col h-full gap-4 overflow-scroll overflow-x-hidden scrollbar-auto"
                       >
-                        <div className="flex gap-3 items-center">
-                          <PlusIcon className={"text-gray-100"} />
-                          <p className="text-sm font-bold text-gray-100">
-                            Add Another Task
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.droppableProps}
-                      className="flex flex-col h-full gap-4 overflow-scroll overflow-x-hidden scrollbar-auto"
-                    >
-                      {lane?.items?.map((item: Task, index: number) => (
-                        <Draggable
-                          key={item.id}
-                          draggableId={item.id}
-                          index={index}
-                        >
-                          {(provided: any, snapshot: any) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              className=""
-                            >
-                              <TaskCard
-                                id={item.id}
-                                onClick={() => {
-                                  setOpen(true);
-                                  setSelectedTaskId(item.id);
-                                }}
-                              />
-                            </div>
-                          )}
-                        </Draggable>
-                      ))}
+                        {lane?.items?.map((item: Task, index: number) => (
+                          <Draggable
+                            key={item.id}
+                            draggableId={item.id}
+                            index={index}
+                          >
+                            {(provided: any, snapshot: any) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                className=""
+                              >
+                                <TaskCard
+                                  id={item.id}
+                                  onClick={() => {
+                                    setOpen(true);
+                                    setSelectedTaskId(item.id);
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
 
-                      {provided.placeholder}
+                        {provided.placeholder}
+                      </div>
                     </div>
-                  </div>
-                )}
-              </Droppable>
-            ))}
-          </DragDropContext>
-          {data && role !== "viewer" && (
-            <CreateLaneButton
-              onComplete={(name: string) => {
-                if (projectId) {
-                  const laneId = uid(20);
-                  addLane(laneId, projectId, name);
-                  const _data: any = _.cloneDeep(data);
-                  _data[laneId] = { loading: false, items: [], name: name };
-                  setData(_data);
-                }
+                  )}
+                </Droppable>
+              ))}
+            </DragDropContext>
+            {data && role !== "viewer" && (
+              <CreateLaneButton
+                onComplete={(name: string) => {
+                  if (projectId) {
+                    const laneId = uid(20);
+                    addLane(laneId, projectId, name);
+                    const _data: any = _.cloneDeep(data);
+                    _data[laneId] = { loading: false, items: [], name: name };
+                    setData(_data);
+                  }
+                }}
+              />
+            )}
+          </div>
+          {selectedTaskId && (
+            <Popup
+              open={open}
+              onClose={() => {
+                setOpen(false);
+                fetchData();
               }}
-            />
+            >
+              <TaskDetail id={selectedTaskId} />
+            </Popup>
           )}
         </div>
-        {selectedTaskId && (
-          <Popup
-            open={open}
-            onClose={() => {
-              setOpen(false);
-              fetchData();
-            }}
-          >
-            <TaskDetail id={selectedTaskId} />
-          </Popup>
-        )}
+        <Popup
+          open={filterOpen}
+          onClose={() => {
+            setFilterOpen(false);
+          }}
+        >
+          <TaskFilter projectId={null} />
+        </Popup>
       </>
     )
   );

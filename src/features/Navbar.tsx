@@ -56,6 +56,7 @@ export const Navbar = ({
               }
               label={role || "unknown"}
               variant="outlined"
+              size="small"
             />
           </div>
         )}

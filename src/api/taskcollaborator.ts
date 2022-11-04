@@ -87,7 +87,7 @@ export const queryTaskCollaboratorsByKeyword: (
     ids = users.map((item) => item.uid);
   } else {
     const fuse = new Fuse(users, { keys: ["name", "email"] });
-    const result = fuse.search(keyword);
+    const result = fuse.search(`'${keyword}`);
     ids = result.map((item) => item.item.uid);
   }
 

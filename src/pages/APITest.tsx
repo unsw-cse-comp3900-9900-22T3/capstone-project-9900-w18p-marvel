@@ -152,7 +152,7 @@ export const APITest = () => {
                 dueDate: faker.date.future(),
                 projectId: id,
                 laneId: laneId,
-                status: "start",
+                status: "started",
                 title: faker.name.jobTitle(),
               } as Task;
               await createTask(
@@ -234,7 +234,6 @@ export const APITest = () => {
         size={"hug"}
         label={"Get All Tasks"}
         onClick={() => {
-          queryAllTasksByProjectId("");
         }}
       />
       <Button

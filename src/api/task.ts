@@ -24,6 +24,11 @@ import {
 } from "firebase/storage";
 import { Status, Task } from "./type";
 import { uploadFile } from "./storage";
+import {
+  queryCollaboratorsInTask,
+  queryTaskCollaboratorsByKeyword,
+} from "./taskcollaborator";
+import { UserListAdmin } from "../components/UserListAdmin";
 
 export const createTask = async (
   id: string,
@@ -120,16 +125,21 @@ export const updateTask = async (
   await updateDoc(doc(db, "tasks", taskId), upsert);
 };
 
-export const queryAllTasksByProjectId: (
-  projectId: string
-) => Promise<Array<Task>> = async (projectId: string) => {
+export const queryAllTasksByProjectId = async (
+  projectId: string,
+  userIds: Array<string>,
+  title: string,
+  description: string,
+  startDate:Date|null,
+  endDate:Date|null
+) => {
   const app = getApp();
   const db = getFirestore(app);
   const q = query(collection(db, "tasks"), where("projectId", "==", projectId));
 
   const querySnapshot = await getDocs(q);
   const data: Array<Task> = [];
-  querySnapshot.forEach((doc) => {
+  querySnapshot.forEach(async (doc: any) => {
     data.push({
       id: doc.id,
       ...doc.data(),
@@ -137,7 +147,46 @@ export const queryAllTasksByProjectId: (
       createdAt: doc.data().createdAt.toDate(),
     } as Task);
   });
-  return data;
+  let collabFilteredIds = data.map((d) => d.id);
+  let titleFilteredIds = data.map((d) => d.id);
+  let descriptionFilteredIds = data.map((d) => d.id);
+  let dateFilteredIds = data.map((d) => d.id);
+  if (userIds.length > 0) {
+    collabFilteredIds = [];
+    await Promise.all(
+      data.map(async (d: any) => {
+        const collabs = (await queryCollaboratorsInTask(d.id)).map(
+          (c) => c.userId
+        );
+        const intersect = userIds.filter((u) => collabs.includes(u));
+        if (intersect.length > 0) {
+          collabFilteredIds.push(d.id);
+        }
+      })
+    );
+  }
+  if (title.length > 0) {
+    const fuse = new Fuse(data, { keys: ["title"] });
+    const result = fuse.search(title);
+    titleFilteredIds = result.map((item) => item.item.id);
+  }
+  if (description.length > 0) {
+    const fuse = new Fuse(data, { keys: ["description"] });
+    const result = fuse.search(description);
+    descriptionFilteredIds = result.map((item) => item.item.id);
+  }
+  if (startDate && endDate) {
+    dateFilteredIds = []
+    data.map((d:Task)=>{
+      if(d.dueDate.getTime() > startDate.getTime() && d.dueDate.getTime() < endDate.getTime()){
+        dateFilteredIds.push(d.id)
+      }
+    })
+  }
+  const concat = [collabFilteredIds, titleFilteredIds, descriptionFilteredIds,dateFilteredIds];
+  const intersection = concat.reduce((a, b) => a.filter((c) => b.includes(c)));
+  const result = intersection.map((i) => ({ ...data.find((d) => d.id === i) }));
+  return result as Array<Task>;
 };
 
 export const deleteTask = async (taskId: string) => {

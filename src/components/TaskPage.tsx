@@ -157,12 +157,25 @@ export function TaskPage({}: Props) {
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [tasks, setTasks] = useState<Array<string>>();
   const [open, setOpen] = useState(false);
+  const [criterion, setCriterion] = useState<{
+    userIds: Array<string>;
+    title: string;
+    description: string;
+    startDate: Date | null;
+    endDate: Date | null;
+  }>({
+    userIds: [],
+    title: "",
+    description: "",
+    startDate: null,
+    endDate: null,
+  });
   const navigate = useNavigate();
 
   let projectCollabObserver: any = null;
   let tasksObserver: any = null;
 
-  const fetchData = async () => {
+  const fetchData = async (criterion:any) => {
     if (projectId && user?.uid) {
       const collabInfo = await getProjectCollaboratorByUserId(
         projectId,
@@ -172,7 +185,14 @@ export function TaskPage({}: Props) {
       const projCollbs = await queryProjectCollaboratorsByProjectId(projectId);
       const collabIds = projCollbs.map((p: ProjectCollaborator) => p.userId);
       if (collabIds.includes(user.uid)) {
-        const tasks = await queryAllTasksByProjectId(projectId);
+        const tasks = await queryAllTasksByProjectId(
+          projectId,
+          criterion.userIds,
+          criterion.title,
+          criterion.description,
+          criterion.startDate,
+          criterion.endDate
+        );
         setTasks(tasks.map((t) => t.id));
         const lanes = await queryLaneByProjectId(projectId);
 
@@ -212,7 +232,7 @@ export function TaskPage({}: Props) {
         where("userId", "==", user.uid)
       );
       projectCollabObserver = onSnapshot(projectCollabQ, (querySnapshot) => {
-        fetchData();
+        fetchData(criterion);
       });
       if (tasksObserver) tasksObserver();
       const taskQ = query(
@@ -220,14 +240,14 @@ export function TaskPage({}: Props) {
         where("projectId", "==", projectId)
       );
       tasksObserver = onSnapshot(taskQ, (querySnapshot) => {
-        fetchData();
+        fetchData(criterion);
       });
       return () => {
         if (projectCollabObserver) projectCollabObserver();
         if (tasksObserver) tasksObserver();
       };
     }
-    fetchData();
+    fetchData(criterion);
   }, []);
 
   async function onDragEnd(result: any) {
@@ -477,7 +497,17 @@ export function TaskPage({}: Props) {
             setFilterOpen(false);
           }}
         >
-          <TaskFilter projectId={null} />
+          <TaskFilter
+            projectId={projectId || ""}
+            onCancel={() => {
+              setFilterOpen(false);
+            }}
+            onConfirm={(props) => {
+              fetchData(props)
+              setCriterion(props)
+              setFilterOpen(false);
+            }}
+          />
         </Popup>
       </>
     )

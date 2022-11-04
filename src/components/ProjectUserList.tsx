@@ -108,7 +108,7 @@ export const ProjectUserList = ({ projectId,onComplete }: Props) => {
       })
       sub.forEach(async (id) => {
         removeProjectCollaborator(id, projectId);
-        const tasks = await queryAllTasksByProjectId(projectId);
+        const tasks = await queryAllTasksByProjectId(projectId,[],"","",null,null);
         tasks.forEach((t: Task) => {
           removeTaskCollaborator(id, t.id);
         });

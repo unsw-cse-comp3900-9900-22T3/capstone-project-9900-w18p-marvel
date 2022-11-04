@@ -76,7 +76,7 @@ const TaskCard = ({ id, onClick }: TaskCardProps) => {
       setTimeLeft(_timeLeft);
       setTimeTheme(_timeTheme);
       const _progress =
-        tsk.status === "start"
+        tsk.status === "started"
           ? 0
           : tsk.status === "blocked"
           ? 20

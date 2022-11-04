@@ -17,6 +17,7 @@ import { queryAllUsers } from "../api/user";
 import { reorder, sample } from "../utils/array";
 import {
   deleteAllProject,
+  deleteProjectAndTasks,
   getProject,
   queryAllProjects,
   queryMyProjects,
@@ -175,7 +176,7 @@ export function TaskPage({}: Props) {
   let projectCollabObserver: any = null;
   let tasksObserver: any = null;
 
-  const fetchData = async (criterion:any) => {
+  const fetchData = async (criterion: any) => {
     if (projectId && user?.uid) {
       const collabInfo = await getProjectCollaboratorByUserId(
         projectId,
@@ -356,6 +357,19 @@ export function TaskPage({}: Props) {
             >
               <SearchIcon />
             </div>
+            <div
+              className="w-6 h-6 cursor-pointer"
+              onClick={async () => {
+                if (projectId) {
+                  if (projectCollabObserver) projectCollabObserver();
+                  if (tasksObserver) tasksObserver();
+                  await deleteProjectAndTasks(projectId);
+                  navigate("/projects")
+                }
+              }}
+            >
+              <DeleteOutlineIcon />
+            </div>
           </div>
           <div className="flex flex-row h-full w-full gap-4 overflow-x-scroll scrollbar-auto">
             <DragDropContext onDragEnd={onDragEnd}>
@@ -503,8 +517,8 @@ export function TaskPage({}: Props) {
               setFilterOpen(false);
             }}
             onConfirm={(props) => {
-              fetchData(props)
-              setCriterion(props)
+              fetchData(props);
+              setCriterion(props);
               setFilterOpen(false);
             }}
           />

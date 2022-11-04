@@ -11,8 +11,13 @@ import {
   where,
 } from "firebase/firestore";
 import { uid } from "uid";
-import { queryProjectCollaboratorsByProjectId } from "./projectCollaborator";
-import { Project, ProjectCollaborator, Resource, Task } from "./type";
+import { deleteAttachment, queryAttachment } from "./attachment";
+import { deleteComment, queryComment } from "./comment";
+import { deleteLane, queryLaneByProjectId } from "./lane";
+import { queryProjectCollaboratorsByProjectId, removeProjectCollaborator } from "./projectCollaborator";
+import { deleteTask, queryAllTasksByProjectId } from "./task";
+import { queryCollaboratorsInTask, queryTaskCollaboratorsByKeyword, removeTaskCollaborator } from "./taskcollaborator";
+import { Lane, Project, ProjectCollaborator, Resource, Task, TaskCollaborator } from "./type";
 
 export const createProject = async (
   id:string,
@@ -99,6 +104,32 @@ export const queryMyProjects: (
   }));
   return myProjects;
 };
+
+export const deleteProjectAndTasks = async (projectId:string)=>{
+  const app = getApp();
+  const db = getFirestore(app);
+  await deleteDoc(doc(db, "projects", projectId));
+  const collabs = await queryProjectCollaboratorsByProjectId(projectId)
+  collabs.forEach((c)=>{
+    removeProjectCollaborator(c.userId,c.projectId)
+  })
+  const tasks = await queryAllTasksByProjectId(projectId,[],"","",null,null)
+  tasks.forEach(async (t:Task)=>{
+    const tCollabs = await queryCollaboratorsInTask(t.id)
+    tCollabs.forEach((tc:TaskCollaborator)=>{
+      removeTaskCollaborator(tc.userId,tc.taskId)
+    })
+    const comments = await queryComment(t.id)
+    comments.forEach(cm=>deleteComment(cm.id))
+    const attachments = await queryAttachment(t.id)
+    attachments.forEach(at=>deleteAttachment(at.id,(err)=>{},(path)=>{}))
+    deleteTask(t.id)
+  })
+  const lanes = await queryLaneByProjectId(projectId)
+  lanes.forEach((l:Lane)=>{
+    deleteLane(l.id)
+  })
+}
 
 export const deleteProject = async (projectId: string) => {
   const app = getApp();

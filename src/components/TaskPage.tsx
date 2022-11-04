@@ -184,6 +184,7 @@ export function TaskPage({}: Props) {
 
   let projectCollabObserver: any = null;
   let tasksObserver: any = null;
+  let lanesObserver: any = null;
 
   const fetchData = async (criterion: any) => {
     if (projectId && user?.uid) {
@@ -253,9 +254,18 @@ export function TaskPage({}: Props) {
       tasksObserver = onSnapshot(taskQ, (querySnapshot) => {
         fetchData(criterion);
       });
-      return () => {
-        if (projectCollabObserver) projectCollabObserver();
-        if (tasksObserver) tasksObserver();
+      if (lanesObserver) lanesObserver();
+      const laneQ = query(
+        collection(db, "lanes"),
+        where("projectId", "==", projectId)
+        );
+        lanesObserver = onSnapshot(taskQ, (querySnapshot) => {
+          fetchData(criterion);
+        });
+        return () => {
+          if (projectCollabObserver) projectCollabObserver();
+          if (tasksObserver) tasksObserver();
+          if (lanesObserver) lanesObserver();
       };
     }
     fetchData(criterion);
@@ -310,9 +320,10 @@ export function TaskPage({}: Props) {
   const deleteLaneAndTasks = (laneId: string, data: any) => {
     const laneMap = _.cloneDeep(data);
     if (laneMap[laneId]) {
+      console.log(laneId)
       laneMap[laneId].items.forEach((item: Task) => deleteTask(item.id));
       deleteLane(laneId);
-      delete laneMap.laneId;
+      delete laneMap[laneId];
       setData(laneMap);
     }
   };
@@ -380,6 +391,7 @@ export function TaskPage({}: Props) {
                     if (projectId) {
                       if (projectCollabObserver) projectCollabObserver();
                       if (tasksObserver) tasksObserver();
+                      if (lanesObserver) lanesObserver();
                       await deleteProjectAndTasks(projectId);
                       navigate("/projects");
                     }

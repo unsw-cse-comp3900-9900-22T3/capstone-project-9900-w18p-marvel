@@ -484,7 +484,7 @@ export function TaskPage({}: Props) {
               open={open}
               onClose={() => {
                 setOpen(false);
-                fetchData();
+                fetchData(criterion);
               }}
             >
               <TaskDetail id={selectedTaskId} />

@@ -9,7 +9,7 @@ import { TotalCommentItem } from "./TotalCommentItem";
 import { Popup } from "./Popup";
 import React, { useEffect, useState } from "react";
 import { TextInput } from "./TextInput";
-import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { getUser } from "../api/user";
 import { useApp } from "../App";
 import { delay } from "../utils/promise";
@@ -121,7 +121,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
                 <Box
                   className={`hover:bg-slate-300 text-slate-500 rounded-[14px] h-6`}
                 >
-                  <DeleteForeverOutlinedIcon
+                  <DeleteOutlinedIcon
                     onClick={() => {
                       deleteTask(id);
                     }}

@@ -21,6 +21,7 @@ import {
   getProject,
   queryAllProjects,
   queryMyProjects,
+  updateProject,
 } from "../api/project";
 import { useApp } from "../App";
 import {
@@ -154,7 +155,15 @@ export function TaskPage({}: Props) {
   const [data, setData] = useState<any>();
   const [collaboratorLists, setCollaboratorLists] =
     useState<Map<string, Array<TaskCollaborator>>>();
-  const { user, role, setRole } = useApp();
+  const {
+    user,
+    role,
+    setRole,
+    snackbarOpen,
+    setSnackbarOpen,
+    snackbarText,
+    setSnackbarText,
+  } = useApp();
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [tasks, setTasks] = useState<Array<string>>();
   const [open, setOpen] = useState(false);
@@ -215,9 +224,10 @@ export function TaskPage({}: Props) {
         }
         setData(laneMap);
       } else {
-        alert(
+        setSnackbarText(
           "Sorry, you don't have permission to view this project, either you entered the wrong project id or you have been removed from the member system of this project."
         );
+        setSnackbarOpen(true);
         navigate("/projects");
       }
     }
@@ -331,7 +341,12 @@ export function TaskPage({}: Props) {
               {projectId && (
                 <div className="flex gap-4 items-center">
                   <ProjectIcon className={"text-gray-100"} />
-                  <p className="text-sm font-bold">{projectName}</p>
+                  {role === "owner" && <TextInput disabled={false} defaultValue={projectName} onComplete={(val:string)=>{
+                    updateProject(projectId || "",val)
+                  }}/>}
+                  {role !== "owner" && (
+                    <p className="text-sm font-bold">{projectName}</p>
+                  )}
                   <Chip
                     color={
                       role === "viewer"
@@ -349,26 +364,33 @@ export function TaskPage({}: Props) {
                 </div>
               )}
             </div>
-            <div
-              className="w-6 h-6 cursor-pointer"
-              onClick={() => {
-                setFilterOpen(true);
-              }}
-            >
-              <SearchIcon />
-            </div>
-            <div
-              className="w-6 h-6 cursor-pointer"
-              onClick={async () => {
-                if (projectId) {
-                  if (projectCollabObserver) projectCollabObserver();
-                  if (tasksObserver) tasksObserver();
-                  await deleteProjectAndTasks(projectId);
-                  navigate("/projects")
-                }
-              }}
-            >
-              <DeleteOutlineIcon />
+            <div className="flex gap-6">
+              <div
+                className="h-6 cursor-pointer"
+                onClick={() => {
+                  setFilterOpen(true);
+                }}
+              >
+                <Chip icon={<SearchIcon />} label="Search tasks" />
+              </div>
+              {role === "owner" && (
+                <div
+                  className="cursor-pointer w-fit h-fit"
+                  onClick={async () => {
+                    if (projectId) {
+                      if (projectCollabObserver) projectCollabObserver();
+                      if (tasksObserver) tasksObserver();
+                      await deleteProjectAndTasks(projectId);
+                      navigate("/projects");
+                    }
+                  }}
+                >
+                  <Chip
+                    icon={<DeleteOutlineIcon />}
+                    label="Delete this project"
+                  />
+                </div>
+              )}
             </div>
           </div>
           <div className="flex flex-row h-full w-full gap-4 overflow-x-scroll scrollbar-auto">

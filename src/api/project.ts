@@ -8,6 +8,7 @@ import {
   getFirestore,
   query,
   setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { uid } from "uid";
@@ -49,6 +50,19 @@ export const getProject: (id: string) => Promise<Project | null> = async (
   } else {
     return null;
   }
+};
+
+export const updateProject = async (
+  projectId: string,
+  title: string | null,
+) => {
+  const app = getApp();
+  const db = getFirestore(app);
+  let upsert: any = {};
+  if (title) {
+    upsert.title = title;
+  }
+  await updateDoc(doc(db, "projects", projectId), upsert);
 };
 
 export const queryAllProjects: () => Promise<Array<Project>> = async () => {

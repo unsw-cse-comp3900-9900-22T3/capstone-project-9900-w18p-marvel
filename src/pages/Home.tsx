@@ -4,23 +4,37 @@ import { CreateProject } from "../components/CreateProject";
 import { Popup } from "../components/Popup";
 import { Navbar } from "../features/Navbar";
 import { Sidebar } from "../features/Sidebar";
-import { UserList } from "../components/UserList";
 import { ProjectUserList } from "../components/ProjectUserList";
 import { Notification } from "../components/Notification";
 import { requestConnection } from "../api/connection";
+import { Button, IconButton, Snackbar } from "@mui/material";
+import React from "react";
+import CloseIcon from '@mui/icons-material/Close';
 
 interface HomeProps {
   children: JSX.Element;
 }
 
 export const Home = ({ children }: HomeProps) => {
-  const { user, projectId, invitations } = useApp();
+  const { user, projectId, invitations,snackbarOpen,setSnackbarOpen,snackbarText } = useApp();
   const [collapse, setCollpase] = useState<boolean>(false);
   const [projectPopupOpen, setProjectPopupOpen] = useState<boolean>(false);
   const [memberPopupOpen, setMemberPopupOpen] = useState<boolean>(false);
+  
   const [notificationPopupOpen, setNotificationPopupOpen] =
     useState<boolean>(false);
   useEffect(() => {}, [projectId]);
+  const action = (
+    <React.Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
   return (
     <>
       <div className="flex flex-row w-full h-full justify-between overflow-hidden">
@@ -77,6 +91,15 @@ export const Home = ({ children }: HomeProps) => {
           onComplete={()=>{setMemberPopupOpen(false)}}
         />
       </Popup>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={()=>{setSnackbarOpen(false)}}
+        message={snackbarText}
+        action={action}
+      />
     </>
   );
 };
+
+

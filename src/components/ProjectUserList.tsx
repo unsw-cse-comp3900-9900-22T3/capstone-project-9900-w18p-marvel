@@ -26,7 +26,7 @@ interface Props {
 }
 
 export const ProjectUserList = ({ projectId,onComplete }: Props) => {
-  const { user } = useApp();
+  const { user,setSnackbarText,setSnackbarOpen } = useApp();
   const [data, setData] = useState<any>([]);
   const [keyword, setKeyword] = useState<string>("");
   const [selected, setSelected] = useState<Array<{ id: string; role: Role }>>(
@@ -115,7 +115,8 @@ export const ProjectUserList = ({ projectId,onComplete }: Props) => {
       });
       onComplete?.()
     } else {
-      alert("A project must has one or more owners!");
+      setSnackbarText("A project must has one or more owners!")
+      setSnackbarOpen(true)
     }
   };
 

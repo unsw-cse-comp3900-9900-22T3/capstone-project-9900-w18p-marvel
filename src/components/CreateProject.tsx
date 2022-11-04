@@ -22,7 +22,10 @@ export const CreateProject = ({createdBy,onComplete}:Props)=>{
     const [uploading,setUploading] = useState<boolean>(false)
     const [progress,setProgress] = useState<number>(0)
 
-    const {user} = useApp()
+    const {user,snackbarOpen,
+      setSnackbarOpen,
+      snackbarText,
+      setSnackbarText,} = useApp()
 
     return (
       <div className="overflow-hidden bg-white-100 relative w-[265px] h-fit rounded-3xl flex flex-col">
@@ -106,7 +109,8 @@ export const CreateProject = ({createdBy,onComplete}:Props)=>{
                       await addProjectCollaborator(user.uid,id,"owner")
                       onComplete?.()
                   }else{
-                    alert("title can not be empty!")
+                    setSnackbarText("title can not be empty!")
+                    setSnackbarOpen(true)
                   }
                 }else{
                   alert("user not login!")

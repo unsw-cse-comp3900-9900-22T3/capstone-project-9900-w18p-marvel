@@ -19,14 +19,15 @@ import { ProjectCollaborator, Role, Task, User } from "../api/type";
 import { requestConnection } from "../api/connection";
 import { useApp } from "../App";
 import { queryAllTasksByProjectId } from "../api/task";
+import { queryInvitation } from "../api/invitation";
 
 interface Props {
   projectId: string | null;
-  onComplete?:()=>void
+  onComplete?: () => void;
 }
 
-export const ProjectUserList = ({ projectId,onComplete }: Props) => {
-  const { user,setSnackbarText,setSnackbarOpen } = useApp();
+export const ProjectUserList = ({ projectId, onComplete }: Props) => {
+  const { user, setSnackbarText, setSnackbarOpen } = useApp();
   const [data, setData] = useState<any>([]);
   const [keyword, setKeyword] = useState<string>("");
   const [selected, setSelected] = useState<Array<{ id: string; role: Role }>>(
@@ -94,29 +95,43 @@ export const ProjectUserList = ({ projectId,onComplete }: Props) => {
 
     const ownerRemain = selected.filter((x) => x.role === "owner");
     if (ownerRemain.length > 0) {
-      add.forEach((id) => {
-        requestConnection(
-          id,
-          userId,
-          new Date(),
+      add.forEach(async (id) => {
+        const oldInv = await queryInvitation(userId, id, projectId);
+        if (oldInv.length <= 0) {
+          requestConnection(
+            id,
+            userId,
+            new Date(),
+            projectId,
+            selected.find((s) => s.id === id)!.role
+          );
+        }
+      });
+      intersect.forEach((id) => {
+        updateProjectCollaborator(
           projectId,
+          id,
           selected.find((s) => s.id === id)!.role
         );
       });
-      intersect.forEach(id=>{
-        updateProjectCollaborator(projectId,id,selected.find((s) => s.id === id)!.role)
-      })
       sub.forEach(async (id) => {
         removeProjectCollaborator(id, projectId);
-        const tasks = await queryAllTasksByProjectId(projectId,[],"","",null,null);
+        const tasks = await queryAllTasksByProjectId(
+          projectId,
+          [],
+          "",
+          "",
+          null,
+          null
+        );
         tasks.forEach((t: Task) => {
           removeTaskCollaborator(id, t.id);
         });
       });
-      onComplete?.()
+      onComplete?.();
     } else {
-      setSnackbarText("A project must has one or more owners!")
-      setSnackbarOpen(true)
+      setSnackbarText("A project must has one or more owners!");
+      setSnackbarOpen(true);
     }
   };
 

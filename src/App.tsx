@@ -6,7 +6,7 @@ import { ProfileCard } from "./components/ProfileCard";
 import { TaskCard } from "./components/TaskCard";
 import { TaskDetail } from "./components/TaskDetail";
 import { UserListItem } from "./components/UserListItem";
-import { UserProfile } from "./components/UserProfile";
+import { ProfileSummary, UserProfile } from "./components/ProfileSummary";
 import { getStorage } from "firebase/storage";
 import { Home } from "./pages/Home";
 import { Interceptor } from "./pages/Interceptor";
@@ -225,6 +225,7 @@ export function App() {
                 <Interceptor>
                   <Home>
                     <ProfileCard />
+                    <ProfileSummary />
                   </Home>
                 </Interceptor>
               }

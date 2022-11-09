@@ -61,7 +61,7 @@ export const ProfileCard = ({}: Props) => {
             {user?.email}
           </div>
         </div>
-        <div className="flex flex-basis: | auto ml-8 bg-white w-[690px] h-[100px]">
+        <div className="flex flex-basis:| auto ml-8 bg-white w-[690px] h-[100px]">
           <div className="flex1 mt-2">
             <div className="text-sm font-bold text-gray-500 mt-4 mb-2 ml-6">
               EMAIL ADDRESS
@@ -76,7 +76,7 @@ export const ProfileCard = ({}: Props) => {
               />
             </div>
           </div>
-          <div className="flex1 mt-2 ml-3">
+          {/* <div className="flex1 mt-2 ml-3">
             <div className="text-sm font-bold text-gray-500 mt-4 mb-2 ml-6">
               PHONE NUMBER
             </div>
@@ -89,7 +89,7 @@ export const ProfileCard = ({}: Props) => {
                 defaultValue={user?.email}
               />
             </div>
-          </div>
+          </div> */}
           <div className="flex1 mt-2 ml-3">
             <div className="text-sm font-bold text-gray-500 mt-4 mb-2 ml-6">
               USER ID

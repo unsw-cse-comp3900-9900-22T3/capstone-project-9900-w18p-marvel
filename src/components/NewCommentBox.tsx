@@ -33,6 +33,7 @@ export const NewCommentBox = ({ TaskId, handleGetComment }: NewCommentBoxProps) 
         setLoading(true);
     }, []);
 
+
     const fetchData = async () => {
 
         console.log(user)

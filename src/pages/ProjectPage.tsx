@@ -1,3 +1,11 @@
+import { getApp } from "firebase/app";
+import {
+  collection,
+  getFirestore,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import { delay } from "lodash";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,44 +17,6 @@ import { ProjectCard } from "../components/ProjectCard";
 
 interface ProjectProps {}
 
-const data = [
-  {
-    image: "/Image.png",
-    name: "Learning Maxon Cinema 4D - A Beginners Training Course",
-    time: new Date(),
-  },
-  {
-    image: "/Image-1.png",
-    name: "Introduction to Community Management",
-    time: new Date(),
-  },
-  {
-    image: "/Image-2.png",
-    name: "Content Creation and Editing for Instagram Stories",
-    time: new Date(),
-  },
-  {
-    image: "/Image-3.png",
-    name: "Architectural Sketching with Watercolor and Ink",
-    time: new Date(),
-  },
-  {
-    image: "/Image-4.png",
-    name: "Digital Fantasy Portraits with Photoshop",
-    time: new Date(),
-  },
-  {
-    image: "/Image-5.png",
-    name: "Adobe Photoshop for Photo Editing and Retouching",
-    time: new Date(),
-  },
-  {
-    image: "/Image-6.png",
-    name: "Design of Graphic Elements to Boost Your Brand",
-    time: new Date(),
-  },
-];
-
 export const ProjectPage = ({}: ProjectProps) => {
   const { user, projectId, setProjectId } = useApp();
 
@@ -54,23 +24,42 @@ export const ProjectPage = ({}: ProjectProps) => {
 
   const navigate = useNavigate();
 
-  const refetch = async () => {
-    if (user?.uid) {
-      const data = await queryMyProjects(user.uid);
+  let observer: any = null;
+
+  const refetch = async (userId: string) => {
+    if (userId) {
+      const data = await queryMyProjects(userId);
       setData(data);
     }
   };
 
   useEffect(() => {
-    refetch();
+    if (user?.uid) {
+      const app = getApp();
+      const db = getFirestore(app);
+      if (observer) observer();
+      const q = query(
+        collection(db, "projectcollaborators"),
+        where("userId", "==", user.uid)
+      );
+      observer = onSnapshot(q, (querySnapshot) => {
+        if (user?.uid) refetch(user.uid);
+      });
+      return () => {
+        if (observer) observer();
+      };
+    }
+    if (user?.uid) refetch(user?.uid);
   }, [user]);
 
   return (
-    <div className="relative w-full h-full">
-      <div className="absolute left-12 top-12 text-sm text-gray-100 font-bold">
-        MY PROJECT
+    <div className="relative w-full h-full flex flex-col">
+      <div className="relative w-full h-32">
+        <div className="absolute left-12 top-12 text-sm text-gray-100 font-bold">
+          MY PROJECT
+        </div>
       </div>
-      <div className="w-full h-full pt-24 px-10 pb-12">
+      <div className="w-full h-full pt-0 px-10 pb-12 overflow-scroll">
         <div className="grid grid-cols-4 gap-4">
           {data.map((item: any) => (
             <ProjectCard
@@ -81,7 +70,7 @@ export const ProjectPage = ({}: ProjectProps) => {
               createdBy={item.createdBy}
               onClick={() => {
                 setProjectId?.(item.id);
-                navigate("/projects/"+item.id);
+                navigate("/projects/" + item.id);
               }}
             />
           ))}

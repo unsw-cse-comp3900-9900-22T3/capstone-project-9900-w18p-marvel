@@ -13,18 +13,21 @@ import {
   queryAllProjectCollaborators,
   queryProjectCollaboratorsByProjectId,
   removeProjectCollaborator,
+  updateProjectCollaborator,
 } from "../api/projectCollaborator";
-import { ProjectCollaborator, Role, Task } from "../api/type";
+import { ProjectCollaborator, Role, Task, User } from "../api/type";
 import { requestConnection } from "../api/connection";
 import { useApp } from "../App";
 import { queryAllTasksByProjectId } from "../api/task";
+import { queryInvitation } from "../api/invitation";
 
 interface Props {
   projectId: string | null;
+  onComplete?: () => void;
 }
 
-export const ProjectUserList = ({ projectId }: Props) => {
-  const { user } = useApp();
+export const ProjectUserList = ({ projectId, onComplete }: Props) => {
+  const { user, setSnackbarText, setSnackbarOpen } = useApp();
   const [data, setData] = useState<any>([]);
   const [keyword, setKeyword] = useState<string>("");
   const [selected, setSelected] = useState<Array<{ id: string; role: Role }>>(
@@ -61,9 +64,10 @@ export const ProjectUserList = ({ projectId }: Props) => {
       await Promise.all(
         all.map(async (c) => {
           const info = await getUser(c.id!);
-          users.push({ ...info, selected: c.selected,role:c.role });
+          users.push({ ...info, selected: c.selected, role: c.role });
         })
       );
+      setSelected(selected.map((u: any) => ({ id: u.id, role: u.role })));
       setData(users);
     }
   };
@@ -81,33 +85,53 @@ export const ProjectUserList = ({ projectId }: Props) => {
     const owners = activeCollabs.filter(
       (c: ProjectCollaborator) => c.role === "owner"
     );
-    const ownerIds = owners.map((o) => o.userId);
-    const activeUserIds = activeCollabs.map((c) => c.id);
+    const activeUserIds = activeCollabs.map((c) => c.userId);
     const selectedIds = selected.map((s) => s.id);
-    const unchanged = selectedIds.filter(x=>activeUserIds.includes(x))
+    const intersect = selectedIds.filter((x) => activeUserIds.includes(x));
     const add = selectedIds.filter((x) => !activeUserIds.includes(x));
     const sub = activeUserIds.filter((x) => !selectedIds.includes(x));
-    console.log(add, sub);
-    add.forEach((id) => {
-      requestConnection(
-        id,
-        userId,
-        new Date(),
-        projectId,
-        selected.find((s) => s.id === id)!.role
-      );
-    });
-    const ownerRemain = ownerIds.filter((x) => !sub.includes(x));
+    console.log("active:", activeUserIds, "selected:", selectedIds);
+    console.log("add:", add, "sub:", sub, "union:", intersect);
+
+    const ownerRemain = selected.filter((x) => x.role === "owner");
     if (ownerRemain.length > 0) {
+      add.forEach(async (id) => {
+        const oldInv = await queryInvitation(userId, id, projectId);
+        if (oldInv.length <= 0) {
+          requestConnection(
+            id,
+            userId,
+            new Date(),
+            projectId,
+            selected.find((s) => s.id === id)!.role
+          );
+        }
+      });
+      intersect.forEach((id) => {
+        updateProjectCollaborator(
+          projectId,
+          id,
+          selected.find((s) => s.id === id)!.role
+        );
+      });
       sub.forEach(async (id) => {
         removeProjectCollaborator(id, projectId);
-        const tasks = await queryAllTasksByProjectId(projectId);
+        const tasks = await queryAllTasksByProjectId(
+          projectId,
+          [],
+          "",
+          "",
+          null,
+          null
+        );
         tasks.forEach((t: Task) => {
           removeTaskCollaborator(id, t.id);
         });
       });
+      onComplete?.();
     } else {
-      alert("A project must has one or more owners!");
+      setSnackbarText("A project must has one or more owners!");
+      setSnackbarOpen(true);
     }
   };
 
@@ -145,6 +169,15 @@ export const ProjectUserList = ({ projectId }: Props) => {
             checkboxDisabled={false}
             showRole={true}
             role={item.role}
+            onRoleChange={(role: Role) => {
+              const _copy = _.cloneDeep(selected);
+              _copy.forEach((c) => {
+                if (c.id === item.uid) {
+                  c.role = role;
+                }
+              });
+              setSelected(_copy);
+            }}
           ></UserListItem>
         ))}
       </div>

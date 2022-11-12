@@ -9,7 +9,7 @@ import {
   queryTaskCollaboratorsByKeyword,
   queryCollaboratorsInTask,
   removeAllTaskCollaborator,
-  updateCollaborators,
+  updateTaskCollaborators,
 } from "../api/taskcollaborator";
 import { addComment, deleteAllComment } from "../api/comment";
 import {
@@ -152,7 +152,7 @@ export const APITest = () => {
                 dueDate: faker.date.future(),
                 projectId: id,
                 laneId: laneId,
-                status: "start",
+                status: "started",
                 title: faker.name.jobTitle(),
               } as Task;
               await createTask(
@@ -167,7 +167,7 @@ export const APITest = () => {
                 data.laneId
               );
 
-              await updateCollaborators(
+              await updateTaskCollaborators(
                 sampleMultiple(
                   projectCollabs.map((u) => u.id),
                   Math.floor(Math.random() * 5)
@@ -234,7 +234,6 @@ export const APITest = () => {
         size={"hug"}
         label={"Get All Tasks"}
         onClick={() => {
-          queryAllTasksByProjectId("");
         }}
       />
       <Button
@@ -388,9 +387,7 @@ export const APITest = () => {
           }
         }}
       />
-      <Popup open={false}>
-        <TaskFilter />
-      </Popup>
+      
     </div>
   );
 };

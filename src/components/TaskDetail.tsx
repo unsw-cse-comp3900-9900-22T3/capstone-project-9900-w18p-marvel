@@ -38,7 +38,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
   const [inputcomment, setInputComment] = useState<any>({});
   const [inputattachments, setAttachment] = useState<any>({});
   const [taskdetails, setTaskdetails] = useState<any>([]);
-  const { user, setUser, role, setRole } = useApp(); //useApp
+  const { user, setUser, role, setRole,snackbarOpen,setSnackbarOpen,snackbarText,setSnackbarText } = useApp(); //useApp
   const [loading, setLoading] = useState(false);
   const [invalid, setInvalid] = useState<boolean>(false);
   console.log(user?.uid);
@@ -57,9 +57,8 @@ export function TaskDetail({ id }: TaskDetailProps) {
       handleGetTaskdetails();
     } else {
       setInvalid(true);
-      alert(
-        "This task you are current viewing might be deleted for some reason just now, redirecting to task board..."
-      );
+      setSnackbarText("This task you are current viewing might be deleted for some reason just now, redirecting to task board...")
+      setSnackbarOpen(true)
     }
   };
 

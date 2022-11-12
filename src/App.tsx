@@ -6,7 +6,7 @@ import { ProfileCard } from "./components/ProfileCard";
 import { TaskCard } from "./components/TaskCard";
 import { TaskDetail } from "./components/TaskDetail";
 import { UserListItem } from "./components/UserListItem";
-import { UserProfile } from "./components/UserProfile";
+import { ProfileSummary, UserProfile } from "./components/ProfileSummary";
 import { getStorage } from "firebase/storage";
 import { Home } from "./pages/Home";
 import { Interceptor } from "./pages/Interceptor";
@@ -29,7 +29,7 @@ import {
 import { Invitation, Role, User } from "./api/type";
 import { getUser } from "./api/user";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { TaskDND } from "./components/TaskDND";
+import { TaskPage } from "./components/TaskPage";
 
 interface ContextProps {
   app: FirebaseApp | null;
@@ -42,6 +42,10 @@ interface ContextProps {
   setProjectId: Function | null;
   role:Role;
   setRole:Function
+  snackbarOpen:boolean
+  setSnackbarOpen:Function
+  snackbarText:string
+  setSnackbarText:Function
 }
 
 const AppContext = React.createContext<ContextProps>({
@@ -54,7 +58,11 @@ const AppContext = React.createContext<ContextProps>({
   projectId: "",
   setProjectId: null,
   role:"viewer",
-  setRole:()=>{}
+  setRole:()=>{},
+  snackbarOpen:false,
+  setSnackbarOpen:()=>{},
+  snackbarText:"",
+  setSnackbarText:()=>{}
 });
 
 export function useApp() {
@@ -68,6 +76,8 @@ export function App() {
   const [inited, setInited] = useState<boolean>(false);
   const [projectId, setProjectId] = useState<string|null>(null);
   const [role, setRole] = useState<Role>("viewer");
+  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
+  const [snackbarText, setSnackbarText] = useState<string>("");
   const firebaseConfig = {
     apiKey: "AIzaSyB71hVo6nDG7esBu5XAmwmwBGj0WC3eXys",
     authDomain: "theverypulseofthemachine.firebaseapp.com",
@@ -154,10 +164,15 @@ export function App() {
       setProjectId,
       role,
       setRole,
+      snackbarOpen,
+      setSnackbarOpen,
+      snackbarText,
+      setSnackbarText
     };
-  }, [authorized, user, invitations, projectId,role]);
+  }, [authorized, user, invitations, projectId,role,snackbarOpen,snackbarText]);
 
   return (
+    
     <AppContext.Provider value={providerValues}>
       <BrowserRouter>
         <Routes>
@@ -188,7 +203,7 @@ export function App() {
                 element={
                   <Interceptor>
                     <Home>
-                      <TaskDND />
+                      <TaskPage />
                     </Home>
                   </Interceptor>
                 }
@@ -199,7 +214,7 @@ export function App() {
               element={
                 <Interceptor>
                   <Home>
-                    <TaskDND />
+                    <TaskPage />
                   </Home>
                 </Interceptor>
               }
@@ -210,6 +225,7 @@ export function App() {
                 <Interceptor>
                   <Home>
                     <ProfileCard />
+                    <ProfileSummary />
                   </Home>
                 </Interceptor>
               }

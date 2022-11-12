@@ -22,7 +22,10 @@ export const CreateProject = ({createdBy,onComplete}:Props)=>{
     const [uploading,setUploading] = useState<boolean>(false)
     const [progress,setProgress] = useState<number>(0)
 
-    const {user} = useApp()
+    const {user,snackbarOpen,
+      setSnackbarOpen,
+      snackbarText,
+      setSnackbarText,} = useApp()
 
     return (
       <div className="overflow-hidden bg-white-100 relative w-[265px] h-fit rounded-3xl flex flex-col">
@@ -94,16 +97,23 @@ export const CreateProject = ({createdBy,onComplete}:Props)=>{
               label={"Create Project"}
               onClick={async () => {
                 if(user?.uid){
-                  const id = uid(20)
-                    await createProject(
-                      id,
-                      title,
-                      { downloadURL, storagePath },
-                      user?.uid,
-                      new Date()
-                    );
-                    await addProjectCollaborator(user.uid,id,"owner")
-                    onComplete?.()
+                  if(title?.length > 0){
+                    const id = uid(20)
+                      await createProject(
+                        id,
+                        title,
+                        { downloadURL, storagePath },
+                        user?.uid,
+                        new Date()
+                      );
+                      await addProjectCollaborator(user.uid,id,"owner")
+                      onComplete?.()
+                  }else{
+                    setSnackbarText("title can not be empty!")
+                    setSnackbarOpen(true)
+                  }
+                }else{
+                  alert("user not login!")
                 }
               }}
             />

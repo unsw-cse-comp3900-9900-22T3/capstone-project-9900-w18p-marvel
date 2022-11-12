@@ -25,41 +25,13 @@ export const Navbar = ({
   const { setUser, user, setAuthorized, invitations, role, projectId } =
     useApp();
   const auth = getAuth(getApp());
-  const [projectName, setProjectName] = useState<string>();
-
-  const fetchProject = async (id: string) => {
-    const proj = await getProject(id);
-    setProjectName(proj?.title);
-  };
-
-  useEffect(() => {
-    if (projectId) {
-      fetchProject(projectId);
-    }
-  }, [projectId]);
+ 
+  
 
   const navigate = useNavigate();
   return (
-    <div className="flex flex-row justify-between items-center gap-9 w-full h-24 p-6 shrink-0 grow-0">
-      <div>
-        {projectId && (
-          <div className="flex gap-4 items-center">
-            <ProjectIcon className={"text-gray-100"}/>
-            <p className="text-sm font-bold">{projectName}</p>
-            <Chip
-              color={
-                role === "viewer"
-                  ? "default"
-                  : role === "editor"
-                  ? "success"
-                  : "info"
-              }
-              label={role}
-              variant="outlined"
-            />
-          </div>
-        )}
-      </div>
+    <div className="flex flex-row justify-end items-center gap-9 w-full h-24 p-6 shrink-0 grow-0">
+      
       <div className="flex gap-9">
         <Button
           theme={"blue"}

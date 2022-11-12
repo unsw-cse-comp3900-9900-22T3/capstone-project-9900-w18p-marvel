@@ -19,7 +19,10 @@ import { User } from "../api/type";
 interface Props {}
 
 export const Landing = ({}: Props) => {
-  const { user, setUser, setAuthorized } = useApp();
+  const { user, setUser, setAuthorized,snackbarOpen,
+    setSnackbarOpen,
+    snackbarText,
+    setSnackbarText, } = useApp();
 
   const auth = getAuth(getApp());
   const navigate = useNavigate();
@@ -48,7 +51,8 @@ export const Landing = ({}: Props) => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        alert(`Sign in error: ${errorMessage}`);
+        setSnackbarText(`Sign in error: ${errorMessage}`)
+        setSnackbarOpen(true)
       });
   };
   const googlePopup = () => {
@@ -79,7 +83,8 @@ export const Landing = ({}: Props) => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        alert(`Sign in error: ${errorMessage}`);
+        setSnackbarText(`Sign in error: ${errorMessage}`)
+        setSnackbarOpen(true)
       });
   };
   const register = (email: string, password: string, username: string) => {
@@ -104,7 +109,8 @@ export const Landing = ({}: Props) => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        alert(`Creating account error: ${errorMessage}`);
+        setSnackbarText(`Creating account error: ${errorMessage}`)
+        setSnackbarOpen(true)
       });
   };
   return (

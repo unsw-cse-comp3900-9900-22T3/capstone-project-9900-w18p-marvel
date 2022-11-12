@@ -89,6 +89,7 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
             prefix={<ProjectIcon className={""} />}
             label={"projects"}
             onClick={() => {
+              setProjectId?.(null)
               navigate("/projects");
             }}
           ></MenuItem>
@@ -114,7 +115,7 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
             }}
           ></MenuItem>
         </div>
-        {projectId && role !== "viewer" && (
+        {projectId && role === "owner" && (
           <div className="px-4 w-full">
             <Button
               theme={"gray"}

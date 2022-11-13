@@ -47,6 +47,7 @@ const NewUploadedCard = ({ TaskId, handleGetattached }: NewUploadedCardProps) =>
           (error) => { }
         );
       }
+
       await addAttachment(
         TaskId,
         user?.uid,
@@ -62,7 +63,8 @@ const NewUploadedCard = ({ TaskId, handleGetattached }: NewUploadedCardProps) =>
         }
 
       );
-      await delay(4000);
+
+      await delay(6000);
     }
     await handleGetattached();
     setLoading(false);

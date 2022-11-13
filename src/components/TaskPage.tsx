@@ -309,7 +309,9 @@ export function TaskPage({}: Props) {
         null,
         null,
         null,
-        destinationId
+        destinationId,
+        null,
+        null,
       );
     }
     for (const [key, value] of Object.entries(newState)) {

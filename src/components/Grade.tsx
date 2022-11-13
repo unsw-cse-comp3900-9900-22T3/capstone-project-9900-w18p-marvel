@@ -3,12 +3,10 @@ import { Popup } from "./Popup"
 import { async } from "@firebase/util";
 import { useState } from "react";
 import React from "react";
+import { scoreTask } from "../api/task";
 
 export const Grade = ()=>{
     const [Value, setValue] = React.useState("")
-    const onConfirm = async (selected: Array<string>, taskID: string) => {
-
-    }
 
     return (
         <div className="flex flex-col w-72">
@@ -24,19 +22,19 @@ export const Grade = ()=>{
             <div className="flex flex-row w-72 justify-between h-12">
                 <div className="ml-7 leading-10 text-2xl text-blue-700">great</div>
                 <div className="mr-7 mt-4">
-                    <input type="radio" name="grade" value="great" />
+                    <input type="radio" name="grade" onChange={(event) => setValue(event.target.value)} value="great" />
                 </div>
             </div>
             <div className="flex flex-row w-72 justify-between h-12">
                 <div className="ml-7 leading-10 text-2xl text-blue-700">good</div>
                 <div className="mr-7 mt-4">
-                    <input type="radio" name="grade" value="good" />
+                    <input type="radio" name="grade" onChange={(event) => setValue(event.target.value)} value="good" />
                 </div>
             </div>
             <div className="flex flex-row w-72 justify-between h-12 mb-4">
                 <div className="ml-7 leading-10 text-2xl text-blue-700">ok</div>
                 <div className="mr-7 mt-4">
-                    <input type="radio" name="grade" value="ok" />
+                    <input type="radio" name="grade" onChange={(event) => setValue(event.target.value)} value="ok" />
                 </div>
             </div>
             <div className="w-72 bg-neutral-600 h-px"></div>
@@ -47,7 +45,7 @@ export const Grade = ()=>{
                         size={"fill"} 
                         label={"Confirm"}
                         onClick={async () => {
-                            onConfirm(selected, taskID);
+                            {scoreTask(id, Value)}
                         }}
                     ></Button></div>
             </div>

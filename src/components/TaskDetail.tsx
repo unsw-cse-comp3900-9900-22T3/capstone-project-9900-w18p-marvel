@@ -25,6 +25,8 @@ import { getApp } from "firebase/app";
 import TSelect from "./TSelect";
 import { TotalAttachedItem } from "./TotalAttachedItem";
 
+import { Grade } from "./Grade"
+
 interface TaskDetailProps {
   id: string;
 }
@@ -42,6 +44,9 @@ export function TaskDetail({ id }: TaskDetailProps) {
   const [loading, setLoading] = useState(false);
   const [invalid, setInvalid] = useState<boolean>(false);
   console.log(user?.uid);
+
+  const [gradeOpen, setgradeOpen] = useState<boolean>(false)
+
 
 
   const handleGetattached = async () => {
@@ -114,6 +119,19 @@ export function TaskDetail({ id }: TaskDetailProps) {
     <>
       {!invalid && (
         <div className={`flex items-center w-200 rounded-[32px] bg-white-100 `}>
+          <Popup
+          open={gradeOpen}
+          onClose={() => {
+            setgradeOpen(false);
+          }}
+        >
+          <Grade
+            id={id}
+            onComplete={() => {
+              setgradeOpen(false);
+            }}
+          /> 
+        </Popup>
           <div
             className={`flex justify-items-start flex-col px-12 overflow-auto max-h-[70rem] relative `}
           >

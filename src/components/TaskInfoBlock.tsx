@@ -16,6 +16,12 @@ import { updateTask } from "../api/task";
 import dayjs, { Dayjs } from 'dayjs';
 import TextField from '@mui/material/TextField';
 import CalenderPicker from "./CalenderPicker";
+
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
+
 interface TaskInfoBlockProps {
   TaskID: string;
   TaskName: string;
@@ -42,6 +48,7 @@ const TaskInfoBlock = ({
   const [inputTaskDesc, setinputTaskDesc] = useState("");
   const [inputDue, setinputDue] = useState("");
   const [InputTaskStatus, setInputTaskStatus] = useState("");
+  const [value, setValue] = React.useState<Dayjs | null>(null);
 
 
 
@@ -98,6 +105,16 @@ const TaskInfoBlock = ({
   useEffect(() => {
     fetchData();
   }, [TaskID]);
+
+
+
+  const check_time = async (time) => {
+    await delay(2000)
+    console.log('timetime')
+    console.log(time)
+
+  };
+
 
   const [open, setOpen] = useState(false);
   const [CalOpen, setCalopen] = useState(false);
@@ -200,7 +217,8 @@ const TaskInfoBlock = ({
                 null,
                 null,
                 null,
-              )
+              );
+
             }}
 
             defaultValue={Description}
@@ -228,7 +246,28 @@ const TaskInfoBlock = ({
               setCalopen(false);
             }}
           >
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Due Date"
+                value={DueDate}
+                onChange={(newValue) => {
+                  setValue(newValue);
 
+                  check_time(newValue);
+                  updateTask(
+                    TaskID,
+                    null,
+                    null,
+                    newValue?.toDate() ? newValue?.toDate() : null,
+                    null,
+                    null,
+                    null,
+                    null,
+                  )
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
           </Popup>
 
 

@@ -132,6 +132,7 @@ const TaskInfoBlock = ({
           <div onClick={() => {
             setTNameIsEditing(true);
           }} className={`flex items-center text-2xl`}><TextInput
+              placeholder="Click to Name the Task!..."
               disabled={TNameIsEditing ? false : true}
               MaxCharacter='300'
               boxheight='300px'
@@ -209,6 +210,7 @@ const TaskInfoBlock = ({
         >
 
           <TextInput_forDes
+            placeholder="Click to Put some Description!..."
             disabled={isDesEditing ? false : true}
             MaxCharacter='300'
             boxheight='300px'

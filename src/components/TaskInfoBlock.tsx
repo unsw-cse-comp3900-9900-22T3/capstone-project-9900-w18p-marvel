@@ -64,7 +64,7 @@ const TaskInfoBlock = ({
     //const activeUserIds = activeCollabs.map((c) => c.userId);
 
     //@console.log(activeUserIds)
-
+    await delay(2000);
     let users: any = [];
     await Promise.all(
       activeCollabs.map(async (c) => {
@@ -72,6 +72,7 @@ const TaskInfoBlock = ({
         users.push({ ...info });
       })
     );
+
     console.log("helpooooooo");
     console.log(users);
     setData(users);
@@ -104,9 +105,13 @@ const TaskInfoBlock = ({
   
   
   */
+
+  const [open, setOpen] = useState(false);
+  const [CalOpen, setCalopen] = useState(false);
+
   useEffect(() => {
     fetchData();
-  }, [TaskID]);
+  }, [TaskID, open]);
 
 
 
@@ -118,8 +123,7 @@ const TaskInfoBlock = ({
   };
 
 
-  const [open, setOpen] = useState(false);
-  const [CalOpen, setCalopen] = useState(false);
+
 
   return (
     <>
@@ -235,7 +239,7 @@ const TaskInfoBlock = ({
             }}
 
           >
-            <TaskUserList taskId={TaskID} projectId={ProjectId} />
+            <TaskUserList taskId={TaskID} projectId={ProjectId} onComplete={() => { setOpen(false) }} />
           </Popup>
 
 

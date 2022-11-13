@@ -17,13 +17,16 @@ import Fuse from "fuse.js";
 interface Props {
   taskId: string;
   projectId: string | null;
+  onComplete?: () => void;
 }
 
-export const TaskUserList = ({ taskId, projectId }: Props) => {
+export const TaskUserList = ({ taskId, projectId, onComplete }: Props) => {
   const [data, setData] = useState<any>([]);
   const [keyword, setKeyword] = useState<string>("");
-  const [selected, setSelected] = useState<Array<string>>([]);
-
+  //const [selected, setSelected] = useState<Array<string>>([]);
+  const [selected, setSelected] = useState<Array<{ id: string }>>(
+    []
+  )
 
   const fetch = async (keyword: string) => {
     if (taskId && projectId) {
@@ -47,6 +50,8 @@ export const TaskUserList = ({ taskId, projectId }: Props) => {
         })
       );
       setData(users);
+
+
     }
   };
 
@@ -55,9 +60,12 @@ export const TaskUserList = ({ taskId, projectId }: Props) => {
     const activeUserIds = activeCollabs.map((c) => c.userId);
     const add = selected.filter((x) => !activeUserIds.includes(x!));
     const sub = activeUserIds.filter((x) => !selected.includes(x!));
-
     add.forEach((id) => addCollaborator(id, taskId));
     sub.forEach((id) => removeTaskCollaborator(id, taskId));
+    await delay(2000)
+    onComplete?.();
+
+
   };
 
   useEffect(() => {
@@ -88,11 +96,12 @@ export const TaskUserList = ({ taskId, projectId }: Props) => {
                 _copy.push(item.uid);
                 setSelected(_copy);
               } else {
-                const index = selected.findIndex(item.uid);
+                const index = selected.findIndex((c) => c.id === item.uid);
                 const _copy = _.cloneDeep(selected);
                 _copy.splice(index, 1);
                 setSelected(_copy);
               }
+
             }}
             defaultSelected={item.selected}
             checkboxDisabled={false}
@@ -108,11 +117,14 @@ export const TaskUserList = ({ taskId, projectId }: Props) => {
           size="fill"
           rounded="2xl"
           label={"Confirm"}
+
           onClick={async () => {
-            onConfirm(selected, taskId);
+            if (taskId) {
+              onConfirm(selected, taskId);
+            }
           }}
         ></Button>
       </div>
-    </div>
+    </div >
   );
 };

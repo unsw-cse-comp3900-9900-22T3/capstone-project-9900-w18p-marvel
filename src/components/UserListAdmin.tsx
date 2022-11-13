@@ -29,7 +29,6 @@ export const UserListAdmin = ({src,name,description}:Props)=>{
                 </div>
                 <div className="ml-6">delete</div>
             </div>
-            
         </div>
     )
 }

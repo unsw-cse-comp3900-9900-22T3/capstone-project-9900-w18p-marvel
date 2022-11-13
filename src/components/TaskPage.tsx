@@ -72,6 +72,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { ProjectIcon } from "../icons/ProjectIcon";
 import SearchIcon from "@mui/icons-material/Search";
 import { TaskFilter } from "./TaskFilter";
+import { Grade } from "./Grade"
 
 /**
  * Moves an item from one list to another list.
@@ -344,6 +345,7 @@ export function TaskPage({}: Props) {
   }, [projectId]);
 
   const [filterOpen, setFilterOpen] = useState<boolean>(false);
+  const [gradeOpen, setgradeOpen] = useState<boolean>(false)
 
   return (
     data && (
@@ -541,6 +543,19 @@ export function TaskPage({}: Props) {
             </Popup>
           )}
         </div>
+        <Popup
+          open={gradeOpen}
+          onClose={() => {
+            setgradeOpen(false);
+          }}
+        >
+          <Grade
+            taskId={taskId}
+            onComplete={() => {
+              setgradeOpen(false);
+            }}
+          /> 
+        </Popup>
         <Popup
           open={filterOpen}
           onClose={() => {

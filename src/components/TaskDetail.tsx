@@ -123,7 +123,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
                   defaultValue={taskdetails?.status || "started" as Status}
                   onChange={(val) => {
                     updateTask(id, null, val as Status, null, null, null,
-                      null,null);
+                      null, null);
                   }}
                   values={["started", "blocked", "complete"]}
                 />
@@ -146,6 +146,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
                 TaskName={taskdetails.title}
                 DueDate={taskdetails?.dueDate?.toDateString()}
                 Description={taskdetails.description}
+                ProjectId={taskdetails.projectId}
                 UserRole={role}
               ></TaskInfoBlock>
             </div>

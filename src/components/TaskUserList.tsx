@@ -24,10 +24,11 @@ export const TaskUserList = ({ taskId, projectId }: Props) => {
   const [keyword, setKeyword] = useState<string>("");
   const [selected, setSelected] = useState<Array<string>>([]);
 
+
   const fetch = async (keyword: string) => {
     if (taskId && projectId) {
-      const allUsers = await queryProjectCollaboratorByKeyword(projectId,keyword);
-      
+      const allUsers = await queryProjectCollaboratorByKeyword(projectId, keyword);
+
       const collaborators = allUsers.map((c) => c.uid);
       const activeCollabs = await queryCollaboratorsInTask(taskId);
       const activeUserIds = activeCollabs.map((c) => c.userId);
@@ -54,6 +55,7 @@ export const TaskUserList = ({ taskId, projectId }: Props) => {
     const activeUserIds = activeCollabs.map((c) => c.userId);
     const add = selected.filter((x) => !activeUserIds.includes(x!));
     const sub = activeUserIds.filter((x) => !selected.includes(x!));
+
     add.forEach((id) => addCollaborator(id, taskId));
     sub.forEach((id) => removeTaskCollaborator(id, taskId));
   };
@@ -83,10 +85,10 @@ export const TaskUserList = ({ taskId, projectId }: Props) => {
             onValueChange={(val: boolean) => {
               if (val) {
                 const _copy = _.cloneDeep(selected);
-                _copy.push(item.id);
+                _copy.push(item.uid);
                 setSelected(_copy);
               } else {
-                const index = selected.findIndex(item.id);
+                const index = selected.findIndex(item.uid);
                 const _copy = _.cloneDeep(selected);
                 _copy.splice(index, 1);
                 setSelected(_copy);

@@ -28,6 +28,7 @@ interface TaskInfoBlockProps {
   DueDate: string;
   Description: string;
   UserRole?: string;
+  ProjectId: string;
 }
 
 const img_address =
@@ -38,7 +39,8 @@ const TaskInfoBlock = ({
   TaskID,
   DueDate,
   Description,
-  UserRole
+  UserRole,
+  ProjectId
 }: TaskInfoBlockProps) => {
   const { projectId } = useApp();
   const [data, setData] = useState<any>([]);
@@ -231,8 +233,9 @@ const TaskInfoBlock = ({
             onClose={() => {
               setOpen(false);
             }}
+
           >
-            <TaskUserList taskId={TaskID} projectId={projectId} />
+            <TaskUserList taskId={TaskID} projectId={ProjectId} />
           </Popup>
 
 
@@ -240,15 +243,19 @@ const TaskInfoBlock = ({
 
 
         {
+
           <Popup
             open={CalOpen}
             onClose={() => {
               setCalopen(false);
             }}
+
           >
+
             <LocalizationProvider dateAdapter={AdapterDayjs}>
+
               <DatePicker
-                label="Due Date"
+                label="Click to Change"
                 value={DueDate}
                 onChange={(newValue) => {
                   setValue(newValue);
@@ -265,10 +272,13 @@ const TaskInfoBlock = ({
                     null,
                   )
                 }}
-                renderInput={(params) => <TextField {...params} />}
+                renderInput={(params) => <TextField sx={{ backgroundColor: 'white', borderRadius: 5 }} {...params} />}
               />
+
             </LocalizationProvider>
+
           </Popup>
+
 
 
         }

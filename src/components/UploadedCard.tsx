@@ -70,17 +70,24 @@ const UploadedCard = ({ FileID, FilePic, FileName, FileAddedTime, FileDownloadLi
         <div className={`flex h-32 w-30 items-center pl-5`}>
           <img src={temp_img_address} className={`h-20 w-20`} />
         </div>
-        <div className={`flex flex-row w-full pr-5 h-auto justify-between`}>
-          <div className={`flex flex-col ml-5 w-auto h-auto gap-3`} >
-            <div className={`text-xl font-bold`}>{FileName}</div>
-            <div className={`text-xs text-gray-100`}>Added at {FileAddedTime}, Created by {uploaduser?.displayName ? uploaduser?.displayName : "Anonymous"}</div>
+        <a
+          target="_blank"
+          href={FileDownloadLink}
+          rel="noreferrer"
+          style={{ fontFamily: "Quicksand" }}
+        >
+          <div className={`flex flex-row w-full pr-5 h-auto justify-between`}>
+            <div className={`flex flex-col ml-5 w-auto h-auto gap-3`} >
+              <div className={`text-xl font-bold`}>{FileName}</div>
+              <div className={`text-xs text-gray-100`}>Added at {FileAddedTime}, Created by {uploaduser?.displayName ? uploaduser?.displayName : "Anonymous"}</div>
+            </div>
+
+            <Box className={`hover:bg-slate-300 text-slate-500 rounded-[14px] h-6`}>
+              <DeleteForeverOutlinedIcon onClick={handleDeleteadd} />
+            </Box>
+
           </div>
-
-          <Box className={`hover:bg-slate-300 text-slate-500 rounded-[14px] h-6`}>
-            <DeleteForeverOutlinedIcon onClick={handleDeleteadd} />
-          </Box>
-
-        </div>
+        </a>
 
       </div>
     </div >

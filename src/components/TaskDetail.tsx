@@ -122,7 +122,8 @@ export function TaskDetail({ id }: TaskDetailProps) {
                 <TSelect
                   defaultValue={taskdetails?.status || "started" as Status}
                   onChange={(val) => {
-                    updateTask(id, null, val as Status, null, null, null);
+                    updateTask(id, null, val as Status, null, null, null,
+                      null,null);
                   }}
                   values={["started", "blocked", "complete"]}
                 />

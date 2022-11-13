@@ -102,7 +102,9 @@ export const updateTask = async (
   status: Status | null,
   dueDate: Date | null,
   description: string | null,
-  laneId: string | null
+  laneId: string | null,
+  completeDate:Date|null,
+  assessment:string|null
 ) => {
   const app = getApp();
   const db = getFirestore(app);
@@ -121,6 +123,12 @@ export const updateTask = async (
   }
   if (laneId) {
     upsert.laneId = laneId;
+  }
+  if (completeDate) {
+    upsert.completeDate = completeDate;
+  }
+  if (assessment) {
+    upsert.assessment = assessment;
   }
   await updateDoc(doc(db, "tasks", taskId), upsert);
 };
@@ -204,3 +212,17 @@ export const deleteAllTask = async () => {
     console.log("deleting task:", t.id);
   });
 };
+
+export const scoreTask = async (id:string,assessment:string)=>{
+  const task = await getTask(id)
+  if(task){
+    await updateTask(id,null,null,null,null,null,null,assessment)
+  }
+}
+
+export const completeTask = async (id:string)=>{
+  const task = await getTask(id)
+  if(task){
+    await updateTask(id,null,null,null,null,null,new Date(),null)
+  }
+}

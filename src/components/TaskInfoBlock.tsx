@@ -121,7 +121,9 @@ const TaskInfoBlock = ({
                   null,
                   null,
                   null,
-                  null
+                  null,
+                  null,
+                  null,
                 )
               }}
 
@@ -195,7 +197,9 @@ const TaskInfoBlock = ({
                 null,
                 null,
                 val,
-                null
+                null,
+                null,
+                null,
               )
             }}
 

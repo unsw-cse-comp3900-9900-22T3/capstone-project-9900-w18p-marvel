@@ -38,15 +38,25 @@ export function TaskDetail({ id }: TaskDetailProps) {
   const [inputcomment, setInputComment] = useState<any>({});
   const [inputattachments, setAttachment] = useState<any>({});
   const [taskdetails, setTaskdetails] = useState<any>([]);
-  const { user, setUser, role, setRole,snackbarOpen,setSnackbarOpen,snackbarText,setSnackbarText } = useApp(); //useApp
+  const { user, setUser, role, setRole, snackbarOpen, setSnackbarOpen, snackbarText, setSnackbarText } = useApp(); //useApp
   const [loading, setLoading] = useState(false);
   const [invalid, setInvalid] = useState<boolean>(false);
   console.log(user?.uid);
 
+
+  const handleGetattached = async () => {
+    const allattachments = await queryAttachment(id);
+    setAttachment(allattachments);
+    await delay(2000);
+    setLoading(true);
+    console.log(allattachments);
+
+  };
+
   let observer: any = null;
   useEffect(() => {
-    setLoading(true);
-  }, []);
+    setLoading(false);
+  }, [loading]);
 
   const fetchData = async () => {
     const tsk = await getTask(id);
@@ -62,6 +72,9 @@ export function TaskDetail({ id }: TaskDetailProps) {
     }
   };
 
+
+
+
   useEffect(() => {
     fetchData();
     const app = getApp();
@@ -70,11 +83,14 @@ export function TaskDetail({ id }: TaskDetailProps) {
     const q = doc(db, "tasks", id);
     observer = onSnapshot(q, (querySnapshot: any) => {
       fetchData();
+
     });
     return () => {
       if (observer) observer();
+
     };
   }, []);
+
 
   const handleGetComment = async () => {
     console.log(id);
@@ -85,12 +101,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
     setLoading(false);
   };
 
-  const handleGetattached = async () => {
-    const allattachments = await queryAttachment(id);
-    setAttachment(allattachments);
-    setLoading(false);
-    console.log(allattachments);
-  };
+
 
   const handleGetTaskdetails = async () => {
     const detailtask = await getTask(id);
@@ -169,7 +180,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
             </div>
 
             <div className={`flex pl-2 pt-3`}>
-              <NewUploadedCard />
+              <NewUploadedCard TaskId={id} handleGetattached={handleGetattached} />
             </div>
 
             <div className={`justify-items-start pt-20 pb-5`}>
@@ -203,14 +214,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
             <div className={`flex pt-3`}>
               <NewCommentBox TaskId={id} handleGetComment={handleGetComment} />
             </div>
-            <div className={`flex pb-5 w-auto items-end`}>
-              <Button
-                theme={"blue"}
-                label={"Create"}
-                onClick={() => { }}
-                size={"hug"}
-              ></Button>
-            </div>
+
           </div>
         </div>
       )}

@@ -19,31 +19,28 @@ export const Profile = ({}: ProfileProps) => {
           <div className="relative w-full m-4 ml-12 text-sm text-gray-100 font-bold">
             My Profile
           </div>
-          <div className="relative bg-white-100 m-2 ml-8 rounded-lg ">
+          <div className="relative bg-white-100 m-2 ml-8 mr-8 rounded-lg ">
           <ProfileCard />
           </div>
 
-          <div className="relative w-full h-full">
+          
             <div className="m-4 ml-12 text-sm text-gray-100 font-bold">
               My Connected Task Master
             </div>
-            <div className={`bg-white-100 w-full h-80 m-2 ml-8 rounded-lg overflow-scroll`}>
+            <div className={`bg-white-100 w-auto h-96 m-2 ml-8 mr-8 rounded-lg overflow-scroll`}>
                 <div className="m-8">
                     <FriendList></FriendList>
                 </div>
             </div>
-          </div>
-          <div className="relative w-full h-full">
-            <div className="m-4 ml-12 text-sm text-gray-100 font-bold">
+          
+            <div className="ml-12 text-sm text-gray-100 font-bold">
               My Assigned Task List
             </div>
-            <div className={`bg-white-100 w-full h-80 m-2 ml-8 rounded-lg overflow-scroll`}>
+            <div className={`bg-white-100 w-auto h-96 m-2 ml-8 mr-8 rounded-lg overflow-scroll`}>
                 <div className="m-8">
                     <FriendList></FriendList>
                 </div>
-
             </div>
-          </div>
         </div>
       );
     };

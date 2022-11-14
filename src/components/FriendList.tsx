@@ -64,7 +64,7 @@ const FriendList = ({}: FriendListProps) => {
     return (
         <div className="mr-8 flex flex-col">
             {data.map((item: any) => (
-                <FriendBox UserId="" FriendName={item.title} Busy={item.id} src={item.photoURL.downloadURL}></FriendBox>
+                <FriendBox UserId={item.id} FriendName={item.title} Busy={item.id} src={item.photoURL.downloadURL}></FriendBox>
           ))}
         </div>
     );

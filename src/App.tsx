@@ -229,14 +229,7 @@ export function App() {
                 <Interceptor>
                   <Home>
                     <Profile>
-                    <ProfileCard />
-                    <ProfileSummary />
-                    <FriendBox></FriendBox>
-                    <FriendBox></FriendBox>
-
                     </Profile>
-                    
-                    
                   </Home>
                 </Interceptor>
               }

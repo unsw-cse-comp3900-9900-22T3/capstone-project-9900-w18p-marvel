@@ -225,8 +225,7 @@ const TaskInfoBlock = ({
                 null,
                 null,
                 null,
-              );
-
+              ); 
             }}
 
             defaultValue={Description}

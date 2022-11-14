@@ -32,9 +32,6 @@ import { getUser } from "./api/user";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { TaskPage } from "./components/TaskPage";
 
-import { Grade } from "./components/Grade";
-import { FriendBox } from "./components/FriendBox";
-
 interface ContextProps {
   app: FirebaseApp | null;
   authorized: boolean;
@@ -246,7 +243,6 @@ export function App() {
             ></Route>
             <Route path="login" element={<Landing />}></Route>
           </Route>
-          <Route path='grade' element={<Grade />}></Route>
         </Routes>
       </BrowserRouter>
     </AppContext.Provider>

@@ -39,14 +39,6 @@ const NewUploadedCard = ({ TaskId, handleGetattached }: NewUploadedCardProps) =>
   const handleaddedatt = async (file) => {
     if (file && user?.uid) {
       setUploading(true);
-      if (storagePath !== "") {
-        deleteFile(
-          storagePath,
-          (path) => {
-          },
-          (error) => { }
-        );
-      }
 
       await addAttachment(
         TaskId,

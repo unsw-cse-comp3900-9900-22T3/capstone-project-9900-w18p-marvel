@@ -16,7 +16,7 @@ import { Status, User } from "../api/type";
 import { queryComment } from "../api/comment";
 
 import { queryAttachment } from "../api/attachment";
-import { deleteTask, getTask, updateTask } from "../api/task";
+import { deleteTask, getTask, updateTask, completeTask } from "../api/task";
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { getApp } from "firebase/app";
 import TSelect from "./TSelect";
@@ -119,10 +119,19 @@ export function TaskDetail({ id }: TaskDetailProps) {
                 <TSelect
                   defaultValue={taskdetails?.status || "started" as Status}
                   onChange={(val) => {
-                    updateTask(id, null, val as Status, null, null, null,
-                      null, null);
+                    if (val === "started") {
+                      updateTask(id, null, val as Status, null, null, null,
+                        null, null);
+                    }
+                    else {
+                      console.log('jjjj')
+                      updateTask(id, null, val as Status, null, null, null,
+                        null, null);
+                      completeTask(id);
+                    }
+
                   }}
-                  values={["started", "blocked", "complete"]}
+                  values={["started", "complete"]}
                 />
               </div>
               <div className={`flex h-auto pt-5`}>

@@ -3,12 +3,9 @@ import { UploadedCard } from "../components/UploadedCard";
 import { NewUploadedCard } from "../components/NewUploadedCard";
 import { CommentBox } from "../components/CommentBox";
 import { NewCommentBox } from "../components/NewCommentBox";
-import { Button } from "./Button";
 import Box from "@mui/material/Box";
 import { TotalCommentItem } from "./TotalCommentItem";
-import { Popup } from "./Popup";
 import React, { useEffect, useState } from "react";
-import { TextInput } from "./TextInput";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { getUser } from "../api/user";
 import { useApp } from "../App";
@@ -234,15 +231,3 @@ function TaskID(
 ) {
   throw new Error("Function not implemented.");
 }
-//export { TaskDetail };
-
-/*
-<div className={`flex pb-5 w-auto items-end`}>
-<Button
-  theme={"blue"}
-  label={"Create"}
-  onClick={() => { }}
-  size={"hug"}
-></Button>
-</div>
-*/

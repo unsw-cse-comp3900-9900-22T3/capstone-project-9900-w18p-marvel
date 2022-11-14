@@ -135,8 +135,8 @@ export const queryAllUsers: (keyword: string) => Promise<Array<User>> = async (
   if (keyword === "") {
     return data;
   } else {
-    const fuse = new Fuse(data, { keys: ["email"] });
-    const result = fuse.search(keyword);
+    const fuse = new Fuse(data, { keys: ["email","displayName"] });
+    const result = fuse.search(`'${keyword}`);
     return result.map((item) => item.item as User);
   }
 };
@@ -151,8 +151,8 @@ export const queryProjectCollaboratorByKeyword = async (projectId:string,keyword
   if(keyword===""){
     return users
   }else{
-    const fuse = new Fuse(users, { keys: ["email"] });
-    const result = fuse.search(keyword);
+    const fuse = new Fuse(users, { keys: ["email","displayName"] });
+    const result = fuse.search(`'${keyword}`);
     return result.map((item) => item.item as User);
   }
 }

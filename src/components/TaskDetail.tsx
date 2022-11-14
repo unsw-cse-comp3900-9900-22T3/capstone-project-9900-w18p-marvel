@@ -9,7 +9,7 @@ import { TotalCommentItem } from "./TotalCommentItem";
 import { Popup } from "./Popup";
 import React, { useEffect, useState } from "react";
 import { TextInput } from "./TextInput";
-import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { getUser } from "../api/user";
 import { useApp } from "../App";
 import { delay } from "../utils/promise";
@@ -25,6 +25,8 @@ import { getApp } from "firebase/app";
 import TSelect from "./TSelect";
 import { TotalAttachedItem } from "./TotalAttachedItem";
 
+import { Grade } from "./Grade"
+
 interface TaskDetailProps {
   id: string;
 }
@@ -38,15 +40,28 @@ export function TaskDetail({ id }: TaskDetailProps) {
   const [inputcomment, setInputComment] = useState<any>({});
   const [inputattachments, setAttachment] = useState<any>({});
   const [taskdetails, setTaskdetails] = useState<any>([]);
-  const { user, setUser, role, setRole,snackbarOpen,setSnackbarOpen,snackbarText,setSnackbarText } = useApp(); //useApp
+  const { user, setUser, role, setRole, snackbarOpen, setSnackbarOpen, snackbarText, setSnackbarText } = useApp(); //useApp
   const [loading, setLoading] = useState(false);
   const [invalid, setInvalid] = useState<boolean>(false);
   console.log(user?.uid);
 
+  const [gradeOpen, setgradeOpen] = useState<boolean>(false)
+
+
+
+  const handleGetattached = async () => {
+    const allattachments = await queryAttachment(id);
+    setAttachment(allattachments);
+    await delay(2000);
+    setLoading(true);
+    console.log(allattachments);
+
+  };
+
   let observer: any = null;
   useEffect(() => {
-    setLoading(true);
-  }, []);
+    setLoading(false);
+  }, [loading]);
 
   const fetchData = async () => {
     const tsk = await getTask(id);
@@ -62,6 +77,9 @@ export function TaskDetail({ id }: TaskDetailProps) {
     }
   };
 
+
+
+
   useEffect(() => {
     fetchData();
     const app = getApp();
@@ -70,11 +88,14 @@ export function TaskDetail({ id }: TaskDetailProps) {
     const q = doc(db, "tasks", id);
     observer = onSnapshot(q, (querySnapshot: any) => {
       fetchData();
+
     });
     return () => {
       if (observer) observer();
+
     };
   }, []);
+
 
   const handleGetComment = async () => {
     console.log(id);
@@ -85,12 +106,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
     setLoading(false);
   };
 
-  const handleGetattached = async () => {
-    const allattachments = await queryAttachment(id);
-    setAttachment(allattachments);
-    setLoading(false);
-    console.log(allattachments);
-  };
+
 
   const handleGetTaskdetails = async () => {
     const detailtask = await getTask(id);
@@ -103,6 +119,19 @@ export function TaskDetail({ id }: TaskDetailProps) {
     <>
       {!invalid && (
         <div className={`flex items-center w-200 rounded-[32px] bg-white-100 `}>
+          <Popup
+          open={gradeOpen}
+          onClose={() => {
+            setgradeOpen(false);
+          }}
+        >
+          <Grade
+            id={id}
+            onComplete={() => {
+              setgradeOpen(false);
+            }}
+          /> 
+        </Popup>
           <div
             className={`flex justify-items-start flex-col px-12 overflow-auto max-h-[70rem] relative `}
           >
@@ -111,7 +140,8 @@ export function TaskDetail({ id }: TaskDetailProps) {
                 <TSelect
                   defaultValue={taskdetails?.status || "started" as Status}
                   onChange={(val) => {
-                    updateTask(id, null, val as Status, null, null, null);
+                    updateTask(id, null, val as Status, null, null, null,
+                      null, null);
                   }}
                   values={["started", "blocked", "complete"]}
                 />
@@ -120,7 +150,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
                 <Box
                   className={`hover:bg-slate-300 text-slate-500 rounded-[14px] h-6`}
                 >
-                  <DeleteForeverOutlinedIcon
+                  <DeleteOutlinedIcon
                     onClick={() => {
                       deleteTask(id);
                     }}
@@ -134,6 +164,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
                 TaskName={taskdetails.title}
                 DueDate={taskdetails?.dueDate?.toDateString()}
                 Description={taskdetails.description}
+                ProjectId={taskdetails.projectId}
                 UserRole={role}
               ></TaskInfoBlock>
             </div>
@@ -169,7 +200,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
             </div>
 
             <div className={`flex pl-2 pt-3`}>
-              <NewUploadedCard />
+              <NewUploadedCard TaskId={id} handleGetattached={handleGetattached} />
             </div>
 
             <div className={`justify-items-start pt-20 pb-5`}>
@@ -203,14 +234,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
             <div className={`flex pt-3`}>
               <NewCommentBox TaskId={id} handleGetComment={handleGetComment} />
             </div>
-            <div className={`flex pb-5 w-auto items-end`}>
-              <Button
-                theme={"blue"}
-                label={"Create"}
-                onClick={() => { }}
-                size={"hug"}
-              ></Button>
-            </div>
+
           </div>
         </div>
       )}

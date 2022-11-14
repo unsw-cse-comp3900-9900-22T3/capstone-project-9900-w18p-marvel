@@ -26,6 +26,8 @@ export interface Task {
     laneId:string
     status:Status
     title:string
+    completeDate:Date
+    assessment:string
 }
 
 export interface Project {

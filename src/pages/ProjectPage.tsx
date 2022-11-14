@@ -32,7 +32,7 @@ export const ProjectPage = ({}: ProjectProps) => {
       setData(data);
     }
   };
-
+  
   useEffect(() => {
     if (user?.uid) {
       const app = getApp();

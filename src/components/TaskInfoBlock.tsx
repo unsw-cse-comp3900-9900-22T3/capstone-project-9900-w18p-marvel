@@ -16,12 +16,19 @@ import { updateTask } from "../api/task";
 import dayjs, { Dayjs } from 'dayjs';
 import TextField from '@mui/material/TextField';
 import CalenderPicker from "./CalenderPicker";
+
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
+
 interface TaskInfoBlockProps {
   TaskID: string;
   TaskName: string;
   DueDate: string;
   Description: string;
   UserRole?: string;
+  ProjectId: string;
 }
 
 const img_address =
@@ -32,7 +39,8 @@ const TaskInfoBlock = ({
   TaskID,
   DueDate,
   Description,
-  UserRole
+  UserRole,
+  ProjectId
 }: TaskInfoBlockProps) => {
   const { projectId } = useApp();
   const [data, setData] = useState<any>([]);
@@ -42,6 +50,7 @@ const TaskInfoBlock = ({
   const [inputTaskDesc, setinputTaskDesc] = useState("");
   const [inputDue, setinputDue] = useState("");
   const [InputTaskStatus, setInputTaskStatus] = useState("");
+  const [value, setValue] = React.useState<Dayjs | null>(null);
 
 
 
@@ -55,7 +64,7 @@ const TaskInfoBlock = ({
     //const activeUserIds = activeCollabs.map((c) => c.userId);
 
     //@console.log(activeUserIds)
-
+    await delay(2000);
     let users: any = [];
     await Promise.all(
       activeCollabs.map(async (c) => {
@@ -63,6 +72,7 @@ const TaskInfoBlock = ({
         users.push({ ...info });
       })
     );
+
     console.log("helpooooooo");
     console.log(users);
     setData(users);
@@ -95,12 +105,25 @@ const TaskInfoBlock = ({
   
   
   */
-  useEffect(() => {
-    fetchData();
-  }, [TaskID]);
 
   const [open, setOpen] = useState(false);
   const [CalOpen, setCalopen] = useState(false);
+
+  useEffect(() => {
+    fetchData();
+  }, [TaskID, open]);
+
+
+
+  const check_time = async (time) => {
+    await delay(2000)
+    console.log('timetime')
+    console.log(time)
+
+  };
+
+
+
 
   return (
     <>
@@ -109,6 +132,7 @@ const TaskInfoBlock = ({
           <div onClick={() => {
             setTNameIsEditing(true);
           }} className={`flex items-center text-2xl`}><TextInput
+              placeholder="Click to Name the Task!..."
               disabled={TNameIsEditing ? false : true}
               MaxCharacter='300'
               boxheight='300px'
@@ -121,7 +145,9 @@ const TaskInfoBlock = ({
                   null,
                   null,
                   null,
-                  null
+                  null,
+                  null,
+                  null,
                 )
               }}
 
@@ -184,6 +210,7 @@ const TaskInfoBlock = ({
         >
 
           <TextInput_forDes
+            placeholder="Click to Put some Description!..."
             disabled={isDesEditing ? false : true}
             MaxCharacter='300'
             boxheight='300px'
@@ -195,8 +222,11 @@ const TaskInfoBlock = ({
                 null,
                 null,
                 val,
-                null
-              )
+                null,
+                null,
+                null,
+              );
+
             }}
 
             defaultValue={Description}
@@ -209,8 +239,9 @@ const TaskInfoBlock = ({
             onClose={() => {
               setOpen(false);
             }}
+
           >
-            <TaskUserList taskId={TaskID} projectId={projectId} />
+            <TaskUserList taskId={TaskID} projectId={ProjectId} onComplete={() => { setOpen(false) }} />
           </Popup>
 
 
@@ -218,14 +249,42 @@ const TaskInfoBlock = ({
 
 
         {
+
           <Popup
             open={CalOpen}
             onClose={() => {
               setCalopen(false);
             }}
+
           >
 
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+
+              <DatePicker
+                label="Click to Change"
+                value={DueDate}
+                onChange={(newValue) => {
+                  setValue(newValue);
+
+                  check_time(newValue);
+                  updateTask(
+                    TaskID,
+                    null,
+                    null,
+                    newValue?.toDate() ? newValue?.toDate() : null,
+                    null,
+                    null,
+                    null,
+                    null,
+                  )
+                }}
+                renderInput={(params) => <TextField sx={{ backgroundColor: 'white', borderRadius: 5 }} {...params} />}
+              />
+
+            </LocalizationProvider>
+
           </Popup>
+
 
 
         }

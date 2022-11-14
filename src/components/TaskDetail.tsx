@@ -3,12 +3,9 @@ import { UploadedCard } from "../components/UploadedCard";
 import { NewUploadedCard } from "../components/NewUploadedCard";
 import { CommentBox } from "../components/CommentBox";
 import { NewCommentBox } from "../components/NewCommentBox";
-import { Button } from "./Button";
 import Box from "@mui/material/Box";
 import { TotalCommentItem } from "./TotalCommentItem";
-import { Popup } from "./Popup";
 import React, { useEffect, useState } from "react";
-import { TextInput } from "./TextInput";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { getUser } from "../api/user";
 import { useApp } from "../App";
@@ -19,7 +16,7 @@ import { Status, User } from "../api/type";
 import { queryComment } from "../api/comment";
 
 import { queryAttachment } from "../api/attachment";
-import { deleteTask, getTask, updateTask } from "../api/task";
+import { deleteTask, getTask, updateTask, completeTask } from "../api/task";
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { getApp } from "firebase/app";
 import TSelect from "./TSelect";
@@ -140,10 +137,19 @@ export function TaskDetail({ id }: TaskDetailProps) {
                 <TSelect
                   defaultValue={taskdetails?.status || "started" as Status}
                   onChange={(val) => {
-                    updateTask(id, null, val as Status, null, null, null,
-                      null, null);
+                    if (val === "started") {
+                      updateTask(id, null, val as Status, null, null, null,
+                        null, null);
+                    }
+                    else {
+                      console.log('jjjj')
+                      updateTask(id, null, val as Status, null, null, null,
+                        null, null);
+                      completeTask(id);
+                    }
+
                   }}
-                  values={["started", "blocked", "complete"]}
+                  values={["started", "complete"]}
                 />
               </div>
               <div className={`flex h-auto pt-5`}>
@@ -252,15 +258,3 @@ function TaskID(
 ) {
   throw new Error("Function not implemented.");
 }
-//export { TaskDetail };
-
-/*
-<div className={`flex pb-5 w-auto items-end`}>
-<Button
-  theme={"blue"}
-  label={"Create"}
-  onClick={() => { }}
-  size={"hug"}
-></Button>
-</div>
-*/

@@ -35,7 +35,7 @@ const NewUploadedCard = ({ TaskId, handleGetattached }: NewUploadedCardProps) =>
   }, []);
 
 
-
+  //Handle the attachment added
   const handleaddedatt = async (file) => {
     if (file && user?.uid) {
       setUploading(true);

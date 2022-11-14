@@ -7,18 +7,31 @@ import { Avatar } from "./Avatar";
 import { Button } from "./Button";
 import { TextInput } from "./TextInput";
 
-interface Props {
-}
 
-export const ProfileSummary = ({}: Props) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const { user,setUser } = useApp(); //useApp 数据中心老板写的函数，
-  const [inputEmail, setInputEmail] = useState("");
-  const [uploading,setUploading] = useState<boolean>(false)
+
+interface Props {
+  onClickManageMember?: () => void;
+}
+export const ProfileSummary = ({onClickManageMember}: Props) => {
+  
+
+  // const [isEditing, setIsEditing] = useState(false);
+  // const { user,setUser } = useApp(); //useApp 数据中心老板写的函数，
+  // const [inputEmail, setInputEmail] = useState("");
+  // const [uploading,setUploading] = useState<boolean>(false)
   
 
   return (
     <div className="flex flex-col">
+      <div className="virtual-scroll-viewport">
+        <div className="virtual-scroll-spacer"></div>
+        <div className="virtual-scroll-list"></div>
+      </div>
+
+
+      <div>
+        Connected Task Master list
+      </div>
       <div className="flex flex-row bg-white-100 w-[690px] h-[100px] m-4">
         <div>
           project name
@@ -35,6 +48,15 @@ export const ProfileSummary = ({}: Props) => {
           project task
         </div>
       </div>
+      {/* <Button
+              theme={"gray"}
+              size={"fill"}
+              label={"Manage Members"}
+              // prefix={<PlusIcon className="" />}
+              onClick={() => {
+                onClickManageMember?.();
+              }}
+            /> */}
     </div>
       // <div className="divide-y divide-gray-300">
       //   <div className="flex flex-basis auto ml-8 bg-white w-[690px] h-[100px]">

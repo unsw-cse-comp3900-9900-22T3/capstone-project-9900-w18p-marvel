@@ -68,6 +68,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
       handleGetComment();
       handleGetattached();
       handleGetTaskdetails();
+
     } else {
       setInvalid(true);
       setSnackbarText("This task you are current viewing might be deleted for some reason just now, redirecting to task board...")
@@ -137,9 +138,9 @@ export function TaskDetail({ id }: TaskDetailProps) {
             <div className={`flex flex-row justify-between`}>
               <div className={`flex pt-5`}>
                 <TSelect
-                  defaultValue={taskdetails?.status || "Not Started" as Status}
+                  defaultValue={taskdetails.status ? taskdetails.status as Status : "Blocked" as Status}
                   onChange={(val) => {
-                    console.log(val)
+                    console.log(taskdetails.status)
                     if (val === "Completed") {
                       console.log('jjjj')
                       updateTask(id, null, val as Status, null, null, null,
@@ -155,6 +156,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
                   }}
                   values={["Not Started", "In Progress", "Blocked", "Completed"]}
                 />
+
               </div>
               <div className={`flex h-auto pt-5`}>
                 <Box

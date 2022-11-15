@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { getUser } from "../api/user";
 import { useApp } from "../App";
+import { Popup } from "./Popup";
 import { delay } from "../utils/promise";
 
 import { Status, User } from "../api/type";
@@ -117,18 +118,18 @@ export function TaskDetail({ id }: TaskDetailProps) {
       {!invalid && (
         <div className={`flex items-center w-200 rounded-[32px] bg-white-100 `}>
           <Popup
-          open={gradeOpen}
-          onClose={() => {
-            setgradeOpen(false);
-          }}
-        >
-          <Grade
-            id={id}
-            onComplete={() => {
+            open={gradeOpen}
+            onClose={() => {
               setgradeOpen(false);
             }}
-          /> 
-        </Popup>
+          >
+            <Grade
+              id={id}
+              onComplete={() => {
+                setgradeOpen(false);
+              }}
+            />
+          </Popup>
           <div
             className={`flex justify-items-start flex-col px-12 overflow-auto max-h-[70rem] relative `}
           >

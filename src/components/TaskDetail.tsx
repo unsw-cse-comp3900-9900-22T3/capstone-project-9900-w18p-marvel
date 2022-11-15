@@ -123,6 +123,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
               setgradeOpen(false);
             }}
           >
+
             <Grade
               id={id}
               onComplete={() => {
@@ -136,21 +137,22 @@ export function TaskDetail({ id }: TaskDetailProps) {
             <div className={`flex flex-row justify-between`}>
               <div className={`flex pt-5`}>
                 <TSelect
-                  defaultValue={taskdetails?.status || "started" as Status}
+                  defaultValue={taskdetails?.status || "Not Started" as Status}
                   onChange={(val) => {
-                    if (val === "started") {
-                      updateTask(id, null, val as Status, null, null, null,
-                        null, null);
-                    }
-                    else {
+                    if (val === "Completed") {
                       console.log('jjjj')
                       updateTask(id, null, val as Status, null, null, null,
                         null, null);
                       completeTask(id);
+
+                    }
+                    else {
+                      updateTask(id, null, val as Status, null, null, null,
+                        null, null);
                     }
 
                   }}
-                  values={["started", "complete"]}
+                  values={["Not Started", "In Progress", "Blocked", "Completed"]}
                 />
               </div>
               <div className={`flex h-auto pt-5`}>

@@ -7,7 +7,7 @@ interface Props {
   values: Array<string>;
 }
 
-export default function TSelect({ defaultValue, onChange, values=[] }: Props) {
+export default function TSelect({ defaultValue, onChange, values = [] }: Props) {
   const [status, setStatus] = React.useState("");
 
   const handleChange = (event: any) => {
@@ -23,7 +23,7 @@ export default function TSelect({ defaultValue, onChange, values=[] }: Props) {
       variant="filled"
       onChange={handleChange}
       sx={{
-        width: "102px",
+        width: "auto",
         height: "40px",
         borderRadius: "16px",
         "&.MuiSelect-select": {
@@ -34,22 +34,22 @@ export default function TSelect({ defaultValue, onChange, values=[] }: Props) {
         },
         "&.MuiInputBase-input": {
           backgroundColor: "transparent",
-          fontWeight:700,
+          fontWeight: 700,
         },
         "&.MuiFilledInput-input": {
           // backgroundColor:'transparent',
-          fontWeight:700,
+          fontWeight: 700,
         },
         "&.MuiInputBase-root": {
-          backgroundColor:'rgba(143, 146, 161, 0.1)',
+          backgroundColor: 'rgba(143, 146, 161, 0.1)',
           // display:'none'
         },
         "&.MuiFilledInput-root": {
           // backgroundColor:'transparent',
           // display:'none'
-          paddingTop:"6px",
-          paddingLeft:"4px",
-          fontWeight:700,
+          paddingTop: "6px",
+          paddingLeft: "4px",
+          fontWeight: 700,
         },
         "&.MuiFilledInput-underline": {
           // backgroundColor:'transparent',

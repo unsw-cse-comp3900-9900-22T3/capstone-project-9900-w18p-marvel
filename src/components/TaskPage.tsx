@@ -344,7 +344,7 @@ export function TaskPage({}: Props) {
   }, [projectId]);
 
   const [filterOpen, setFilterOpen] = useState<boolean>(false);
-
+  
   return (
     data && (
       <>

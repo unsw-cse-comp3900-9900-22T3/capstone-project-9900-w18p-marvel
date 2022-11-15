@@ -6,12 +6,13 @@ import { ProfileCard } from "./components/ProfileCard";
 import { TaskCard } from "./components/TaskCard";
 import { TaskDetail } from "./components/TaskDetail";
 import { UserListItem } from "./components/UserListItem";
-import { ProfileSummary, UserProfile } from "./components/ProfileSummary";
+import { ProfileSummary } from "./components/ProfileSummary";
 import { getStorage } from "firebase/storage";
 import { Home } from "./pages/Home";
 import { Interceptor } from "./pages/Interceptor";
 import { ProjectPage } from "./pages/ProjectPage";
 import { Landing } from "./pages/Landing";
+import { Profile } from "./pages/Profile";
 import { FirebaseApp, getApp, initializeApp } from "firebase/app";
 
 import React from "react";
@@ -30,6 +31,9 @@ import { Invitation, Role, User } from "./api/type";
 import { getUser } from "./api/user";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { TaskPage } from "./components/TaskPage";
+
+import { Grade } from "./components/Grade";
+import { FriendBox } from "./components/FriendBox";
 
 interface ContextProps {
   app: FirebaseApp | null;
@@ -224,8 +228,8 @@ export function App() {
               element={
                 <Interceptor>
                   <Home>
-                    <ProfileCard />
-                    <ProfileSummary />
+                    <Profile>
+                    </Profile>
                   </Home>
                 </Interceptor>
               }
@@ -242,6 +246,7 @@ export function App() {
             ></Route>
             <Route path="login" element={<Landing />}></Route>
           </Route>
+          <Route path='grade' element={<Grade />}></Route>
         </Routes>
       </BrowserRouter>
     </AppContext.Provider>

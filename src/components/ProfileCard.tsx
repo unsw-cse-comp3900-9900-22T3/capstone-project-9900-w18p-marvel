@@ -19,10 +19,10 @@ export const ProfileCard = ({}: Props) => {
   
 
   return (
-    // <div className="flex flex-col items-stretch bg-white-100 m-10 w-[730px] h-[300px] rounded-lg">
-      <div className="divide-y divide-gray-300">
-        <div className="flex flex-basis auto ml-8 bg-white w-[690px] h-[100px]">
-          <div className="transition-all mt-4 w-14 h-14 relative hover:scale-95">
+    // w-[690px] h-[100px]
+      <div className="divide-y divide-gray-300 w-full h-full">
+        <div className="flex flex-basis auto ml-10">
+          <div className="transition-all mt-6 w-14 h-14 relative hover:scale-95">
             <input
               type={"file"}
               className="opacity-0 absolute inset-0 cursor-pointer"
@@ -54,19 +54,19 @@ export const ProfileCard = ({}: Props) => {
               rounded="sm"
             />
           </div>
-          <div className="text-lg font-bold text-black mt-6 ml-6">
+          <div className="text-lg font-bold text-black mt-6 ml-10">
             {user?.displayName}
           </div>
           <div className="text-sm font-light text-black mt-14 ml-[-85px]">
             {user?.email}
           </div>
         </div>
-        <div className="flex flex-basis:| auto ml-8 bg-white w-[690px] h-[100px]">
-          <div className="flex1 mt-2">
+        <div className="flex justify-between m-4 ml-8 mr-8">
+          <div className="flex1">
             <div className="text-sm font-bold text-gray-500 mt-4 mb-2 ml-6">
               EMAIL ADDRESS
             </div>
-            <div className="text-sm font-bold text-black mb-4">
+            <div className="text-sm font-bold text-black ml-4">
               <TextInput
                 disabled={isEditing ? false : true}
                 onChange={(val) => {
@@ -76,21 +76,8 @@ export const ProfileCard = ({}: Props) => {
               />
             </div>
           </div>
-          {/* <div className="flex1 mt-2 ml-3">
-            <div className="text-sm font-bold text-gray-500 mt-4 mb-2 ml-6">
-              PHONE NUMBER
-            </div>
-            <div className="text-sm font-bold text-black mb-4">
-              <TextInput
-                disabled={isEditing ? false : true}
-                onChange={(val) => {
-                  setInputEmail(val);
-                }}
-                defaultValue={user?.email}
-              />
-            </div>
-          </div> */}
-          <div className="flex1 mt-2 ml-3">
+         
+          <div className="flex1 ml-3">
             <div className="text-sm font-bold text-gray-500 mt-4 mb-2 ml-6">
               USER ID
             </div>
@@ -98,8 +85,8 @@ export const ProfileCard = ({}: Props) => {
           </div>
         </div>
 
-        <div className="flex flex-basis: | auto ml-8 bg-white w-[690px] h-[100px]">
-          <div className="mt-7">
+        <div className="flex justify-between m-4 ml-8 mr-8">
+          <div className="mt-5">
             <Button
               theme="gray"
               size="hug"
@@ -110,7 +97,7 @@ export const ProfileCard = ({}: Props) => {
               }}
             />
           </div>
-          <div className="mt-7 ml-[450px]">
+          <div className="mt-5 ">
             <Button
               theme="gray"
               size="hug"
@@ -133,10 +120,10 @@ export const ProfileCard = ({}: Props) => {
           </div>
         </div>
       </div>
-    // </div>
+   
   );
 
-  //   <div className="text-yellow-500">Write your component here</div>;
+  
 };
 
-// export { ProfileCard };
+

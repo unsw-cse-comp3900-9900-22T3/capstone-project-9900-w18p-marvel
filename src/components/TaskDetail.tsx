@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { getUser } from "../api/user";
 import { useApp } from "../App";
+import { Popup } from "./Popup";
 import { delay } from "../utils/promise";
 
 import { Status, User } from "../api/type";
@@ -21,6 +22,8 @@ import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { getApp } from "firebase/app";
 import TSelect from "./TSelect";
 import { TotalAttachedItem } from "./TotalAttachedItem";
+
+import { Grade } from "./Grade"
 
 interface TaskDetailProps {
   id: string;
@@ -39,6 +42,9 @@ export function TaskDetail({ id }: TaskDetailProps) {
   const [loading, setLoading] = useState(false);
   const [invalid, setInvalid] = useState<boolean>(false);
   console.log(user?.uid);
+
+  const [gradeOpen, setgradeOpen] = useState<boolean>(false)
+
 
 
   const handleGetattached = async () => {
@@ -111,27 +117,42 @@ export function TaskDetail({ id }: TaskDetailProps) {
     <>
       {!invalid && (
         <div className={`flex items-center w-200 rounded-[32px] bg-white-100 `}>
+          <Popup
+            open={gradeOpen}
+            onClose={() => {
+              setgradeOpen(false);
+            }}
+          >
+
+            <Grade
+              id={id}
+              onComplete={() => {
+                setgradeOpen(false);
+              }}
+            />
+          </Popup>
           <div
             className={`flex justify-items-start flex-col px-12 overflow-auto max-h-[70rem] relative `}
           >
             <div className={`flex flex-row justify-between`}>
               <div className={`flex pt-5`}>
                 <TSelect
-                  defaultValue={taskdetails?.status || "started" as Status}
+                  defaultValue={taskdetails?.status || "Not Started" as Status}
                   onChange={(val) => {
-                    if (val === "started") {
-                      updateTask(id, null, val as Status, null, null, null,
-                        null, null);
-                    }
-                    else {
+                    if (val === "Completed") {
                       console.log('jjjj')
                       updateTask(id, null, val as Status, null, null, null,
                         null, null);
                       completeTask(id);
+
+                    }
+                    else {
+                      updateTask(id, null, val as Status, null, null, null,
+                        null, null);
                     }
 
                   }}
-                  values={["started", "complete"]}
+                  values={["Not Started", "In Progress", "Blocked", "Completed"]}
                 />
               </div>
               <div className={`flex h-auto pt-5`}>

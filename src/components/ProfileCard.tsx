@@ -21,7 +21,7 @@ export const ProfileCard = ({}: Props) => {
   return (
     // w-[690px] h-[100px]
       <div className="divide-y divide-gray-300 w-full h-full">
-        <div className="flex flex-basis auto ml-10  ">
+        <div className="flex flex-basis auto ml-10">
           <div className="transition-all mt-6 w-14 h-14 relative hover:scale-95">
             <input
               type={"file"}
@@ -62,11 +62,11 @@ export const ProfileCard = ({}: Props) => {
           </div>
         </div>
         <div className="flex justify-between m-4 ml-8 mr-8">
-          <div className="flex1 mt-2">
+          <div className="flex1">
             <div className="text-sm font-bold text-gray-500 mt-4 mb-2 ml-6">
               EMAIL ADDRESS
             </div>
-            <div className="text-sm font-bold text-black mb-4 ml-4">
+            <div className="text-sm font-bold text-black ml-4">
               <TextInput
                 disabled={isEditing ? false : true}
                 onChange={(val) => {
@@ -77,7 +77,7 @@ export const ProfileCard = ({}: Props) => {
             </div>
           </div>
          
-          <div className="flex1 mt-2 ml-3">
+          <div className="flex1 ml-3">
             <div className="text-sm font-bold text-gray-500 mt-4 mb-2 ml-6">
               USER ID
             </div>

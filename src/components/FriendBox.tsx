@@ -16,24 +16,24 @@ interface FriendboxProps {
 }
 
 
-const img_address = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL9LonfTfSW8SOAc8E7Fe982afR_kqYbwSuQ&usqp=CAU"
+// const img_address = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL9LonfTfSW8SOAc8E7Fe982afR_kqYbwSuQ&usqp=CAU"
 
-const waste_icon = "https://freesvg.org/img/trash.png"
+// const waste_icon = "https://freesvg.org/img/trash.png"
 
 const FriendBox = ({UserId, FriendName, Busy,src }: FriendboxProps) => {
     const { user, setUser } = useApp();
     
 
-    const fetchData = async () => {
-        const userinfo = await getUser(UserId);
-        console.log(userinfo)
-        await delay(1000);
-        // setcommnetuser(userinfo)
-        // console.log(UserId)
-        console.log(user?.uid)
-        // console.log(Comments)
+    // const fetchData = async () => {
+    //     const userinfo = await getUser(UserId);
+    //     console.log(userinfo)
+    //     await delay(1000);
+    //     // setcommnetuser(userinfo)
+    //     // console.log(UserId)
+    //     console.log(user?.uid)
+    //     // console.log(Comments)
 
-    }
+    // }
 
 
 // {user?.photo?.downloadURL || ""}

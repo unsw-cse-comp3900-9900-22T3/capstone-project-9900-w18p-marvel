@@ -139,6 +139,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
                 <TSelect
                   defaultValue={taskdetails?.status || "Not Started" as Status}
                   onChange={(val) => {
+                    console.log(val)
                     if (val === "Completed") {
                       console.log('jjjj')
                       updateTask(id, null, val as Status, null, null, null,

@@ -117,7 +117,7 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
           ></MenuItem> */}
         </div>
         {projectId && role === "owner" && (
-          <div className="px-4 w-full">
+          <div className="px-4 pb-20 w-full">
             <Button
               theme={"gray"}
               size={"fill"}

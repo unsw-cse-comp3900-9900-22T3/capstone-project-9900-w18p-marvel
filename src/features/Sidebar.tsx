@@ -30,12 +30,14 @@ const MenuItem = ({ prefix, label, onClick }: MenuItemProps) => {
       }}
     >
       <div
-        className={`transition-all ${hover ? "w-1" : "w-0"} h-8 rounded-r-2xl ${hover ? "bg-blue-100" : "bg-transparent"
-          }`}
+        className={`transition-all ${hover ? "w-1" : "w-0"} h-8 rounded-r-2xl ${
+          hover ? "bg-blue-100" : "bg-transparent"
+        }`}
       ></div>
       <div
-        className={`flex flex-row gap-4 text-sm ${hover ? "text-blue-100" : "text-black"
-          } `}
+        className={`flex flex-row gap-4 text-sm ${
+          hover ? "text-blue-100" : "text-black"
+        } `}
       >
         <div
           className={`${hover ? "text-blue-100" : "text-white-60"} font-bold`}
@@ -58,20 +60,26 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
   const navigate = useNavigate();
   const { projectId, setProjectId, role, setRole } = useApp();
 
-  useEffect(() => { }, []);
+  useEffect(() => {}, []);
 
   return (
     <div
-      className={`relative transition-all overflow-hidden shrink-0 grow-0 ${collapse ? "w-16 basis-16" : "w-56 basis-56"
-        } bg-white-100 h-full `}
+      className={`relative transition-all overflow-hidden shrink-0 grow-0 ${
+        collapse ? "w-16 basis-16" : "w-56 basis-56"
+      } bg-white-100 h-full `}
     >
-      {<div className={`flex flex-col items-center`}>
-
-        <div className="flex text-xl font-extrabold pt-5">
-
-          <img src={"https://live.staticflickr.com/65535/52503382719_0e80264fc9_z.jpg className="} className="w-40 h-20" />
+      {
+        <div className={`flex flex-col items-center`}>
+          <div className="flex text-xl font-extrabold pt-5">
+            <img
+              src={
+                "https://live.staticflickr.com/65535/52503382719_0e80264fc9_z.jpg className="
+              }
+              className="w-40 h-20"
+            />
+          </div>
         </div>
-      </div>}
+      }
       <div className="absolute inset-0 pointer-events-none">
         <div className="w-full h-full flex justify-end items-center">
           <div
@@ -90,7 +98,7 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
             prefix={<ProjectIcon className={""} />}
             label={"Projects"}
             onClick={() => {
-              setProjectId?.(null)
+              setProjectId?.(null);
               navigate("/projects");
             }}
           ></MenuItem>
@@ -116,19 +124,21 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
             }}
           ></MenuItem> */}
         </div>
-        {projectId && role === "owner" && (
-          <div className="px-4 w-full">
-            <Button
-              theme={"gray"}
-              size={"fill"}
-              label={"Manage Members"}
-              prefix={<PlusIcon className="" />}
-              onClick={() => {
-                onClickManageMember?.();
-              }}
-            />
-          </div>
-        )}
+        <div className="pb-20">
+          {projectId && role === "owner" && (
+            <div className="px-4 w-full">
+              <Button
+                theme={"gray"}
+                size={"fill"}
+                label={"Manage Members"}
+                prefix={<PlusIcon className="" />}
+                onClick={() => {
+                  onClickManageMember?.();
+                }}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

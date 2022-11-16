@@ -28,7 +28,7 @@ import {
   createTask,
   deleteAllTask,
   deleteTask,
-  queryAllTasksByProjectId,
+  queryAllTasksByCriterion,
   updateTask,
 } from "../api/task";
 import _ from "lodash";
@@ -196,7 +196,7 @@ export function TaskPage({}: Props) {
       const projCollbs = await queryProjectCollaboratorsByProjectId(projectId);
       const collabIds = projCollbs.map((p: ProjectCollaborator) => p.userId);
       if (collabIds.includes(user.uid)) {
-        const tasks = await queryAllTasksByProjectId(
+        const tasks = await queryAllTasksByCriterion(
           projectId,
           criterion.userIds,
           criterion.title,

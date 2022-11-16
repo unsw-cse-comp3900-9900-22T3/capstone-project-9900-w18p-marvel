@@ -11,7 +11,8 @@ import {
   where,
 } from "firebase/firestore";
 import Fuse from "fuse.js";
-import { queryAllTasksByProjectId } from "./task";
+import _ from "lodash";
+import { getTask, queryAllTasksByCriterion } from "./task";
 import {
   TaskCollaborator,
   Role,
@@ -19,6 +20,7 @@ import {
   User,
   ProjectCollaborator,
 } from "./type";
+import { getUser } from "./user";
 
 export const updateTaskCollaborators = async (
   uids: Array<string>,
@@ -144,3 +146,74 @@ export const removeAllTaskCollaborator: () => void = async () => {
     deleteDoc(doc(db, "taskcollaborators", c.id));
   });
 };
+
+export const queryAllMyTaskIds = async (userId: string) => {
+  const app = getApp();
+  const db = getFirestore(app);
+  const q = query(
+    collection(db, "taskcollaborators"),
+    where("userId", "==", userId)
+  );
+
+  const querySnapshot = await getDocs(q);
+  const data: Array<string> = [];
+  querySnapshot.forEach(async (doc: any) => {
+    data.push(doc.data()?.taskId);
+  });
+
+  return _.uniq(data);
+};
+
+export const queryTaskCollaboratorIdsByTaskId = async (taskId: string) => {
+  const app = getApp();
+  const db = getFirestore(app);
+  const q = query(
+    collection(db, "taskcollaborators"),
+    where("taskId", "==", taskId)
+  );
+
+  const querySnapshot = await getDocs(q);
+  const data: Array<string> = [];
+  querySnapshot.forEach(async (doc: any) => {
+    data.push(doc.data()?.userId);
+  });
+
+  return _.uniq(data);
+};
+
+export const queryConnectedTaskCollaborator = async (userId: string) => {
+  const app = getApp();
+  const db = getFirestore(app);
+  const myTaskIds = await queryAllMyTaskIds(userId);
+  let collaborators: Array<string> = [];
+  await Promise.all(
+    myTaskIds.map(async (taskId: string) => {
+      const collabs = await queryTaskCollaboratorIdsByTaskId(taskId);
+      collaborators = collaborators.concat(collabs);
+    })
+  );
+  collaborators = _.uniq(collaborators);
+  const data: Array<User> = [];
+  await Promise.all(
+    collaborators.map(async (id: string) => {
+      const user = await getUser(id);
+      if (user) data.push(user);
+    })
+  );
+  return data;
+};
+
+
+export const queryConnectedTasks = async (userId:string,collabratorId:string)=>{
+  const app = getApp();
+  const db = getFirestore(app);
+  const myTaskIds = await queryAllMyTaskIds(userId);
+  const collabTaskIds = await queryAllMyTaskIds(collabratorId)
+  const intersection = _.intersection(myTaskIds,collabTaskIds)
+  const data:Array<Task> = []
+  await Promise.all(intersection.map(async (id:string)=>{
+    const task = await getTask(id)
+    if(task) data.push(task)
+  }))
+  return data
+}

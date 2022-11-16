@@ -133,8 +133,8 @@ export const updateTask = async (
   await updateDoc(doc(db, "tasks", taskId), upsert);
 };
 
-export const queryAllTasksByProjectId = async (
-  projectId: string,
+export const queryAllTasksByCriterion = async (
+  projectId: string|null,
   userIds: Array<string>,
   title: string,
   description: string,
@@ -143,7 +143,12 @@ export const queryAllTasksByProjectId = async (
 ) => {
   const app = getApp();
   const db = getFirestore(app);
-  const q = query(collection(db, "tasks"), where("projectId", "==", projectId));
+  let q = null
+  if(projectId === null){
+    q = query(collection(db, "tasks"));
+  }else{
+    q = query(collection(db, "tasks"), where("projectId", "==", projectId));
+  }
 
   const querySnapshot = await getDocs(q);
   const data: Array<Task> = [];

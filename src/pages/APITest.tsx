@@ -22,7 +22,7 @@ import {
   createTask,
   deleteAllTask,
   queryAllTasks,
-  queryAllTasksByProjectId,
+  queryAllTasksByCriterion,
 } from "../api/task";
 import { Comment, Project, Role, Task } from "../api/type";
 import {

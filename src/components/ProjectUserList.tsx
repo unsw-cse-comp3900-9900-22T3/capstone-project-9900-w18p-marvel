@@ -18,7 +18,7 @@ import {
 import { ProjectCollaborator, Role, Task, User } from "../api/type";
 import { requestConnection } from "../api/connection";
 import { useApp } from "../App";
-import { queryAllTasksByProjectId } from "../api/task";
+import { queryAllTasksByCriterion } from "../api/task";
 import { queryInvitation } from "../api/invitation";
 
 interface Props {
@@ -116,7 +116,7 @@ export const ProjectUserList = ({ projectId, onComplete }: Props) => {
       });
       sub.forEach(async (id) => {
         removeProjectCollaborator(id, projectId);
-        const tasks = await queryAllTasksByProjectId(
+        const tasks = await queryAllTasksByCriterion(
           projectId,
           [],
           "",

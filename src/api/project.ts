@@ -16,7 +16,7 @@ import { deleteAttachment, queryAttachment } from "./attachment";
 import { deleteComment, queryComment } from "./comment";
 import { deleteLane, queryLaneByProjectId } from "./lane";
 import { queryProjectCollaboratorsByProjectId, removeProjectCollaborator } from "./projectCollaborator";
-import { deleteTask, queryAllTasksByProjectId } from "./task";
+import { deleteTask, queryAllTasksByCriterion } from "./task";
 import { queryCollaboratorsInTask, queryTaskCollaboratorsByKeyword, removeTaskCollaborator } from "./taskcollaborator";
 import { Lane, Project, ProjectCollaborator, Resource, Task, TaskCollaborator } from "./type";
 
@@ -127,7 +127,7 @@ export const deleteProjectAndTasks = async (projectId:string)=>{
   collabs.forEach((c)=>{
     removeProjectCollaborator(c.userId,c.projectId)
   })
-  const tasks = await queryAllTasksByProjectId(projectId,[],"","",null,null)
+  const tasks = await queryAllTasksByCriterion(projectId,[],"","",null,null)
   tasks.forEach(async (t:Task)=>{
     const tCollabs = await queryCollaboratorsInTask(t.id)
     tCollabs.forEach((tc:TaskCollaborator)=>{

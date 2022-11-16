@@ -18,7 +18,7 @@ export const Profile = ({ }: ProfileProps) => {
     const { user } = useApp();
 
     return (
-        <div className="relative w-full h-full flex flex-col">
+        <div className="relative w-full h-full flex flex-col justify-items-center">
             <div className="relative w-full m-4 ml-12 text-sm text-gray-100 font-bold">
                 MY PROFILE
             </div>

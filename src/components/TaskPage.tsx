@@ -348,7 +348,7 @@ export function TaskPage({}: Props) {
   return (
     data && (
       <>
-        <div className="w-full h-full flex flex-col">
+        <div className="bg-gradient-to-r from-sky-500/50 to-indigo-500/50 w-full h-full flex flex-col">
           <div className="w-full h-20 justify-between items-center flex px-6 py-6">
             <div className="w-fit h-fit">
               {projectId && (

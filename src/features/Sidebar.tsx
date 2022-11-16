@@ -87,7 +87,7 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
         <div className="w-full">
           <MenuItem
             prefix={<ProjectIcon className={""} />}
-            label={"projects"}
+            label={"Projects"}
             onClick={() => {
               setProjectId?.(null)
               navigate("/projects");

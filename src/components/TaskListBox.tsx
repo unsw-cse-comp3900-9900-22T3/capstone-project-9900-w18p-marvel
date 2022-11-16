@@ -87,7 +87,7 @@ const TaskListBox = ({ TaskID }: TaskListBoxProps) => {
                             <AssignmentIcon />
                         </div>
                         <div className={`flex justify-between w-full h-auto gap-4`}>
-                            <div className={`font-bold w-auto text-lg text-blue-600`}>
+                            <div className={`font-bold w-20 text-lg text-blue-600`}>
                                 {taskdata?.title ? taskdata?.title : "No Name!"}
                             </div>
                             <div className={`font-bold w-auto text-lg`} onClick={() => {
@@ -114,7 +114,7 @@ const TaskListBox = ({ TaskID }: TaskListBoxProps) => {
                             <div className={`text-lg w-auto text-blue-600/75`}>
                                 Due Date: {taskdata?.dueDate?.toDateString()}
                             </div>
-                            <div className={`text-lg w-auto text-blue-600/75`}>
+                            <div className={`text-lg text-blue-600/75`}>
                                 Project Name: {pjdata?.title}
                             </div>
 

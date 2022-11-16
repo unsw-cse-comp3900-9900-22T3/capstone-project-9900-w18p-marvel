@@ -67,7 +67,7 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
     >
       {<div className={`flex flex-col items-center`}>
 
-        <div className="flex text-xl font-extrabold pt-5">
+        <div className="flex text-xl font-extrabold pt-1">
 
           <img src={"https://live.staticflickr.com/65535/52503382719_0e80264fc9_z.jpg className="} className="w-40 h-20" />
         </div>

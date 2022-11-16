@@ -86,7 +86,7 @@ const TaskListBox = ({ TaskID }: TaskListBoxProps) => {
                         <div className={`flex w-auto pt-1`}>
                             <AssignmentIcon />
                         </div>
-                        <div className={`flex justify-evenly w-full h-auto gap-8`}>
+                        <div className={`flex justify-between w-full h-auto gap-4`}>
                             <div className={`font-bold w-auto text-lg text-blue-600`}>
                                 {taskdata?.title ? taskdata?.title : "No Name!"}
                             </div>

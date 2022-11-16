@@ -86,7 +86,7 @@ const CommentBox = ({ TaskId, Comments, CommentDate, CommentorID, CommentId, Own
 
                 </div>
                 <div className={`flex flex-col w-176 h-auto gap-3`}>
-                    <div className={`text-sm font-bold text-lg`}>{commnetuser?.displayName ? commnetuser?.displayName : "Anonymous"}</div>
+                    <div className={`text-sm font-bold text-lg`}>{commnetuser?.name ? commnetuser?.name : "Anonymous"}</div>
                     <div className={`text-xs w-149 break-all pr-10 h-auto text-gray-100`}>{Comments}</div>
 
                 </div>

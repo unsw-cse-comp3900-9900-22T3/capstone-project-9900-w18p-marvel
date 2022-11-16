@@ -51,8 +51,9 @@ export const updateUserProfile = async (
       if (username) {
         await updateDoc(doc(db, "users", userId), {
           name: username,
+          displayName: username
         });
-        // await updateProfile(user, { displayName: username });
+        //await updateProfile(user, { displayName: username });
         onComplete?.({ ...userInfo, uid: userId, displayName: username });
       }
       if (email) {

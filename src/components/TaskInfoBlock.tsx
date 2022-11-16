@@ -193,7 +193,7 @@ const TaskInfoBlock = ({
           </div>
         </div>
         <div className={`flex flex-col w-176 h-auto pt-5`}>
-          <div className={`flex font-bold text-lg text-zinc-600 items-center gap-4`}>
+          <div className={`flex font-bold text-lg text-zinc-600 items-center pl-1 gap-4`}>
             <DescriptionOutlinedIcon
               fontSize="large" />
             Description

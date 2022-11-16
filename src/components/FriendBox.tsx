@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import { delay } from "../utils/promise";
 import { Popup } from "./Popup";
 import { ProfileFriendInfo } from "./ProfileFriendInfo"
+import Button from '@mui/material/Button';
 
 
 
@@ -22,9 +23,9 @@ interface FriendboxProps {
 
 // const waste_icon = "https://freesvg.org/img/trash.png"
 
-const FriendBox = ({UserId, FriendName, Busy,src }: FriendboxProps) => {
+const FriendBox = ({ UserId, FriendName, Busy, src }: FriendboxProps) => {
     const { user, setUser } = useApp();
-    
+
 
     // const fetchData = async () => {
     //     const userinfo = await getUser(UserId);
@@ -38,7 +39,7 @@ const FriendBox = ({UserId, FriendName, Busy,src }: FriendboxProps) => {
     // }
 
 
-// {user?.photo?.downloadURL || ""}
+    // {user?.photo?.downloadURL || ""}
 
     const [profileOpen, setprofileOpen] = useState<boolean>(false)
     return (
@@ -56,20 +57,20 @@ const FriendBox = ({UserId, FriendName, Busy,src }: FriendboxProps) => {
                         {FriendName}
                     </div>
                     <div className={`font-bold w-64 text-lg`}>
-                    <button onClick={()=>setprofileOpen(true)}>profile button</button>
-                      <Popup
-                          open={profileOpen}
-                          onClose={() => {
-                          setprofileOpen(false);
-                          }}
-                      >
-                        <ProfileFriendInfo
-                          UserId={UserId}
-                          onComplete={() => {
-                            setprofileOpen(false);
-                          }}
-                        /> 
-                      </Popup>
+                        <Button variant="outlined" onClick={() => setprofileOpen(true)}>View Profile</Button>
+                        <Popup
+                            open={profileOpen}
+                            onClose={() => {
+                                setprofileOpen(false);
+                            }}
+                        >
+                            <ProfileFriendInfo
+                                UserId={UserId}
+                                onComplete={() => {
+                                    setprofileOpen(false);
+                                }}
+                            />
+                        </Popup>
                     </div>
                     <div className={`text-sm w-64 text-gray-100`}>
                         Next Week's Workload

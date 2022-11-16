@@ -10,7 +10,8 @@ import { NightShelter } from '@mui/icons-material';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import { TaskDetail } from "./TaskDetail";
 import { Popup } from "./Popup";
-
+import { getProject } from "../api/project";
+import Button from '@mui/material/Button';
 
 
 interface TaskListBoxProps {
@@ -24,26 +25,38 @@ interface TaskListBoxProps {
 // const waste_icon = "https://freesvg.org/img/trash.png"
 
 const TaskListBox = ({ TaskID }: TaskListBoxProps) => {
-    const [taskdata, setTaskData] = useState<Array<"">>([]);
+    const [taskdata, setTaskData] = useState<any>([]);
+    const [pjdata, setPjData] = useState<any>([]);
     const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
     const [open, setOpen] = useState(false);
+
+
+    const fetchProject = async (ProjectID: string) => {
+        const projectdata = await getProject(ProjectID);
+        setPjData(projectdata)
+        console.log(projectdata);
+    }
+
+
     const fetchdata = async (TaskID: string) => {
 
         const data = await getTask(TaskID);
 
         setTaskData(data);
         console.log(data);
+        await delay(1000);
 
 
-
-
-        console.log(TaskID);
     };
+
+
+
 
 
     useEffect(() => {
         fetchdata(TaskID);
-    }, [open]);
+
+    }, [open, TaskID]);
 
 
     // const fetchData = async () => {
@@ -78,7 +91,8 @@ const TaskListBox = ({ TaskID }: TaskListBoxProps) => {
                                 setSelectedTaskId(taskdata.id);
                                 setOpen(true);
                             }}>
-                                Task Button
+                                <Button variant="outlined">View Task</Button>
+
 
                             </div>
                             {selectedTaskId && (
@@ -97,6 +111,10 @@ const TaskListBox = ({ TaskID }: TaskListBoxProps) => {
                             <div className={`text-sm w-64 text-gray-100`}>
                                 Due Date: {taskdata?.dueDate?.toDateString()}
                             </div>
+                            <div className={`text-sm w-64 text-gray-100`}>
+                                Project Name: {pjdata?.title}
+                            </div>
+
 
                         </div>
                     </div>

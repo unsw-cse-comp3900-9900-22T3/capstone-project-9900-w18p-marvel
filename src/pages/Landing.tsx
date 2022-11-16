@@ -51,8 +51,7 @@ export const Landing = ({}: Props) => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        setSnackbarText(`Sign in error: ${errorMessage}`)
-        setSnackbarOpen(true)
+        alert(`Sign in error: ${errorMessage}`)
       });
   };
   const googlePopup = () => {
@@ -83,8 +82,7 @@ export const Landing = ({}: Props) => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        setSnackbarText(`Sign in error: ${errorMessage}`)
-        setSnackbarOpen(true)
+        alert(`Sign in error: ${errorMessage}`)
       });
   };
   const register = (email: string, password: string, username: string) => {
@@ -109,8 +107,7 @@ export const Landing = ({}: Props) => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        setSnackbarText(`Creating account error: ${errorMessage}`)
-        setSnackbarOpen(true)
+        alert(`Creating account error: ${errorMessage}`)
       });
   };
   return (

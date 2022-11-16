@@ -42,7 +42,7 @@ const MenuItem = ({ prefix, label, onClick }: MenuItemProps) => {
         >
           {prefix && prefix}
         </div>
-        <div className="text-inherit font-bold">{label}</div>
+        <div className="text-inherit text-lg font-bold">{label}</div>
       </div>
     </div>
   );

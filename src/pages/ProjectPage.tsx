@@ -52,10 +52,12 @@ export const ProjectPage = ({}: ProjectProps) => {
     if (user?.uid) refetch(user?.uid);
   }, [user]);
 
+  const background = "https://img.freepik.com/free-vector/abstract-watercolor-pastel-background_87374-139.jpg?w=2000"
+
   return (
-    <div className="relative w-full h-full flex flex-col">
+    <div className="bg-gradient-to-r from-sky-500/50 to-indigo-500/50 relative w-full h-full flex flex-col">
       <div className="relative w-full h-32">
-        <div className="absolute left-12 top-12 text-sm text-gray-100 font-bold">
+        <div className="absolute left-12 top-12 text-sm text-gray-800 font-bold">
           MY PROJECT
         </div>
       </div>

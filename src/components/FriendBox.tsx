@@ -52,7 +52,7 @@ const FriendBox = ({ UserId, FriendName, Busy, src }: FriendboxProps) => {
                         rounded="full"
                     />
                 </div>
-                <div className={`flex justify-start w-full h-auto gap-10`}>
+                <div className={`flex justify-between w-full h-auto gap-5`}>
                     <div className={`font-bold w-80 text-lg text-blue-600`}>
                         {FriendName}
                     </div>

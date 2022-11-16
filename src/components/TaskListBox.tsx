@@ -108,13 +108,13 @@ const TaskListBox = ({ TaskID }: TaskListBoxProps) => {
                                     <TaskDetail id={selectedTaskId} />
                                 </Popup>
                             )}
-                            <div className={`text-sm w-64 text-blue-600/75`}>
+                            <div className={`text-lg w-64 text-blue-600/75`}>
                                 Status: {taskdata?.status}
                             </div>
-                            <div className={`text-sm w-64 text-blue-600/75`}>
+                            <div className={`text-lg w-64 text-blue-600/75`}>
                                 Due Date: {taskdata?.dueDate?.toDateString()}
                             </div>
-                            <div className={`text-sm w-64 text-blue-600/75`}>
+                            <div className={`text-lg w-64 text-blue-600/75`}>
                                 Project Name: {pjdata?.title}
                             </div>
 

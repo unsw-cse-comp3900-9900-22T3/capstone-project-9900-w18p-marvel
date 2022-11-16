@@ -19,7 +19,7 @@ export const Profile = ({ }: ProfileProps) => {
 
     return (
         <div className="bg-gradient-to-r from-sky-500/50 to-indigo-500/50 relative w-full h-full flex flex-col justify-items-center">
-            <div className="relative w-full m-4 ml-12 text-sm text-gray-800 font-bold">
+            <div className="relative w-full m-4 ml-12 text-lg text-gray-800 font-bold">
                 MY PROFILE
             </div>
             <div className="relative bg-white-100 m-2 ml-8 mr-8 rounded-lg ">
@@ -27,7 +27,7 @@ export const Profile = ({ }: ProfileProps) => {
             </div>
 
             <div className="overflow-y-scroll">
-                <div className="m-4 ml-12 text-sm text-gray-600 font-bold">
+                <div className="m-4 ml-12 text-lg text-gray-600 font-bold">
                     MY CONNECTED TASK MASTERS
                 </div>
                 <div className={`bg-white-100 w-auto h-96 m-2 ml-8 mr-8 rounded-lg overflow-scroll`}>
@@ -36,7 +36,7 @@ export const Profile = ({ }: ProfileProps) => {
                     </div>
                 </div>
 
-                <div className="m-4 ml-12 text-sm text-gray-600 font-bold">
+                <div className="m-4 ml-12 text-lg text-gray-600 font-bold">
                     MY ASSIGNED TASK LIST
                 </div>
                 <div className={`bg-white-100 w-auto h-96 m-2 ml-8 mr-8 rounded-lg overflow-scroll`}>
@@ -44,7 +44,7 @@ export const Profile = ({ }: ProfileProps) => {
                         <TasklistinProfile></TasklistinProfile>
                     </div>
                 </div>
-                <div className="m-4 ml-12 text-sm text-gray-600 font-bold">
+                <div className="m-4 ml-12 text-lg text-gray-600 font-bold">
                     MY DAILY PROGRESS
                 </div>
                 <div className={`bg-white-100 w-auto h-96 m-2 ml-8 mr-8 rounded-lg overflow-scroll`}>

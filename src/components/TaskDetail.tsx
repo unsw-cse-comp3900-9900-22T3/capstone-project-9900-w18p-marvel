@@ -220,11 +220,11 @@ export function TaskDetail({ id }: TaskDetailProps) {
               {inputcomment?.length > 0 &&
                 inputcomment.map(
                   (item: {
-                    taskId: string | undefined;
-                    id: string | undefined;
-                    createdBy: string | undefined;
-                    createdAt: { toDateString: () => string | undefined };
-                    content: string | undefined;
+                    taskId: string;
+                    id: string;
+                    createdBy: string;
+                    createdAt: { toDateString: () => string };
+                    content: string;
                   }) => (
                     <CommentBox
                       TaskId={item.taskId}

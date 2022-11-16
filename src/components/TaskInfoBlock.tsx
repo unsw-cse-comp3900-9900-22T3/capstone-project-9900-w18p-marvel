@@ -115,10 +115,9 @@ const TaskInfoBlock = ({
 
 
 
-  const check_time = async (time) => {
+  const check_time = async () => {
     await delay(2000)
     console.log('timetime')
-    console.log(time)
 
   };
 
@@ -134,8 +133,6 @@ const TaskInfoBlock = ({
           }} className={`flex items-center text-2xl`}><TextInput
               placeholder="Click to Name the Task!..."
               disabled={TNameIsEditing ? false : true}
-              MaxCharacter='300'
-              boxheight='300px'
               fontSize='text-2xl'
               onChange={(val) => {
                 setinputTaskName(val);
@@ -263,7 +260,7 @@ const TaskInfoBlock = ({
                 onChange={(newValue) => {
                   setValue(newValue);
 
-                  check_time(newValue);
+                  check_time();
                   updateTask(
                     TaskID,
                     null,

@@ -53,7 +53,7 @@ const FriendBox = ({ UserId, FriendName, Busy, src }: FriendboxProps) => {
                     />
                 </div>
                 <div className={`flex justify-start w-full h-auto gap-10`}>
-                    <div className={`font-bold w-80 text-lg`}>
+                    <div className={`font-bold w-80 text-lg text-blue-600`}>
                         {FriendName}
                     </div>
                     <div className={`font-bold w-64 text-lg`}>
@@ -72,10 +72,10 @@ const FriendBox = ({ UserId, FriendName, Busy, src }: FriendboxProps) => {
                             />
                         </Popup>
                     </div>
-                    <div className={`text-sm w-64 text-gray-100`}>
+                    <div className={`text-lg w-64 text-blue-600/75`}>
                         Next Week's Workload
                     </div>
-                    <div className={`text-sm w-64 text-gray-100`}>
+                    <div className={`text-lg w-64 text-blue-600/75`}>
                         {Busy}
                     </div>
 

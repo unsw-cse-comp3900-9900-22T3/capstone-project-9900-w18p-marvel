@@ -87,7 +87,7 @@ const TaskListBox = ({ TaskID }: TaskListBoxProps) => {
                             <AssignmentIcon />
                         </div>
                         <div className={`flex justify-start w-full h-auto gap-10`}>
-                            <div className={`font-bold w-80 text-lg`}>
+                            <div className={`font-bold w-80 text-lg text-blue-600`}>
                                 {taskdata?.title ? taskdata?.title : "No Name!"}
                             </div>
                             <div className={`font-bold w-64 text-lg`} onClick={() => {
@@ -108,13 +108,13 @@ const TaskListBox = ({ TaskID }: TaskListBoxProps) => {
                                     <TaskDetail id={selectedTaskId} />
                                 </Popup>
                             )}
-                            <div className={`text-sm w-64 text-gray-100`}>
+                            <div className={`text-sm w-64 text-blue-600/75`}>
                                 Status: {taskdata?.status}
                             </div>
-                            <div className={`text-sm w-64 text-gray-100`}>
+                            <div className={`text-sm w-64 text-blue-600/75`}>
                                 Due Date: {taskdata?.dueDate?.toDateString()}
                             </div>
-                            <div className={`text-sm w-64 text-gray-100`}>
+                            <div className={`text-sm w-64 text-blue-600/75`}>
                                 Project Name: {pjdata?.title}
                             </div>
 

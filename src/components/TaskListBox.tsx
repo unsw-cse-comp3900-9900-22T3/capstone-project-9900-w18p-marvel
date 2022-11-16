@@ -1,0 +1,115 @@
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import { Avatar } from "./Avatar";
+import { getUser, updateUserProfile } from "../api/user";
+import React, { useEffect, useState } from "react";
+import { useApp } from "../App";
+import Box from '@mui/material/Box';
+import { delay } from "../utils/promise";
+import { getTask } from "../api/task";
+import { NightShelter } from '@mui/icons-material';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import { TaskDetail } from "./TaskDetail";
+import { Popup } from "./Popup";
+
+
+
+interface TaskListBoxProps {
+    TaskID: string;
+
+}
+
+
+// const img_address = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL9LonfTfSW8SOAc8E7Fe982afR_kqYbwSuQ&usqp=CAU"
+
+// const waste_icon = "https://freesvg.org/img/trash.png"
+
+const TaskListBox = ({ TaskID }: TaskListBoxProps) => {
+    const [taskdata, setTaskData] = useState<Array<"">>([]);
+    const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+    const [open, setOpen] = useState(false);
+    const fetchdata = async (TaskID: string) => {
+
+        const data = await getTask(TaskID);
+
+        setTaskData(data);
+        console.log(data);
+
+
+
+
+        console.log(TaskID);
+    };
+
+
+    useEffect(() => {
+        fetchdata(TaskID);
+    }, [open]);
+
+
+    // const fetchData = async () => {
+    //     const userinfo = await getUser(UserId);
+    //     console.log(userinfo)
+    //     await delay(1000);
+    //     // setcommnetuser(userinfo)
+    //     // console.log(UserId)
+    //     console.log(user?.uid)
+    //     // console.log(Comments)
+
+    // }
+
+
+    // {user?.photo?.downloadURL || ""}
+
+    return (
+        <>
+            {!(taskdata === null) && (
+                < div className={`flex flex-row w-full h-auto mb-2`}>
+
+
+                    <div className={`flex flex-row w-full h-auto pl-5 py-5 bg-gray-50 rounded-2xl relative`}>
+                        <div className={`flex w-40`}>
+                            <AssignmentIcon />
+                        </div>
+                        <div className={`flex justify-start w-full h-auto gap-10`}>
+                            <div className={`font-bold w-80 text-lg`}>
+                                {taskdata?.title ? taskdata?.title : "No Name!"}
+                            </div>
+                            <div className={`font-bold w-64 text-lg`} onClick={() => {
+                                setSelectedTaskId(taskdata.id);
+                                setOpen(true);
+                            }}>
+                                Task Button
+
+                            </div>
+                            {selectedTaskId && (
+                                <Popup
+                                    open={open}
+                                    onClose={() => {
+                                        setOpen(false);
+                                    }}
+                                >
+                                    <TaskDetail id={selectedTaskId} />
+                                </Popup>
+                            )}
+                            <div className={`text-sm w-64 text-gray-100`}>
+                                Status: {taskdata?.status}
+                            </div>
+                            <div className={`text-sm w-64 text-gray-100`}>
+                                Due Date: {taskdata?.dueDate?.toDateString()}
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div >
+            )
+            }
+        </>
+
+
+
+    );
+};
+
+export { TaskListBox };

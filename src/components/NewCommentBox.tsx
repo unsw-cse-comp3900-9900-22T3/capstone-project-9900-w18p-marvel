@@ -1,7 +1,5 @@
 import { TextInput } from "./TextInput";
 import { useState, useEffect } from "react";
-import { getUser, updateUserProfile } from "../api/user";
-import { User } from "../api/type";
 import { useApp } from "../App";
 import { Avatar } from "./Avatar";
 import SendIcon from '@mui/icons-material/Send';
@@ -10,8 +8,7 @@ import SendIcon from '@mui/icons-material/Send';
 import {
     addComment
 } from "../api/comment";
-import { uid } from "uid";
-import { async } from "@firebase/util";
+
 
 interface NewCommentBoxProps {
     TaskId: string;
@@ -41,7 +38,7 @@ export const NewCommentBox = ({ TaskId, handleGetComment }: NewCommentBoxProps) 
     }
 
 
-    const handleadded = async (TaskId, uid, comment) => {
+    const handleadded = async (TaskId: string, uid: string, comment: string) => {
         await addComment(TaskId, uid, comment);
         await handleGetComment();
         setLoading(false);
@@ -86,11 +83,8 @@ export const NewCommentBox = ({ TaskId, handleGetComment }: NewCommentBoxProps) 
                         setIsEditing(false);
                         handleadded(
                             TaskId,
-                            user?.uid,
+                            user?.uid || "",
                             inputcomment)
-
-
-
 
                     }} />
                 </div>

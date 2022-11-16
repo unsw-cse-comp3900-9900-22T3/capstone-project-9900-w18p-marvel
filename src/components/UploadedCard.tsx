@@ -12,7 +12,7 @@ interface UploadedCardProps {
   FileName: string;
   FileAddedTime: string;
   FileDownloadLink: string;
-  UploadedBy: string;
+  UploadedBy?: string;
   handleGetattached: any;
 
 }
@@ -37,16 +37,7 @@ const UploadedCard = ({ FileID, FilePic, FileName, FileAddedTime, FileDownloadLi
 
 
 
-  const fetchAttach = async (url: string | URL) => {
-    const xhr = new XMLHttpRequest();
-    xhr.responseType = 'blob';
-    xhr.onload = (event) => {
-      const blob = xhr.response;
-    };
-    xhr.open('GET', url);
 
-
-  };
 
   useEffect(() => {
     fetchData();

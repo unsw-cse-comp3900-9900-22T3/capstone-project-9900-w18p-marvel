@@ -1,13 +1,9 @@
 import { addAttachment } from "../api/attachment";
-import { addComment } from "../api/comment";
-import { deleteFile, uploadFile } from "../api/storage"
 import { useState } from "react"
 import { useEffect } from "react";
 import { useApp } from "../App"
-import { Button } from "./Button";
-import { uid } from "uid";
 import { delay } from "../utils/promise";
-import { async } from "@firebase/util";
+
 
 interface NewUploadedCardProps {
   TaskId: string;
@@ -36,7 +32,7 @@ const NewUploadedCard = ({ TaskId, handleGetattached }: NewUploadedCardProps) =>
 
 
   //Handle the attachment added
-  const handleaddedatt = async (file) => {
+  const handleaddedatt = async (file: File | undefined) => {
     if (file && user?.uid) {
       setUploading(true);
 
@@ -61,9 +57,6 @@ const NewUploadedCard = ({ TaskId, handleGetattached }: NewUploadedCardProps) =>
     await handleGetattached();
     setLoading(false);
   };
-
-
-
 
 
 

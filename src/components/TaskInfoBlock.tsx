@@ -25,7 +25,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 interface TaskInfoBlockProps {
   TaskID: string;
   TaskName: string;
-  DueDate: string;
+  DueDate: any;
   Description: string;
   UserRole?: string;
   ProjectId: string;
@@ -115,10 +115,9 @@ const TaskInfoBlock = ({
 
 
 
-  const check_time = async (time) => {
+  const check_time = async () => {
     await delay(2000)
     console.log('timetime')
-    console.log(time)
 
   };
 
@@ -134,8 +133,6 @@ const TaskInfoBlock = ({
           }} className={`flex items-center text-2xl`}><TextInput
               placeholder="Click to Name the Task!..."
               disabled={TNameIsEditing ? false : true}
-              MaxCharacter='300'
-              boxheight='300px'
               fontSize='text-2xl'
               onChange={(val) => {
                 setinputTaskName(val);
@@ -212,8 +209,6 @@ const TaskInfoBlock = ({
           <TextInput_forDes
             placeholder="Click to Put some Description!..."
             disabled={isDesEditing ? false : true}
-            MaxCharacter='300'
-            boxheight='300px'
             onChange={(val) => {
               setinputTaskDesc(val);
               updateTask(
@@ -226,7 +221,6 @@ const TaskInfoBlock = ({
                 null,
                 null,
               );
-
             }}
 
             defaultValue={Description}
@@ -266,7 +260,7 @@ const TaskInfoBlock = ({
                 onChange={(newValue) => {
                   setValue(newValue);
 
-                  check_time(newValue);
+                  check_time();
                   updateTask(
                     TaskID,
                     null,

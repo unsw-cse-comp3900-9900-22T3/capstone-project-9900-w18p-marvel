@@ -23,14 +23,14 @@ export const ProfileFriendInfo = ({UserId}:props) => {
         fetch()
     },[])
     return(
-        <div className="flex flex-col w-60 bg-white">
-            <div className="text-2xl w-60 text-center h-12 text-neutral-900">profile</div>
-            <span>Email:</span>
-            <span>{User?.email}</span>
-            <span>Name:</span>
-            <span>{User?.displayName}</span>
-            <span>connected tasks:</span>
-            <span>{}</span>
+        <div className="flex flex-col w-64 h-64 bg-white-100 rounded-[32px]">
+            <div className="text-2xl w-60 text-center h-12 text-neutral-900 mt-4">profile</div>
+            <div className="text-xl ml-4">
+                <div>Email:</div>
+                <div className="mt-1 italic">{User?.email}</div>
+                <div className="mt-3">Name:</div>
+                <div className="mt-1 italic">{User?.displayName}</div>
+            </div>
         </div>
     )
 }

@@ -1,7 +1,6 @@
 import { FriendBox } from "../components/FriendBox";
 import { useApp } from "../App";
 import { getUser } from "../api/user";
-
 import { getApp } from "firebase/app";
 import {
   collection,
@@ -15,30 +14,24 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { uid } from "uid";
 import { queryMyProjects } from "../api/project";
-import { Project } from "../api/type";
-
-
-
-
+import { queryConnectedTaskCollaborator } from "../api/taskcollaborator";
+import { Project, User } from "../api/type";
 
 
 interface FriendListProps {
-    
-    
 }
 
 
 const FriendList = ({}: FriendListProps) => {
     const { user, projectId, setProjectId } = useApp();
-
-    const [data, setData] = useState<Array<Project>>([]);
+    const [data, setData] = useState<Array<User>>([]);
     const navigate = useNavigate();
 
     let observer: any = null;
 
     const refetch = async (userId: string) => {
         if (userId) {
-        const data = await queryMyProjects(userId);
+        const data = await queryConnectedTaskCollaborator(userId);
         setData(data);
         }
     };
@@ -64,7 +57,7 @@ const FriendList = ({}: FriendListProps) => {
     return (
         <div className="mr-8 flex flex-col">
             {data.map((item: any) => (
-                <FriendBox UserId={item.id} FriendName={item.title} Busy={item.id} src={item.photoURL.downloadURL}></FriendBox>
+                <FriendBox UserId={item.uid} FriendName={item.displayName} Busy={Math.floor(Math.random()*100)+"%"} src={item.photo.downloadURL}></FriendBox>
           ))}
         </div>
     );

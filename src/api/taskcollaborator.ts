@@ -185,17 +185,18 @@ export const queryConnectedTaskCollaborator = async (userId: string) => {
   const app = getApp();
   const db = getFirestore(app);
   const myTaskIds = await queryAllMyTaskIds(userId);
-  let collaborators: Array<string> = [];
+  let collaboratorIds: Array<string> = [];
   await Promise.all(
     myTaskIds.map(async (taskId: string) => {
       const collabs = await queryTaskCollaboratorIdsByTaskId(taskId);
-      collaborators = collaborators.concat(collabs);
+      collaboratorIds = collaboratorIds.concat(collabs);
     })
   );
-  collaborators = _.uniq(collaborators);
+  collaboratorIds = _.uniq(collaboratorIds);
+  collaboratorIds = collaboratorIds.filter((c:string)=>c!== userId)
   const data: Array<User> = [];
   await Promise.all(
-    collaborators.map(async (id: string) => {
+    collaboratorIds.map(async (id: string) => {
       const user = await getUser(id);
       if (user) data.push(user);
     })

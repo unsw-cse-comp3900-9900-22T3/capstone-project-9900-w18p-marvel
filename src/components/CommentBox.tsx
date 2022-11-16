@@ -19,8 +19,8 @@ import {
 
 interface CommentboxProps {
     TaskId?: string;
-    CommentId: string;
-    CommentorID: string;
+    CommentId?: string;
+    CommentorID?: string;
     Comments?: string;
     CommentDate?: string;
     OwnerId?: string;

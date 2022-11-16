@@ -25,7 +25,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 interface TaskInfoBlockProps {
   TaskID: string;
   TaskName: string;
-  DueDate: string;
+  DueDate: any;
   Description: string;
   UserRole?: string;
   ProjectId: string;
@@ -212,8 +212,6 @@ const TaskInfoBlock = ({
           <TextInput_forDes
             placeholder="Click to Put some Description!..."
             disabled={isDesEditing ? false : true}
-            MaxCharacter='300'
-            boxheight='300px'
             onChange={(val) => {
               setinputTaskDesc(val);
               updateTask(
@@ -225,7 +223,7 @@ const TaskInfoBlock = ({
                 null,
                 null,
                 null,
-              ); 
+              );
             }}
 
             defaultValue={Description}

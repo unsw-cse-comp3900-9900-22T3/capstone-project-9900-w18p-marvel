@@ -232,7 +232,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
                       CommentorID={item.createdBy}
                       CommentDate={item.createdAt.toDateString()}
                       Comments={item.content}
-                      OwnerID={user?.uid}
+                      OwnerId={user?.uid}
                       handleGetComment={handleGetComment}
                     ></CommentBox>
                   )

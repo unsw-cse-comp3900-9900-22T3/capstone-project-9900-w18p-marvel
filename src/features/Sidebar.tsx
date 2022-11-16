@@ -30,14 +30,12 @@ const MenuItem = ({ prefix, label, onClick }: MenuItemProps) => {
       }}
     >
       <div
-        className={`transition-all ${hover ? "w-1" : "w-0"} h-8 rounded-r-2xl ${
-          hover ? "bg-blue-100" : "bg-transparent"
-        }`}
+        className={`transition-all ${hover ? "w-1" : "w-0"} h-8 rounded-r-2xl ${hover ? "bg-blue-100" : "bg-transparent"
+          }`}
       ></div>
       <div
-        className={`flex flex-row gap-4 text-sm ${
-          hover ? "text-blue-100" : "text-black"
-        } `}
+        className={`flex flex-row gap-4 text-sm ${hover ? "text-blue-100" : "text-black"
+          } `}
       >
         <div
           className={`${hover ? "text-blue-100" : "text-white-60"} font-bold`}
@@ -60,17 +58,21 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
   const navigate = useNavigate();
   const { projectId, setProjectId, role, setRole } = useApp();
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   return (
     <div
-      className={`relative transition-all overflow-hidden shrink-0 grow-0 ${
-        collapse ? "w-16 basis-16" : "w-56 basis-56"
-      } bg-white-100 h-full `}
+      className={`relative transition-all overflow-hidden shrink-0 grow-0 ${collapse ? "w-16 basis-16" : "w-56 basis-56"
+        } bg-white-100 h-full `}
     >
-      {/* <div className="absolute top-3 left-8">
-        <img src="/brand.png" className="w-16 h-16" />
-      </div> */}
+      {<div className={`flex flex-col justify-between items-center`}>
+        <div className="flex top-3 left-8">
+          <img src="/brand.png" className="w-20 h-20" />
+        </div>
+        <div className="flex left-8 text-xl font-extrabold">
+          WeCan
+        </div>
+      </div>}
       <div className="absolute inset-0 pointer-events-none">
         <div className="w-full h-full flex justify-end items-center">
           <div

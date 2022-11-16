@@ -11,6 +11,7 @@ import { getUser } from "../api/user";
 import { useApp } from "../App";
 import { Popup } from "./Popup";
 import { delay } from "../utils/promise";
+import Button from '@mui/material/Button';
 
 import { Status, User } from "../api/type";
 
@@ -118,27 +119,16 @@ export function TaskDetail({ id }: TaskDetailProps) {
     <>
       {!invalid && (
         <div className={`flex items-center w-200 rounded-[32px] bg-white-100 `}>
-          <Popup
-            open={gradeOpen}
-            onClose={() => {
-              setgradeOpen(false);
-            }}
-          >
 
-            <Grade
-              id={id}
-              onComplete={() => {
-                setgradeOpen(false);
-              }}
-            />
-          </Popup>
+
+
           <div
             className={`flex justify-items-start flex-col px-12 overflow-auto max-h-[70rem] relative `}
           >
             <div className={`flex flex-row justify-between`}>
               <div className={`flex pt-5`}>
                 <TSelect
-                  defaultValue={taskdetails.status ? taskdetails.status as Status : "Blocked" as Status}
+                  defaultValue={taskdetails.status ? taskdetails.status as Status : "Not Started" as Status}
                   onChange={(val) => {
                     console.log(taskdetails.status)
                     if (val === "Completed") {
@@ -158,9 +148,14 @@ export function TaskDetail({ id }: TaskDetailProps) {
                 />
 
               </div>
+
               <div className={`flex h-auto pt-5`}>
+
+                <div onClick={() => { setgradeOpen(true); }} className={`mr-5`}><Button variant="contained" >Grade The Task!</Button></div>
+
+
                 <Box
-                  className={`hover:bg-slate-300 text-slate-500 rounded-[14px] h-6`}
+                  className={`hover:bg-slate-300 text-slate-500 rounded-[14px] h-6 mt-1`}
                 >
                   <DeleteOutlinedIcon
                     onClick={() => {
@@ -249,7 +244,24 @@ export function TaskDetail({ id }: TaskDetailProps) {
 
           </div>
         </div>
-      )}
+      )
+      }
+
+
+      <Popup
+        open={gradeOpen}
+        onClose={() => {
+          setgradeOpen(false);
+        }}
+      >
+
+        <Grade
+          id={id}
+          onComplete={() => {
+            setgradeOpen(false);
+          }}
+        />
+      </Popup>
     </>
   );
 }

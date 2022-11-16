@@ -70,7 +70,8 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
           <img src="/brand.png" className="w-20 h-20" />
         </div>
         <div className="flex text-xl font-extrabold">
-          WeCan
+
+          <img src={"https://live.staticflickr.com/65535/52503382719_0e80264fc9_z.jpg className="} className="w-20 h-10" />
         </div>
       </div>}
       <div className="absolute inset-0 pointer-events-none">

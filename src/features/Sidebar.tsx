@@ -100,20 +100,20 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
               navigate("/profile");
             }}
           ></MenuItem>
-          <MenuItem
+          {/* <MenuItem
             prefix={<TaskIcon className={""} />}
             label={"Tasks"}
             onClick={() => {
               navigate("/tasks");
             }}
-          ></MenuItem>
-          <MenuItem
+          ></MenuItem> */}
+          {/* <MenuItem
             prefix={<TaskIcon className={""} />}
             label={"API"}
             onClick={() => {
               navigate("/api");
             }}
-          ></MenuItem>
+          ></MenuItem> */}
         </div>
         {projectId && role === "owner" && (
           <div className="px-4 w-full">

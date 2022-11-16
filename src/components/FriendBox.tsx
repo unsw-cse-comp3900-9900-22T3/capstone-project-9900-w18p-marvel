@@ -5,6 +5,8 @@ import React, { useEffect, useState } from "react";
 import { useApp } from "../App";
 import Box from '@mui/material/Box';
 import { delay } from "../utils/promise";
+import { Popup } from "./Popup";
+import { ProfileFriendInfo } from "./ProfileFriendInfo"
 
 
 
@@ -38,6 +40,7 @@ const FriendBox = ({UserId, FriendName, Busy,src }: FriendboxProps) => {
 
 // {user?.photo?.downloadURL || ""}
 
+    const [profileOpen, setprofileOpen] = useState<boolean>(false)
     return (
         <div className={`flex flex-row w-full h-auto mb-2`}>
             <div className={`flex flex-row w-full h-auto pl-5 py-5 bg-gray-50 rounded-2xl relative`}>
@@ -53,7 +56,20 @@ const FriendBox = ({UserId, FriendName, Busy,src }: FriendboxProps) => {
                         {FriendName}
                     </div>
                     <div className={`font-bold w-64 text-lg`}>
-                        profile button
+                    <button onClick={()=>setprofileOpen(true)}>profile button</button>
+                      <Popup
+                          open={profileOpen}
+                          onClose={() => {
+                          setprofileOpen(false);
+                          }}
+                      >
+                        <ProfileFriendInfo
+                          UserId={UserId}
+                          onComplete={() => {
+                            setprofileOpen(false);
+                          }}
+                        /> 
+                      </Popup>
                     </div>
                     <div className={`text-sm w-64 text-gray-100`}>
                         Next Week's Workload

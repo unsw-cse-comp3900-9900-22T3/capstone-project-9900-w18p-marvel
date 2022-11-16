@@ -27,7 +27,7 @@ export const Profile = ({ }: ProfileProps) => {
             </div>
 
             <div className="overflow-y-scroll">
-                <div className="m-4 ml-12 text-sm text-gray-800 font-bold">
+                <div className="m-4 ml-12 text-sm text-gray-600 font-bold">
                     MY CONNECTED TASK MASTERS
                 </div>
                 <div className={`bg-white-100 w-auto h-96 m-2 ml-8 mr-8 rounded-lg overflow-scroll`}>
@@ -36,7 +36,7 @@ export const Profile = ({ }: ProfileProps) => {
                     </div>
                 </div>
 
-                <div className="m-4 ml-12 text-sm text-gray-800 font-bold">
+                <div className="m-4 ml-12 text-sm text-gray-600 font-bold">
                     MY ASSIGNED TASK LIST
                 </div>
                 <div className={`bg-white-100 w-auto h-96 m-2 ml-8 mr-8 rounded-lg overflow-scroll`}>
@@ -44,7 +44,7 @@ export const Profile = ({ }: ProfileProps) => {
                         <TasklistinProfile></TasklistinProfile>
                     </div>
                 </div>
-                <div className="m-4 ml-12 text-sm text-gray-100 font-bold">
+                <div className="m-4 ml-12 text-sm text-gray-600 font-bold">
                     MY DAILY PROGRESS
                 </div>
                 <div className={`bg-white-100 w-auto h-96 m-2 ml-8 mr-8 rounded-lg overflow-scroll`}>

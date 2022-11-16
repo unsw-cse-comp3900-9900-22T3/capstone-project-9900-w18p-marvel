@@ -65,11 +65,11 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
       className={`relative transition-all overflow-hidden shrink-0 grow-0 ${collapse ? "w-16 basis-16" : "w-56 basis-56"
         } bg-white-100 h-full `}
     >
-      {<div className={`flex flex-col justify-between items-center`}>
+      {<div className={`flex flex-col items-center`}>
         <div className="flex top-3 left-8">
           <img src="/brand.png" className="w-20 h-20" />
         </div>
-        <div className="flex left-8 text-xl font-extrabold">
+        <div className="flex text-xl font-extrabold">
           WeCan
         </div>
       </div>}
@@ -85,7 +85,7 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
           </div>
         </div>
       </div>
-      <div className="pt-36 pb-10 w-full h-full flex flex-col  justify-between">
+      <div className="pt-10 pb-10 w-full h-full flex flex-col  justify-between">
         <div className="w-full">
           <MenuItem
             prefix={<ProjectIcon className={""} />}

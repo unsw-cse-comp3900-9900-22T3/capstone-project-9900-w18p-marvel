@@ -14,6 +14,7 @@ export const ProfileCard = ({ }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
   const { user, setUser } = useApp(); //useApp 数据中心老板写的函数，
   const [inputEmail, setInputEmail] = useState("");
+  const [inputName, setInputName] = useState("");
   const [uploading, setUploading] = useState<boolean>(false);
 
   return (
@@ -43,7 +44,21 @@ export const ProfileCard = ({ }: Props) => {
           <Avatar src={user?.photo?.downloadURL || ""} size="xl" rounded="sm" />
         </div>
         <div className="text-lg font-bold text-black mt-6 ml-10">
-          {user?.displayName ? user?.displayName : "Anonymous"}
+
+
+          {!isEditing && <span className="text-lg font-bold text-black mt-6 ml-10">{user?.displayName ? user?.displayName : "Anonymous"}</span>}
+          {isEditing && (
+            <TextInput
+              disabled={isEditing ? false : true}
+              onChange={(val) => {
+                setInputName(val);
+              }}
+              defaultValue={user?.displayName}
+              placeholder={"Click to Add Name!"}
+            />
+          )}
+
+
         </div>
         <div className="text-sm font-light text-black mt-14 ml-[-105px]">
           {user?.email}
@@ -63,6 +78,7 @@ export const ProfileCard = ({ }: Props) => {
                   setInputEmail(val);
                 }}
                 defaultValue={user?.email}
+
               />
             )}
           </div>
@@ -99,7 +115,7 @@ export const ProfileCard = ({ }: Props) => {
               if (user)
                 updateUserProfile(
                   user.uid!,
-                  null,
+                  inputName,
                   inputEmail,
                   null,
                   (user: User) => {

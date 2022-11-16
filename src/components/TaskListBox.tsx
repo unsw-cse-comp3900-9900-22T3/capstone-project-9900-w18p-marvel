@@ -46,6 +46,9 @@ const TaskListBox = ({ TaskID }: TaskListBoxProps) => {
         console.log(data);
         await delay(1000);
 
+        const projectdata = await getProject(data?.projectId);
+        setPjData(projectdata);
+
 
     };
 

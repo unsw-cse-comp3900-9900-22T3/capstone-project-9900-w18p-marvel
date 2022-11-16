@@ -258,14 +258,14 @@ export function TaskPage({}: Props) {
       const laneQ = query(
         collection(db, "lanes"),
         where("projectId", "==", projectId)
-        );
-        lanesObserver = onSnapshot(taskQ, (querySnapshot) => {
-          fetchData(criterion);
-        });
-        return () => {
-          if (projectCollabObserver) projectCollabObserver();
-          if (tasksObserver) tasksObserver();
-          if (lanesObserver) lanesObserver();
+      );
+      lanesObserver = onSnapshot(taskQ, (querySnapshot) => {
+        fetchData(criterion);
+      });
+      return () => {
+        if (projectCollabObserver) projectCollabObserver();
+        if (tasksObserver) tasksObserver();
+        if (lanesObserver) lanesObserver();
       };
     }
     fetchData(criterion);
@@ -311,7 +311,7 @@ export function TaskPage({}: Props) {
         null,
         destinationId,
         null,
-        null,
+        null
       );
     }
     for (const [key, value] of Object.entries(newState)) {
@@ -322,7 +322,7 @@ export function TaskPage({}: Props) {
   const deleteLaneAndTasks = (laneId: string, data: any) => {
     const laneMap = _.cloneDeep(data);
     if (laneMap[laneId]) {
-      console.log(laneId)
+      console.log(laneId);
       laneMap[laneId].items.forEach((item: Task) => deleteTask(item.id));
       deleteLane(laneId);
       delete laneMap[laneId];
@@ -344,19 +344,25 @@ export function TaskPage({}: Props) {
   }, [projectId]);
 
   const [filterOpen, setFilterOpen] = useState<boolean>(false);
-  
+
   return (
     data && (
       <>
-        <div className="bg-gradient-to-r from-sky-500/50 to-indigo-500/50 w-full h-full flex flex-col">
+        <div className="bg-gradient-to-r from-sky-500/50 to-indigo-500/50 w-full h-full flex flex-col px-4 pb-2">
           <div className="w-full h-20 justify-between items-center flex px-6 py-6">
             <div className="w-fit h-fit">
               {projectId && (
                 <div className="flex gap-4 items-center">
                   <ProjectIcon className={"text-gray-100"} />
-                  {role === "owner" && <TextInput disabled={false} defaultValue={projectName} onComplete={(val:string)=>{
-                    updateProject(projectId || "",val)
-                  }}/>}
+                  {role === "owner" && (
+                    <TextInput
+                      disabled={false}
+                      defaultValue={projectName}
+                      onComplete={(val: string) => {
+                        updateProject(projectId || "", val);
+                      }}
+                    />
+                  )}
                   {role !== "owner" && (
                     <p className="text-sm font-bold">{projectName}</p>
                   )}

@@ -20,7 +20,7 @@ export const ProfileCard = ({ }: Props) => {
   return (
     // w-[690px] h-[100px]
     <div className="divide-y divide-gray-300 w-full h-full">
-      <div className="flex flex-basis auto ml-10">
+      <div className="flex flex-row flex-basis auto ml-10">
         <div className="transition-all mt-6 w-14 h-14 relative hover:scale-95">
           <input
             type={"file"}
@@ -43,25 +43,27 @@ export const ProfileCard = ({ }: Props) => {
           )}
           <Avatar src={user?.photo?.downloadURL || ""} size="xl" rounded="sm" />
         </div>
-        <div className="text-lg font-bold text-black mt-6 ml-10">
+        <div className="flex flex-col pl-5">
+          <div className="flex text-lg font-bold text-black mt-6">
 
 
-          {!isEditing && <span className="text-lg font-bold text-black mt-6 ml-10">{user?.displayName ? user?.displayName : "Anonymous"}</span>}
-          {isEditing && (
-            <TextInput
-              disabled={isEditing ? false : true}
-              onChange={(val) => {
-                setInputName(val);
-              }}
-              defaultValue={user?.displayName}
-              placeholder={"Click to Add Name!"}
-            />
-          )}
+            {!isEditing && <span className="text-lg font-bold text-black">{user?.displayName ? user?.displayName : "Anonymous"}</span>}
+            {isEditing && (
+              <TextInput
+                disabled={isEditing ? false : true}
+                onChange={(val) => {
+                  setInputName(val);
+                }}
+                defaultValue={user?.displayName}
+                placeholder={"Click to Add Name!"}
+              />
+            )}
 
 
-        </div>
-        <div className="text-sm font-light text-black mt-14 ml-[-105px]">
-          {user?.email}
+          </div>
+          <div className="flex text-sm font-light text-black">
+            {user?.email}
+          </div>
         </div>
       </div>
       <div className="flex justify-between m-4 ml-8 mr-8">

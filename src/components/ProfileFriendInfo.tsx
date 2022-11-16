@@ -24,7 +24,9 @@ export const ProfileFriendInfo = ({ UserId }: props) => {
     }, [])
     return (
         <div className="flex flex-col px-5 w-auto h-auto bg-white-100 rounded-[32px] pb-5">
+            <img src={"https://cdn-icons-png.flaticon.com/512/1141/1141102.png"}></img>
             <div className="text-2xl w-auto text-center h-12 text-neutral-900 mt-4">Friend's Profile</div>
+
             <div className="text-xl">
                 <div className="mt-3">Name:</div>
                 <div className="mt-1 italic">{User?.displayName}</div>

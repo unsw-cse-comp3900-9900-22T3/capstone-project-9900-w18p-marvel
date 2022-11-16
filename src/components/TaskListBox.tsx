@@ -83,14 +83,14 @@ const TaskListBox = ({ TaskID }: TaskListBoxProps) => {
 
 
                     <div className={`flex flex-row w-full h-auto pl-5 py-5 bg-gray-50 rounded-2xl relative`}>
-                        <div className={`flex w-40`}>
+                        <div className={`flex w-auto pt-1`}>
                             <AssignmentIcon />
                         </div>
-                        <div className={`flex justify-between w-full h-auto gap-10`}>
-                            <div className={`font-bold w-80 text-lg text-blue-600`}>
+                        <div className={`flex justify-between w-full h-auto gap-8`}>
+                            <div className={`font-bold w-auto text-lg text-blue-600`}>
                                 {taskdata?.title ? taskdata?.title : "No Name!"}
                             </div>
-                            <div className={`font-bold w-64 text-lg`} onClick={() => {
+                            <div className={`font-bold w-auto text-lg`} onClick={() => {
                                 setSelectedTaskId(taskdata.id);
                                 setOpen(true);
                             }}>
@@ -108,13 +108,13 @@ const TaskListBox = ({ TaskID }: TaskListBoxProps) => {
                                     <TaskDetail id={selectedTaskId} />
                                 </Popup>
                             )}
-                            <div className={`text-lg w-64 text-blue-600/75`}>
+                            <div className={`text-lg w-auto text-blue-600/75`}>
                                 Status: {taskdata?.status}
                             </div>
-                            <div className={`text-lg w-64 text-blue-600/75`}>
+                            <div className={`text-lg w-auto text-blue-600/75`}>
                                 Due Date: {taskdata?.dueDate?.toDateString()}
                             </div>
-                            <div className={`text-lg w-64 text-blue-600/75`}>
+                            <div className={`text-lg w-auto text-blue-600/75`}>
                                 Project Name: {pjdata?.title}
                             </div>
 

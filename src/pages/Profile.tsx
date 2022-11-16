@@ -23,7 +23,7 @@ export const Profile = ({}: ProfileProps) => {
           <ProfileCard />
           </div>
 
-          
+          <div className="overflow-y-scroll">
             <div className="m-4 ml-12 text-sm text-gray-100 font-bold">
               MY CONNECTED TASK MASTERS
             </div>
@@ -40,6 +40,7 @@ export const Profile = ({}: ProfileProps) => {
                 <div className="m-8">
                     <FriendList></FriendList>
                 </div>
+            </div>
             </div>
         </div>
       );

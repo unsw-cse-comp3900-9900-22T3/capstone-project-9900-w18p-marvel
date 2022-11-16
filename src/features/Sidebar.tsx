@@ -66,12 +66,10 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
         } bg-white-100 h-full `}
     >
       {<div className={`flex flex-col items-center`}>
-        <div className="flex top-3 left-8">
-          <img src="/brand.png" className="w-20 h-20" />
-        </div>
-        <div className="flex text-xl font-extrabold">
 
-          <img src={"https://live.staticflickr.com/65535/52503382719_0e80264fc9_z.jpg className="} className="w-20 h-10" />
+        <div className="flex text-xl font-extrabold pt-5">
+
+          <img src={"https://live.staticflickr.com/65535/52503382719_0e80264fc9_z.jpg className="} className="w-40 h-20" />
         </div>
       </div>}
       <div className="absolute inset-0 pointer-events-none">

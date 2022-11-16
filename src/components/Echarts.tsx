@@ -20,7 +20,7 @@ export const Echarts = ({ id, data1, data2 }: EchartsProps) => {
     series: [
       {
         data: [0.5, 0.2, 0.4, 0.5, 0.8, 0.5, 0.9],
-        type: "bar",
+        type: "line",
         smooth: true,
       },
     ],

@@ -108,13 +108,13 @@ export const Sidebar = ({ onClickManageMember }: Props) => {
               navigate("/tasks");
             }}
           ></MenuItem> */}
-          {/* <MenuItem
+          <MenuItem
             prefix={<TaskIcon className={""} />}
             label={"API"}
             onClick={() => {
               navigate("/api");
             }}
-          ></MenuItem> */}
+          ></MenuItem>
         </div>
         {projectId && role === "owner" && (
           <div className="px-4 pb-20 w-full">

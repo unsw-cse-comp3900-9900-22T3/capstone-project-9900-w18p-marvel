@@ -84,7 +84,7 @@ export const APITest = () => {
     console.log("image gened:", imgs);
 
     allUsers.forEach((u) => {
-      const dummyProjectIds = Array(randInt(1, 8))
+      const dummyProjectIds = Array(randInt(1, 3))
         .fill(0)
         .map((n) => uid(20));
       dummyProjectIds.forEach((id) => {
@@ -116,7 +116,7 @@ export const APITest = () => {
         //select random users and creator
         const rand = Math.floor(Math.random() * 8) + 1;
         const projectCollabs = [{ id: u.uid, role: "owner" }].concat(
-          sampleMultiple(allUsers, randInt(0, allUsers.length - 1))
+          sampleMultiple(allUsers, randInt(8, allUsers.length - 1))
             .map((c) => ({
               id: c.uid,
               role: sample(["owner", "editor", "viewer"]),
@@ -141,7 +141,7 @@ export const APITest = () => {
         ).forEach((n) => {
           const laneId = uid(20);
           addLane(laneId, id, n);
-          const rand = Math.floor(Math.random() * 5);
+          const rand = Math.floor(Math.random() * 12) + 8;
           const dummyTasks = Array(rand)
             .fill(0)
             .map(async (n) => {
@@ -153,8 +153,10 @@ export const APITest = () => {
                 dueDate: faker.date.future(),
                 projectId: id,
                 laneId: laneId,
-                status: "started",
+                status: sample(["Not Started","In Progress","Blocked","Completed"]),
                 title: faker.name.jobTitle(),
+                completeDate:faker.date.future(),
+                assessment:"Perfect",
               } as Task;
               await createTask(
                 data.id,
@@ -165,13 +167,15 @@ export const APITest = () => {
                 data.createdBy,
                 data.createdAt,
                 data.projectId,
-                data.laneId
+                data.laneId,
+                data.completeDate,
+                data.assessment
               );
 
               await updateTaskCollaborators(
                 sampleMultiple(
                   projectCollabs.map((u) => u.id),
-                  Math.floor(Math.random() * 5)
+                  Math.floor(Math.random() * 5) + 8
                 ),
                 data.id
               );

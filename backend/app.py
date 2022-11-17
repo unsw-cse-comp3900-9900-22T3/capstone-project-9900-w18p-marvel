@@ -1,3 +1,4 @@
+import datetime
 from flask import Flask
 
 app = Flask(__name__)
@@ -5,7 +6,7 @@ app = Flask(__name__)
 import firebase_admin
 from firebase_admin import credentials,firestore_async
 
-cred = credentials.Certificate("theverypulseofthemachine-firebase-adminsdk-qnurl-42b20ec79c.json")
+cred = credentials.Certificate("./theverypulseofthemachine-firebase-adminsdk-qnurl-42b20ec79c.json")
 client = firebase_admin.initialize_app(cred, {
     'databaseURL': "https://theverypulseofthemachine-default-rtdb.asia-southeast1.firebasedatabase.app",
     'databaseAuthVariableOverride': {
@@ -29,9 +30,15 @@ async def recommend():
         task_ref = db.collection(u'taskcollaborators').where("userId","==",u["uid"])
         task_docs = await task_ref.get()
         for doc in task_docs:
-            item = doc.to_dict()
-            item['id'] = doc.id
-            d['tasks'].append(item)
+            task = await db.collection("tasks").document(doc.to_dict()["taskId"]).get()
+            if task.exists:
+                item = task.to_dict()
+                item["cost"] = 0
+                item['id'] = task.id
+                if item["status"] == "Completed":
+                    timestamp = item["completeDate"].timestamp() - item["createdAt"].timestamp()
+                    item["cost"] = round((timestamp)/3600/24,2)
+                d['tasks'].append(item)
         data.append(d)
 
     return data

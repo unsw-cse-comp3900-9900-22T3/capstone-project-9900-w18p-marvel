@@ -39,7 +39,9 @@ export const createTask = async (
   createdBy: string,
   createdAt: Date,
   projectId: string,
-  laneId: string
+  laneId: string,
+  completeDate:Date,
+  assessment:string
 ) => {
   const app = getApp();
   const db = getFirestore(app);
@@ -53,6 +55,8 @@ export const createTask = async (
     createdBy: createdBy,
     createdAt: createdAt,
     cover: { downloadURL: "", storagePath: "" },
+    completeDate:completeDate,
+    assessment:assessment
   });
   console.log("creating task:", id);
 };
@@ -64,11 +68,12 @@ export const queryAllTasks: () => Promise<Array<Task>> = async () => {
   const data: Array<Task> = [];
   querySnapshot.forEach((doc) => {
     if (doc.id !== "placeholder") {
+      console.log(doc.data())
       data.push({
         id: doc.id,
         ...doc.data(),
-        dueDate: doc.data().dueDate.toDate(),
-        createdAt: doc.data().createdAt.toDate(),
+        dueDate: doc.data()?.dueDate?.toDate(),
+        createdAt: doc.data()?.createdAt?.toDate(),
       } as Task);
     }
   });

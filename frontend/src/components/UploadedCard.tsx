@@ -23,13 +23,13 @@ const waste_icon = "https://freesvg.org/img/trash.png"
 
 const UploadedCard = ({ FileID, FilePic, FileName, FileAddedTime, FileDownloadLink, UploadedBy, handleGetattached }: UploadedCardProps) => {
 
-  console.log(FileID)
+  console.log(UploadedBy)
 
   const [uploaduser, setUploaduser] = useState<any>({});
   const [loading, setLoading] = useState(false);
   const fetchData = async () => {
     const userinfo = await getUser(UploadedBy);
-    await delay(1000);
+    await delay(2000);
     console.log(userinfo)
     setUploaduser(userinfo)
 
@@ -53,6 +53,8 @@ const UploadedCard = ({ FileID, FilePic, FileName, FileAddedTime, FileDownloadLi
 
 
 
+
+
   return (
     <div className={`flex flex-col w-176 h-auto mb-2`}>
 
@@ -71,7 +73,7 @@ const UploadedCard = ({ FileID, FilePic, FileName, FileAddedTime, FileDownloadLi
           >
             <div className={`flex flex-col ml-5 w-auto h-auto gap-3`} >
               <div className={`text-xl font-bold`}>{FileName}</div>
-              <div className={`text-xs text-gray-100`}>Added at {FileAddedTime}, Created by {uploaduser?.displayName ? uploaduser?.displayName : "Anonymous"}</div>
+              <div className={`text-xs text-gray-100`}>Added at {FileAddedTime}, Created by {uploaduser?.name ? uploaduser?.name : "Anonymous"}</div>
 
             </div>
           </a>

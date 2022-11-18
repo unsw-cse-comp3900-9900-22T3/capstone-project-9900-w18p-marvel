@@ -464,13 +464,15 @@ export function TaskPage({}: Props) {
                               const newTask = await createTask(
                                 id,
                                 "",
-                                "started",
+                                "Not Started",
                                 faker.date.future(),
                                 "",
                                 user?.uid,
                                 new Date(),
                                 projectId,
-                                key
+                                key,
+                                new Date(),
+                                ""
                               );
                               setSelectedTaskId(id);
                             }

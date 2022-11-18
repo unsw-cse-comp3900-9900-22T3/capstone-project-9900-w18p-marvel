@@ -141,7 +141,7 @@ export const APITest = () => {
         ).forEach((n) => {
           const laneId = uid(20);
           addLane(laneId, id, n);
-          const rand = Math.floor(Math.random() * 12) + 8;
+          const rand = Math.floor(Math.random() * 4) + 2;
           const dummyTasks = Array(rand)
             .fill(0)
             .map(async (n) => {

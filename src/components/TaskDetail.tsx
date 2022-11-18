@@ -115,6 +115,8 @@ export function TaskDetail({ id }: TaskDetailProps) {
     console.log(detailtask);
   };
 
+
+  console.log(inputattachments);
   return (
     <>
       {!invalid && (
@@ -191,7 +193,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
                     createdAt: { toDateString: () => string };
                     id: string;
                     resource: { downloadURL: string };
-                    Createby: string;
+                    createdBy: string;
                   }) => (
                     <UploadedCard
                       FilePic={item.FilePic}
@@ -199,7 +201,7 @@ export function TaskDetail({ id }: TaskDetailProps) {
                       FileAddedTime={item.createdAt.toDateString()}
                       FileID={item.id}
                       FileDownloadLink={item.resource.downloadURL}
-                      UploadedBy={item.Createby}
+                      UploadedBy={item.createdBy}
                       handleGetattached={handleGetattached}
                     ></UploadedCard>
                   )

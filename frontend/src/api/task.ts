@@ -236,3 +236,35 @@ export const completeTask = async (id:string)=>{
     await updateTask(id,null,null,null,null,null,new Date(),null)
   }
 }
+
+export const getProportion = async (tasks:Array<Task>)=>{
+  var curr = new Date; // get current date
+  var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+  var last = first + 6; // last day is the first day + 6
+  
+  var firstday = new Date(curr.setDate(first));
+  var lastday = new Date(curr.setDate(last));
+  const compeleteTasks = tasks.filter((t:Task)=>{
+    if(t.status === "Completed"){
+      if(t.createdAt.getTime() > firstday.getTime() 
+      && t.createdAt.getTime() < lastday.getTime()
+      && t.completeDate.getTime() > firstday.getTime()
+      && t.completeDate.getTime() < lastday.getTime()){
+        return t
+      }
+    }
+  })
+  const allTasks = tasks.filter((t:Task)=>{
+    if(t.status === "Completed"){
+      if(t.createdAt.getTime() > firstday.getTime() 
+      && t.createdAt.getTime() < lastday.getTime()){
+        return t
+      }
+    }
+  })
+  
+
+
+
+
+}
